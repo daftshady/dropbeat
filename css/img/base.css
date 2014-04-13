@@ -1,0 +1,519 @@
+/** Base css declaration **/
+
+html, body {
+    overflow: hidden;
+}
+
+#bottom {
+    position: absolute;
+    height: 150px;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+}
+#player {
+    position: absolute;
+    width: 400px;
+    height: 150px;
+    background:-webkit-linear-gradient(bottom, #ADAEB0 0%, #F1F1F1 100%);
+    bottom: 0;
+    right: 0;
+}
+
+#player .message {  
+    position: absolute;
+    width: 400px;
+    height: 10px;
+    left: 10px;
+    top: 7px;
+    display: block;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 15px;
+}
+
+/** Buttons **/
+#player .buttons {
+    position: absolute;
+    bottom: 0px;
+    width: 400px;
+    height: 80px;
+    text-align: center;
+    display: inline-block;
+}
+#player .buttons .border {
+    display: inline-block;
+    margin: 5px 0px 6px 0px;
+    border-radius: 50px;
+   
+}
+#player .buttons .border.mid {
+    margin: 5px 10px 0px 10px;
+}
+
+#player .buttons .back,
+#player .buttons .play,
+#player .buttons .forth {
+    cursor: pointer;
+    display: block;
+    width: 45px;
+    height: 45px;
+    margin: 10px;
+    border-radius: 50px;
+    position: relative;
+    box-shadow: 0px 0px 1px #ADAEB0;
+    background:-webkit-linear-gradient(top, #EEE 0%, #CCC 100%);
+    background:linear-gradient(top, #EEE 0%, #CCC 100%);
+    color: #333;
+    text-shadow: none;
+}
+#player .buttons .back {
+    background-image: url('img/back_button_overlay.png');
+    background-size: 45px 45px;
+}
+#player .buttons .play {
+    width: 60px;
+    height: 60px;
+    background-image: url('img/play_button_overlay.png');
+    background-size: 60px 60px;
+}
+#player .buttons .forth {
+    background-image: url('img/forth_button_overlay.png');
+    background-size: 45px 45px;
+}
+
+/** Recom **/
+#recom {
+    height: 100%;
+    width: 100%;
+    border-top: 3px solid #C4C4C4;
+    overflow: auto;
+}
+
+#recom .recom-table {
+    width: 100%;
+    line-height: 45px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+
+}
+
+#recom .result-title {
+    padding-left: 12px;
+}
+
+#recom .result-title:hover {
+    background: #F1F1F1;
+    cursor: pointer;
+}
+
+#recom .result-tag {
+    color: blue;
+    width: 30px;
+    font-size: 13px;
+}
+#recom .recom-result-row {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 20px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+#recom .recom-spinner {
+    z-index: -5;
+    width: 100%;
+    height: 100%;
+    background: url('img/recom-spin.gif')
+                50% 50%
+                no-repeat;
+    display: none;
+}
+
+#recom .recom-comment {
+    z-index: -5;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 20px;
+    line-height: 150px;
+}
+
+
+/** Progress **/
+
+#player .progress-wrapper {
+    position: absolute;
+    height: 12px;
+    width: 400px;
+    padding-right: 470px;
+    bottom: 100px;
+   -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+#player .position,
+#player .length {
+    position: absolute;
+    text-align: center;
+    width: 45px;
+    bottom: 80px;
+    display: block;
+    font-size:13px;
+}
+
+#player .position {
+    left: 3px;
+}
+#player .length {
+    right: 3px;
+}
+#player .progress-wrapper .progress {
+    position: absolute;
+    left: 10px;
+    width: 380px;
+    height: 10px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background: #ADAEB0;
+}
+
+#player .progress-wrapper .progress .bullet,
+#player .progress-wrapper .progress .buffer {
+    height: 100%;
+    background:-webkit-linear-gradient(top, #CCC 0%, #999 100%);
+    background:-moz-linear-gradient(top, #CCC 0%, #999 100%);
+    background:-ms-linear-gradient(top, #CCC 0%, #999 100%);
+    background:-o-linear-gradient(top, #CCC 0%, #999 100%);
+    background:linear-gradient(top, #CCC 0%, #999 100%);
+    border-radius: 10px;
+    position: relative;
+    width: 0;
+}
+#player .progress-wrapper .progress .buffer {
+    height: 10px;
+    position: absolute;
+    top: 1px;
+    bottom: 0;
+    margin-left: 4px;
+    border-radius: 5px;
+    background:-webkit-linear-gradient(top, #666 30%, #888 100%);
+    background:-moz-linear-gradient(top, #666 30%, #888 100%);
+    background:-ms-linear-gradient(top, #666 30%, #888 100%);
+    background:-o-linear-gradient(top, #666 30%, #888 100%);
+    background:linear-gradient(top, #666 30%, #888 100%);
+}
+#player .progress-wrapper .progress .bullet .dot {
+    position: absolute;
+    top: 0px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50px;
+    background:-webkit-linear-gradient(top, #FFF 0%, #AAA 100%);
+    background:-moz-linear-gradient(top, #FFF 0%, #AAA 100%);
+    background:-ms-linear-gradient(top, #FFF 0%, #AAA 100%);
+    background:-o-linear-gradient(top, #FFF 0%, #AAA 100%);
+    background:linear-gradient(top, #FFF 0%, #AAA 100%);
+}
+
+/* Players */
+
+#external-player {
+    width: 200px;
+    height: 200px;
+    background: #000;
+    position: absolute;
+    left: -10000px;
+}
+#youtube-player {
+    pointer-events: all;
+}
+
+
+/* Playlist */
+
+#playlist-wrapper {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: -5;
+    width: 400px;
+    height: 100%;
+    padding: 0 0 0 0; 
+    background: #FFF;
+}
+
+#playlist-wrapper .playlist-board {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    height:100%;
+    right: 0px;
+    padding-bottom: 100px;
+    border-bottom: 1px solid #e8e8e8;
+    border-left: 1px solid #e8e8e8;
+}
+
+#playlist-wrapper .playlist {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+#playlist-wrapper .playlist-title {
+    padding-left: 10px;
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: #F1F1F1;
+    border-bottom: 1px solid #e8e8e8;
+    border-left: 1px solid #e8e8e8;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 25px;
+    line-height: 60px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#playlist-wrapper .playlist-table {
+    width: 100%;
+    line-height: 35px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
+
+#playlist-wrapper .playlist-table-row {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 13px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+#playlist-wrapper .music-idx {
+    width: 25px;
+    background: #F1F1F1;
+    border-right: 1px solid #e8e8e8;
+    text-align: center;
+}
+
+#playlist-wrapper .music-title {
+    padding-left:10px;
+}
+
+#playlist-wrapper .music-title:hover {
+    background: #F1F1F1;
+    cursor: pointer;
+}
+
+#playlist-wrapper .music-title-playing {
+    font-weight: bold;
+}
+
+#playlist-wrapper .music-remove {
+    width: 35px;
+    background-image: url('img/black-minus-icon.png');
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+}
+#playlist-wrapper .music-remove:hover {
+    width: 35px;
+    background-image: url('img/red-minus-icon.png');
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    cursor: pointer;
+}
+
+/* Search bar */
+
+#top-bar {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    height: 60px;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    background-color: #F1F1F1;
+    z-index: -5;
+}
+
+#top-bar .search-bar {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    right: 400px;
+    top: 0px;
+    left: 0px;
+    background-color: #F1F1F1;
+}
+
+#top-bar .search-bar .search-box-wrapper {
+    display: inline-block;
+    margin-left: 13px;
+    margin-top: 13px;
+    background: #F1F1F1;
+}
+
+#top-bar .search input[type=search]{
+    -webkit-appearance: none;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 26px;
+    width: 400px;
+    padding: 2px 4px 2px 10px;
+    border-right: none;
+    outline: none;
+    border:1px solid #d0d0d0;
+}
+
+#top-bar .search input[type=button] {
+    position:relative; 
+    left:-4px;
+    height:32px;
+    border:1px solid #adc5cf;
+    background: #e4f1f9; /* Old browsers */
+    background: -moz-linear-gradient(top, #e4f1f9 0%, #d5e7f3 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e4f1f9), color-stop(100%,#d5e7f3)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #e4f1f9 0%,#d5e7f3 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #e4f1f9 0%,#d5e7f3 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #e4f1f9 0%,#d5e7f3 100%); /* IE10+ */
+    background: linear-gradient(top, #e4f1f9 0%,#d5e7f3 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4f1f9', endColorstr='#d5e7f3',GradientType=0 ); /* IE6-9 */
+    color:#7da2aa;
+    cursor: pointer;
+}
+
+/* Mid talon */
+
+#mid {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0px;
+    top: 60px;
+    padding-bottom: 210px;
+    overflow: hidden;
+    padding-right: 400px;
+    height: 100%;
+    width: 100%;
+    z-index: -5;
+}
+
+#mid .search-result-wrapper {
+    height: 100%;
+    width: 100%;
+}
+
+
+#mid .search-result-title {
+    padding-left: 10px;
+    width: 100%;
+    height: 35px;
+    background: #F1F1F1;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 20px;
+    line-height: 35px;
+    text-align: right;
+    padding-right: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    border-top: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+#mid .search-result {
+    width: 100%;
+    overflow: auto;
+}
+
+#mid .search-result-table {
+    width: 100%;
+    line-height: 50px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
+
+#mid .search-result-row {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 20px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+#mid .search-result-recom-row {
+    border-bottom: 2px solid #FF1900;
+    border-top: 2px solid #FF1900;
+}
+
+#mid .result-title {
+    padding-left: 12px;
+}
+
+#mid .result-title:hover {
+    background: #F1F1F1;
+    cursor: pointer;
+}
+
+.result-to-playlist {
+    width: 45px;
+    background-image: url('img/black-plus-icon.png');
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-size: 45px 50px;
+}
+
+.result-to-playlist:hover {
+    cursor: pointer;
+    background-image: url('img/red-plus-icon2.png');
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-size: 45px 50px;
+}
+
+#mid .spinner {
+    z-index: -5;
+    width: 100%;
+    height: 100%;
+    background: url('img/spin.gif')
+                50% 50%
+                no-repeat;
+    display: block;
+}
+
+#mid .ready-comment {
+    z-index: -5;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 20px;
+}
+
+
+
