@@ -1,18 +1,9 @@
 // Base config
-var debug = true;
-if (!debug) {
-    var SCHEME = "http";
-    var BASE_API_HOST = "54.250.195.24:8000";
-    var URI = "/dropbeat/api/";
-    var VERSION = "v1"
-    var API_URL = SCHEME + "://" + BASE_API_HOST + URI + VERSION + "/";
-} else {
-    var SCHEME = "http";
-    var BASE_API_HOST = "127.0.0.1:8100";
-    var URI = "/dropbeat/api/";
-    var VERSION = "v1"
-    var API_URL = SCHEME + "://" + BASE_API_HOST + URI + VERSION + "/";
-}
+var SCHEME = "http";
+var BASE_API_HOST = "api.dropbeat.net";
+var URI = "/dropbeat/api/";
+var VERSION = "v1"
+var API_URL = SCHEME + "://" + BASE_API_HOST + URI + VERSION + "/";
 
 // Api bindings
 var API_SEARCH_URL = API_URL + "search" + "/";
