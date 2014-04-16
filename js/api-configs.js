@@ -2,7 +2,7 @@
 var SCHEME = "http";
 var BASE_API_HOST = "api.dropbeat.net";
 var URI = "/dropbeat/api/";
-var VERSION = "v1"
+var VERSION = "v1";
 var API_URL = SCHEME + "://" + BASE_API_HOST + URI + VERSION + "/";
 
 // Api bindings

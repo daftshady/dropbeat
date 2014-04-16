@@ -84,8 +84,8 @@ function searchCallback(data) {
     SearchBox.retry = false;
 };
 
-/* SearchList Declarations */
 
+/* SearchList Declarations */
 var SearchList = {
     elems:{
         searchResultSection:".body-section .search-result-section",
