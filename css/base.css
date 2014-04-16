@@ -88,11 +88,19 @@ html, body {
     overflow:hidden;
 }
 #dropbeat .logo-header{
+    float: left;
     margin-left:6px;
     text-indent:-9999px;
     background:url("img/main_logo_blur.png");
     width:189px;
     height:60px;
+    cursor: pointer;
+}
+#dropbeat .github-link{
+    float: right;
+    background:url("img/github.png");
+    width:58px;
+    height:58px;
     cursor: pointer;
 }
 #dropbeat .contents .header-section{

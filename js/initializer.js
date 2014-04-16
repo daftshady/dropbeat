@@ -53,6 +53,11 @@ $(document).ready(function() {
     $('#logo').click(function() {
         location.href = fullHost;
     });
+
+    // Github octocat clickable
+    $('#github').click(function() {
+        location.href = 'https://github.com/daftshady/dropbeat';
+    });
 });
 
 function onYouTubeIframeAPIReady() {
