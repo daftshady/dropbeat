@@ -75,13 +75,18 @@ var ViewControl = {
           , $searchBar = $('.search-input-field', $searchSection)
           , $readyComment = $('#dropbeat .body-section .ready-comment')
           , $bodySection = $('#dropbeat .body-section')
-          , $initializeLoader = $('#dropbeat .body-section .dropbeat-initialize-spinner');
+          , $initializeLoader =
+            $('#dropbeat .body-section .dropbeat-initialize-spinner');
 
         $searchBar.css({width:$readyComment.width() * 0.5});
 
-        var readyCommentHeight = $readyComment.height() + parseInt($readyComment.css("paddingBottom"));
-        var landingPageHeight = $searchSection.height() + readyCommentHeight;
-        var landingPageTop = ($bodySection.height() - $bodySection.offset().top - landingPageHeight)/2;
+        var readyCommentHeight =
+            $readyComment.height() +
+            parseInt($readyComment.css("paddingBottom"));
+        var landingPageHeight =
+            $searchSection.height() + readyCommentHeight;
+        var landingPageTop = ($bodySection.height() -
+            $bodySection.offset().top - landingPageHeight)/2;
         var newSearchBarTop = landingPageTop + readyCommentHeight
           , newSearchBarLeft = ($bodySection.width() - $searchSection.width())/2;
         var initializeLoaderTop = newSearchBarTop + $searchSection.height();
@@ -97,9 +102,11 @@ var ViewControl = {
 
     resizePlaylistRow: function() {
         if($(".a-playlist-music").length > 0){
-            var rowWidth = $(".a-playlist-music").width() - $(".music-remove").width()
-                                    - parseInt($(".music-remove").css("paddingLeft"))
-                                    - parseInt($(".music-remove").css("paddingRight"));
+            var rowWidth =
+                $(".a-playlist-music").width() -
+                $(".music-remove").width() -
+                parseInt($(".music-remove").css("paddingLeft")) -
+                parseInt($(".music-remove").css("paddingRight"));
             $(".music-title-wrapper").css("width", rowWidth);
             var maxMusicIndexWidth = $(".music-index:last").width();
             var scrollWidth = $(".music-title-wrapper").width()

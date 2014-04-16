@@ -258,12 +258,14 @@ var PlaylistControl = {
             NotifyManager.playlistCleared();
 
             // Logging
-            if (window.dropbeat && typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+            if (window.dropbeat &&
+                typeof window.dropbeat=="object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction("dropbeat", "playlist-manage/clear");
             }
         });
 
-        $(this.elems.playlistFilterInput).bind("propertychange keyup input paste", function(event) {
+        $(this.elems.playlistFilterInput).
+            bind("propertychange keyup input paste", function(event) {
             clearTimeout(PlaylistControl.filterTimer);
             PlaylistControl.filterTimer = setTimeout(function () {
                 PlaylistControl.filter($(this).val().toLowerCase());

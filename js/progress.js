@@ -39,10 +39,12 @@ var Progress = {
         $('#player .progress-handle').show();
         var interval = 100;
         if (Progress.bulletUpdateCaller == null) {
-            Progress.bulletUpdateCaller = setInterval(Progress.updateBullet, interval);
+            Progress.bulletUpdateCaller =
+                setInterval(Progress.updateBullet, interval);
         }
         if (Progress.bufferUpdateCaller == null) {
-            Progress.bufferUpdateCaller = setInterval(Progress.updateBuffer, interval * 10);
+            Progress.bufferUpdateCaller =
+                setInterval(Progress.updateBuffer, interval * 10);
         }
         Progress.isStarted = true;
     },

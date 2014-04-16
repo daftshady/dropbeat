@@ -138,7 +138,7 @@ var RecomList = {
                 $(".header-section").height() +
                 parseInt($(".header-section").css("paddingBottom")) +
                 parseInt($(".header-section").css("paddingTop"));
-            var bodySectionHeight = 
+            var bodySectionHeight =
                 $dropbeatContents.height() - headerSectionHeight;
 
             $(".footer-section").animate({

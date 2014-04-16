@@ -8,7 +8,7 @@ table {
      border-collapse:collapse;
       border-spacing:0;
 }
-fieldset,img { 
+fieldset,img {
      border:0;
 }
 address,caption,cite,code,dfn,em,strong,th,var {
@@ -28,7 +28,7 @@ h1,h2,h3,h4,h5,h6 {
 q:before,q:after {
      content:'';
 }
-abbr,acronym { 
+abbr,acronym {
     border:0;
 }
 
@@ -300,18 +300,18 @@ html, body {
     box-sizing: border-box;
     overflow:auto;
 
-    scrollbar-face-color: #1e1e1e; 
+    scrollbar-face-color: #1e1e1e;
     scrollbar-highlight-color: #1e1e1e;
-    scrollbar-shadow-color: #1e1e1e; 
+    scrollbar-shadow-color: #1e1e1e;
     scrollbar-3dlight-color: #1e1e1e;
-    scrollbar-arrow-color: #1e1e1e; 
+    scrollbar-arrow-color: #1e1e1e;
     scrollbar-track-color: #2c2c2c;
     scrollbar-darkshadow-color: #1e1e1e;
 }
 #dropbeat .search-result-section::-webkit-scrollbar{
     width:8px;
     background-color:transparent;
-} 
+}
 #dropbeat .search-result-section::-webkit-scrollbar-thumb{
     background-color: #1e1e1e;
     border-radius: 4px;
@@ -324,7 +324,7 @@ html, body {
 #dropbeat .search-result-section::-webkit-scrollbar-thumb:active{
     background-color:#111;
     border:1px solid #333333;
-} 
+}
 #dropbeat .search-input-field{
     float:left;
     width:60%;
@@ -639,7 +639,7 @@ html, body {
     border-left:none;
 }
 #dropbeat .playlist-section .playlist-tab-on{
-    border-top:1px solid #292929; 
+    border-top:1px solid #292929;
     padding-top:0;
     padding-left:0;
     background:#232323;
@@ -653,7 +653,7 @@ html, body {
     border-right:none;
 }
 #dropbeat .playlist-section .playlist-search{
-    background:url("img/bg_player.png"); 
+    background:url("img/bg_player.png");
     padding:15px;
     border-bottom:1px solid #181818
 }
@@ -776,18 +776,18 @@ html, body {
     -o-box-sizing: border-box;
     box-sizing: border-box;
 
-    scrollbar-face-color: #4b4b4b; 
+    scrollbar-face-color: #4b4b4b;
     scrollbar-highlight-color: #4b4b4b;
-    scrollbar-shadow-color: #4b4b4b; 
+    scrollbar-shadow-color: #4b4b4b;
     scrollbar-3dlight-color: #4b4b4b;
-    scrollbar-arrow-color: #4b4b4b; 
+    scrollbar-arrow-color: #4b4b4b;
     scrollbar-track-color: #1e1e1e;
     scrollbar-darkshadow-color: #4b4b4b;
 }
 #dropbeat .playlist::-webkit-scrollbar{
     width:6px;
     background-color:transparent;
-} 
+}
 #dropbeat .playlist::-webkit-scrollbar-thumb{
     background-color: #4b4b4b;
     border-radius: 4px;
@@ -797,7 +797,7 @@ html, body {
 }
 #dropbeat .playlist::-webkit-scrollbar-thumb:active{
     background-color:#6d6d6d;
-} 
+}
 #dropbeat .playlist .a-playlist-music{
     padding:8px 0;
     height:16px;
