@@ -96,8 +96,9 @@ var PlaylistControl = {
         $(this.elems.playlistFilterInput).
             bind("propertychange keyup input paste", function(event) {
             clearTimeout(PlaylistControl.filterTimer);
+            var that = $(this);
             PlaylistControl.filterTimer = setTimeout(function () {
-                PlaylistControl.filter($(this).val().toLowerCase());
+                PlaylistControl.filter(that.val().toLowerCase());
             }, 800);
         });
     },
