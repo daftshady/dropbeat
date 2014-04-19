@@ -27,8 +27,9 @@ function PlayerManager() {
     }
 
     self.init = function() {
-        if($(self.elems.loadingFilter).is(":hidden"))
+        if ($(self.elems.loadingFilter).is(":hidden")) {
             $(self.elems.loadingFilter).show();
+        }
         // Push all available players to `players`.
         // XXX: Should get player type from each player object.
         if(!youtubeApiReady) {

@@ -123,7 +123,8 @@ var PlaylistControl = {
         // `playlistCallback` is executed later.
         $.ajax({
             url: API_PLAYLIST_URL,
-            data: "key=" +  key+ "&type=jsonp",
+            data: "key=" + key + "&type=jsonp",
+            dataType: 'jsonp'
         });
 
         // Logging
@@ -131,6 +132,17 @@ var PlaylistControl = {
             typeof window.dropbeat=="object" && dropbeat.logApiAction) {
             dropbeat.logApiAction("dropbeat", "playlist-manage/load");
         }
+    },
+    generate: function(key) {
+        // Load method for autogen.
+        // XXX: Generation should be done with `long polling`
+        // so that it cannot block whole playlist while generating.
+        // `playlistCallback` is executed later.
+        $.ajax({
+            url: API_PLAYLIST_AUTOGEN,
+            data: "key=" + key + "&type=jsonp",
+            dataType: 'jsonp'
+        });
     }
 };
 
@@ -156,7 +168,7 @@ function playlistCallback(data) {
         NotifyManager.playlistLoaded();
     } else {
         // XXX: Warn for invalid key
-        NotifyManager.invalidPlaylistKey();
+        alert('Invalid access');
         location.href = fullHost;
     }
 };

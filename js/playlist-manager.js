@@ -5,6 +5,7 @@ function PlaylistManager() {
     self.localKey = 'local';
     // Instant key for shared playlist.
     self.shareKey = 'share';
+    self.generateType = {'artist':0};
     self.maxLocalPlaylist = 3;
     self.playingLocalSeq = 0;
 
@@ -21,14 +22,21 @@ function PlaylistManager() {
     self.init = function() {
         self.delegateTriggers();
         // Load playlist in uri.
-        var uriKey = keyFromUri();
-        if (uriKey) {
-            PlaylistControl.load(uriKey);
+        var shareKey = keyFromUri(shareUriKey);
+        if (shareKey) {
+            PlaylistControl.load(shareKey);
             NotifyManager.inSharedPlaylist();
             /*
             We don't want to load original local playlist when
             user accessed with shared uri.
             */
+            return;
+        }
+
+        var autogenKey = keyFromUri(autogenUriKey);
+        if (autogenKey) {
+            self.autogen(self.generateType.artist, autogenKey);
+            NotifyManager.inSharedPlaylist();
             return;
         }
 
@@ -197,6 +205,15 @@ function PlaylistManager() {
             $title.css({left:0});
         });
     };
+    self.autogen = function(generate_type, key) {
+        if (self.generateType.artist == generate_type) {
+            return self.genFromArtist(key);
+        }
+        // Raise for NotImplemented
+    };
+    self.genFromArtist = function(artist) {
+        PlaylistControl.generate(artist);
+    };
 }
 
 
@@ -225,11 +242,12 @@ var words = [
     'Strawberry'
 ];
 
-function keyFromUri() {
+var shareUriKey = '?playlist=';
+var autogenUriKey = '?artist=';
+function keyFromUri(key) {
     var uri = location.search;
-    var sap = '?playlist=';
-    if (uri.indexOf(sap) != -1) {
-        return uri.slice(sap.length);
+    if (uri.indexOf(key) != -1) {
+        return uri.slice(key.length);
     }
     return false;
 }

@@ -7,7 +7,8 @@ var dropbeatReady = false;
 var countryCode = null;
 var fullHost = window.location.protocol + '//' +  window.location.host;
 var notifyReady = false;
-var onSharedList = keyFromUri() != false;
+var onSharedList = keyFromUri(shareUriKey) != false
+    || keyFromUri(autogenUriKey) != false;
 
 // XXX: Immediate sync of playlist can affect performance
 // after server-sync is implemented.
