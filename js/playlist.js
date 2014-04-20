@@ -3,9 +3,9 @@ function Playlist() {
     // Change in local playlist should be pushed into server.
     self.playlist = [];
     self.renderPlaylistRow = function(music, idx){
-        if(!music.id)
+        if (!music.id)
             return "";
-        if(!self.rowTemplate)
+        if (!self.rowTemplate)
             self.rowTemplate =
                 _.template($(playlistManager.elems.playlistRowTemplate).html());
         return self.rowTemplate({music:music, idx:idx});

@@ -206,7 +206,7 @@ var UrlAdder = {
         }
 
         // Logging
-        if(window.dropbeat &&
+        if (window.dropbeat &&
             typeof window.dropbeat=="object" && dropbeat.logApiAction) {
             dropbeat.logApiAction("dropbeat", "playlist-manage/load-from-url");
         }

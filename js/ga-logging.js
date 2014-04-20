@@ -1,11 +1,11 @@
-if(!window.dropbeat) window.dropbeat = window.dropbeat || {};
+if (!window.dropbeat) window.dropbeat = window.dropbeat || {};
 
 dropbeat.logApiAction = function(apiName, apiAction, param){
-    if(!_gaq || !apiName || apiName == "" || !apiAction || apiAction == "") {
+    if (!_gaq || !apiName || apiName == "" || !apiAction || apiAction == "") {
         return false;
     }
     var path = "/api-call/" + apiName + "/" + apiAction;
-    if(param && typeof param == "object"){
+    if (param && typeof param == "object"){
         var q = "";
         $.each(param, function(key, value){
           q += q == "" ? "?" : "&";
@@ -34,11 +34,11 @@ $(function(){
     var params = {};
     $.each($(this).data(), function(key, value){
         var dashKey = dropbeat.camelToDashed(key);
-        if(dashKey == "api-name" || dashKey == "api-action") {
+        if (dashKey == "api-name" || dashKey == "api-action") {
             return true;
         }
         var apiDataKeyMatch = dashKey.match("^api-(.+)");
-        if(apiDataKeyMatch){
+        if (apiDataKeyMatch){
             params[apiDataKeyMatch[1]] = value;
         }
     });

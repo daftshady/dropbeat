@@ -32,7 +32,7 @@ function PlayerManager() {
         }
         // Push all available players to `players`.
         // XXX: Should get player type from each player object.
-        if(!youtubeApiReady) {
+        if (!youtubeApiReady) {
             setTimeout(function() {
                 self.init();
             }, 1000);
@@ -68,7 +68,7 @@ function PlayerManager() {
             }
         } else {
             // Logging
-            if(window.dropbeat &&
+            if (window.dropbeat &&
                 typeof window.dropbeat=="object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction("dropbeat", "player/play",
                     {title:music.title, id:music.id, type:music.type});
@@ -92,7 +92,7 @@ function PlayerManager() {
             }
 
             self.currentPlayer = self.players.get(music.type);
-            if(self.currentPlayer == null) {
+            if (self.currentPlayer == null) {
                 // raise for Unsupported player
                 return;
             }
@@ -232,7 +232,7 @@ function PlayerManager() {
 
                 if (current == pos) {
                     if (forward) {
-                        if(RepeatControl.state == RepeatState.noRepeat
+                        if (RepeatControl.state == RepeatState.noRepeat
                             || playlist.length() == 0) {
                             return -1;
                         }

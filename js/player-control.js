@@ -95,7 +95,7 @@ var PlayerMessageControl = {
     },
 
     setLoading: function(title) {
-        if(title)
+        if (title)
             $(PlayerMessageControl.elems.playerTitle).text(title);
         else
             $(PlayerMessageControl.elems.playerTitle).text("...");
@@ -132,11 +132,11 @@ var RepeatControl = {
                 $(that).removeClass(stateObj.klass);
             });
             $(this).addClass(RepeatControl.state.klass);
-            if(RepeatControl.state == RepeatState.repeatOne){
+            if (RepeatControl.state == RepeatState.repeatOne){
                 RepeatControl.prevNextClickable = PlayerControl.prevNextClickable;
                 PlayerControl.updateButton(false);
             }
-            else if(RepeatControl.prevNextClickable){
+            else if (RepeatControl.prevNextClickable){
                 PlayerControl.updateButton(RepeatControl.prevNextClickable);
                 RepeatControl.prevNextClickable = null;
             }

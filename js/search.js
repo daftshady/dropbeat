@@ -17,7 +17,7 @@ var SearchBox = {
     init: function() {
         var that = this;
         $(this.elems.searchButton).click(function() {
-            if(ViewControl.isLandingPageVisible())
+            if (ViewControl.isLandingPageVisible())
                 ViewControl.hideLandingPage(function(){
                     SearchBox.onSubmit($(that.elems.searchInput).val());
                 });
@@ -28,7 +28,7 @@ var SearchBox = {
         $(this.elems.searchInput).keydown(function(event) {
             // Keydown of `Enter key`
             if (event.keyCode == 13) {
-                if(ViewControl.isLandingPageVisible())
+                if (ViewControl.isLandingPageVisible())
                     ViewControl.hideLandingPage(function(){
                         SearchBox.onSubmit($(that.elems.searchInput).val());
                     });
@@ -102,7 +102,7 @@ var SearchList = {
             // raise
             return;
         }
-        if(!this.template)
+        if (!this.template)
             this.template =
                 _.template($(this.elems.searchResultTemplate).html());
         SearchList.resultEscape(resp);

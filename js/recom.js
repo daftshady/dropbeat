@@ -45,7 +45,7 @@ var RecomList = {
     updateView: function(resp) {
         if (resp == null)
             return;
-        if(!this.template)
+        if (!this.template)
             this.template =
                 _.template($(this.elems.recomResultTemplate).html());
         RecomList.resultEscape(resp);
@@ -107,7 +107,7 @@ var RecomList = {
         });
     },
     showList:function(){
-        if(!this.isVisible()){
+        if (!this.isVisible()){
             var that = this;
 
             var $dropbeatContents = $('#dropbeat .contents');
@@ -130,7 +130,7 @@ var RecomList = {
         }
     },
     hideList:function(){
-        if(this.isVisible()){
+        if (this.isVisible()){
             var that = this;
 
             var $dropbeatContents = $('#dropbeat .contents');

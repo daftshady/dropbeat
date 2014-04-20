@@ -101,7 +101,7 @@ function BaseExternalPlayer() {
 
     self.onPlaying = function() {
         var title = playerManager.currentMusic.title;
-        if(playlistManager.playingLocalSeq == playlistManager.getCurrentPlaylistIdx())
+        if (playlistManager.playingLocalSeq == playlistManager.getCurrentPlaylistIdx())
             boldPlaylistTitle(title);
         PlayerMessageControl.setTitle(title);
     };
@@ -354,7 +354,7 @@ function SoundCloudPlayer() {
         }
 
         if (self.titleHack && time > 0) {
-            if(playlistManager.playingLocalSeq
+            if (playlistManager.playingLocalSeq
                 == playlistManager.getCurrentPlaylistIdx())
                 boldPlaylistTitle(self.currentMusic.title);
             PlayerMessageControl.setTitle(self.currentMusic.title);

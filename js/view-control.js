@@ -8,7 +8,7 @@ var ViewControl = {
 
         window.onresize = function(event) {
             ViewControl.resizeContentsBody();
-            if(ViewControl.isLandingPageVisible())
+            if (ViewControl.isLandingPageVisible())
                 ViewControl.resizeLandingPage();
             ViewControl.resizePlaylistRow();
         };
@@ -53,7 +53,7 @@ var ViewControl = {
         $searchSection.css({width:"100%"});
         var searchBarMaxWidth = parseInt($searchSection.css('maxWidth'));
         var searchBarWidth = $searchSection.width() * 0.6;
-        if(searchBarWidth > searchBarMaxWidth)
+        if (searchBarWidth > searchBarMaxWidth)
           searchBarWidth = searchBarMaxWidth;
 
 
@@ -64,7 +64,7 @@ var ViewControl = {
             });
             $searchSection.animate({left:0}, 500, function(){
                 $('#dropbeat .body-section .search-result-section').show();
-                if(callback && typeof callback == "function")
+                if (callback && typeof callback == "function")
                     callback();
             });
         });
@@ -101,7 +101,7 @@ var ViewControl = {
     },
 
     resizePlaylistRow: function() {
-        if($(".a-playlist-music").length > 0){
+        if ($(".a-playlist-music").length > 0){
             var rowWidth =
                 $(".a-playlist-music").width() -
                 $(".music-remove").width() -

@@ -110,7 +110,7 @@ function PlaylistManager() {
     };
 
     self.getPlaylistWithIdx = function(idx) {
-        if(idx < 0)
+        if (idx < 0)
             return [];
         return self.shareKey in self.playlists ?
             self.playlists[self.shareKey] : self.playlists[self.localKey+idx];
@@ -173,7 +173,7 @@ function PlaylistManager() {
             var e = self.elems.playlist;
             var $marquee = $(this).find(self.elems.musicTitleScroller);
             var $title = $(this).find(self.elems.musicTitle);
-            if($title.width() <= $marquee.width())
+            if ($title.width() <= $marquee.width())
                 return;
             var speed = 20;
             var animPeriod = speed * $title.width();
