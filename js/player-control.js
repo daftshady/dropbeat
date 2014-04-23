@@ -42,7 +42,7 @@ var PlayerControl = {
 
 var PlayerButtonViewControl = {
     togglePlayButton: function() {
-        if (playerManager.currentMusic == null) {
+        if (!playerManager.currentMusic) {
             return;
         }
 
@@ -62,7 +62,7 @@ var PlayerButtonViewControl = {
     setPause: function() {
         $(PlayerControl.elems.ctrlPlay).addClass("pause");
         var $playerStatus = $(PlayerMessageControl.elems.playerStatus);
-        if ($playerStatus.text() == PlayerMessageControl.statusText.onPaused) {
+        if ($playerStatus.text() === PlayerMessageControl.statusText.onPaused) {
             $playerStatus.text(PlayerMessageControl.statusText.onPlaying);
         }
     }
@@ -132,7 +132,7 @@ var RepeatControl = {
                 $(that).removeClass(stateObj.klass);
             });
             $(this).addClass(RepeatControl.state.klass);
-            if (RepeatControl.state == RepeatState.repeatOne){
+            if (RepeatControl.state === RepeatState.repeatOne){
                 RepeatControl.prevNextClickable = PlayerControl.prevNextClickable;
                 PlayerControl.updateButton(false);
             }
@@ -178,6 +178,6 @@ var ShuffleControl = {
         return array;
     },
     isShuffle: function() {
-        return ShuffleControl.state == ShuffleState.on;
+        return ShuffleControl.state === ShuffleState.on;
     }
 };

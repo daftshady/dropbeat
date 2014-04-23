@@ -7,13 +7,13 @@ var LocalStorage = {
 
     getPlaylist: function(idx, old) {
         // XXX: This method do not follow strong OOP.
-        idx = idx == null ? 0 : idx;
+        idx = !idx ? 0 : idx;
         raw = localStorage.getItem(LocalStorage.localPlaylistKey(idx));
         // TODO: We don't need to migrate after first migration.
         if (old) {
             raw = localStorage.getItem(LocalStorage.playlistKey);
         }
-        if (raw != null) {
+        if (raw) {
             playlist = new Playlist();
             raw = JSON.parse(raw);
             for (var i=0; i<raw.length; i++) {
@@ -34,7 +34,7 @@ var LocalStorage = {
 
     localPlaylistKey: function(idx) {
         var key = LocalStorage.playlistKey;
-        if (idx != null) {
+        if (idx) {
             key = key + idx;
         }
         return key;
@@ -50,14 +50,14 @@ var LocalStorage = {
 
     getLocalHash: function(existings) {
         hash = localStorage.getItem(LocalStorage.localHashKey);
-        if (hash != null) {
+        if (hash) {
             return hash;
         }
 
         if (existings) {
             while(true) {
                 hash = LocalStorage.initLocalHash();
-                if (jQuery.inArray(hash, existings) == -1) {
+                if (jQuery.inArray(hash, existings) === -1) {
                     LocalStorage.setLocalHash(hash);
                     break;
                 }
@@ -70,7 +70,7 @@ var LocalStorage = {
     },
 
     hasLocalHash: function() {
-        return localStorage.getItem(LocalStorage.localHashKey) != null;
+        return localStorage.getItem(LocalStorage.localHashKey) !== null;
     },
 
     setLocalHash: function(hash) {

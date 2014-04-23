@@ -43,7 +43,7 @@ var RecomList = {
         RecomList.delegateTrigger();
     },
     updateView: function(resp) {
-        if (resp == null)
+        if (!resp)
             return;
         if (!this.template)
             this.template =
@@ -75,7 +75,7 @@ var RecomList = {
 
             // Logging
             if (window.dropbeat &&
-                typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+                typeof window.dropbeat==="object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction(
                     "dropbeat", "playlist/add-from-recom", musicData);
             }
@@ -100,7 +100,7 @@ var RecomList = {
 
             // Logging
             if (window.dropbeat &&
-                typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+                typeof window.dropbeat==="object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction(
                     "dropbeat", "playlist/play-from-recom", musicData);
             }

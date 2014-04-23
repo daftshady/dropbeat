@@ -27,7 +27,7 @@ var SearchBox = {
 
         $(this.elems.searchInput).keydown(function(event) {
             // Keydown of `Enter key`
-            if (event.keyCode == 13) {
+            if (event.keyCode === 13) {
                 if (ViewControl.isLandingPageVisible())
                     ViewControl.hideLandingPage(function(){
                         SearchBox.onSubmit($(that.elems.searchInput).val());
@@ -41,9 +41,9 @@ var SearchBox = {
 
     onSubmit: function(keyword) {
         keyword = encodeURIComponent(keyword);
-        if (context.searching && (context.keyword == keyword)) {
+        if (context.searching && (context.keyword === keyword)) {
             return;
-        } else if (context.keyword == keyword) {
+        } else if (context.keyword === keyword) {
             return;
         }
         SearchList.updateView([]);
@@ -64,7 +64,7 @@ var SearchBox = {
 
         // Logging
         if (window.dropbeat
-            && typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+            && typeof window.dropbeat==="object" && dropbeat.logApiAction) {
             dropbeat.logApiAction("dropbeat", "search", {keyword:keyword});
         }
     },
@@ -72,7 +72,7 @@ var SearchBox = {
 };
 
 function searchCallback(data) {
-    if ((data == null || data == undefined) && !SearchBox.retry) {
+    if (!data && !SearchBox.retry) {
         SearchBox.retry = true;
         // Retry to wake google api.
         SearchBox.onSubmit($(SearchBox.elems.searchInput).val());
@@ -98,7 +98,7 @@ var SearchList = {
         this.delegateTrigger();
     },
     updateView: function(resp) {
-        if (resp == null) {
+        if (!resp) {
             // raise
             return;
         }
@@ -162,7 +162,7 @@ var SearchList = {
 
             // Logging
             if (window.dropbeat
-                && typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+                && typeof window.dropbeat==="object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction(
                     "dropbeat", "playlist/add-from-search", musicData);
             }
@@ -187,7 +187,7 @@ var SearchList = {
 
             // Logging
             if (window.dropbeat &&
-                typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+                typeof window.dropbeat==="object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction(
                     "dropbeat", "playlist/play-from-search", musicData);
             }

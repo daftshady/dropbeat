@@ -38,11 +38,11 @@ var Progress = {
     start: function() {
         $('#player .progress-handle').show();
         var interval = 100;
-        if (Progress.bulletUpdateCaller == null) {
+        if (!Progress.bulletUpdateCaller) {
             Progress.bulletUpdateCaller =
                 setInterval(Progress.updateBullet, interval);
         }
-        if (Progress.bufferUpdateCaller == null) {
+        if (!Progress.bufferUpdateCaller) {
             Progress.bufferUpdateCaller =
                 setInterval(Progress.updateBuffer, interval * 10);
         }
@@ -50,7 +50,7 @@ var Progress = {
     },
 
     stop: function() {
-        if (Progress.bulletUpdateCaller != null) {
+        if (Progress.bulletUpdateCaller) {
             clearInterval(Progress.bulletUpdateCaller);
             Progress.bulletUpdateCaller = null;
         }
@@ -133,7 +133,7 @@ var Progress = {
 
     updateBuffer: function(buffer) {
         if (Progress.isStarted) {
-            buffer = buffer == null ? playerManager.getBuffer() : buffer;
+            buffer = !buffer ? playerManager.getBuffer() : buffer;
             Progress.$buffer.width(buffer/100.0*Progress.$bar.width());
         }
     },

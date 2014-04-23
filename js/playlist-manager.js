@@ -45,7 +45,7 @@ function PlaylistManager() {
             // Merge local playlist with server playlist and load it.
         } else {
             // Load local playlist.
-            if (LocalStorage.getVisited() == null) {
+            if (!LocalStorage.getVisited()) {
                 LocalStorage.setVisited();
                 if (LocalStorage.getPlaylist().empty()) {
                     initialPlaylistToNewComer();
@@ -54,7 +54,7 @@ function PlaylistManager() {
 
             // Temporal migration for old user.
             var initialIdx = 0;
-            if (LocalStorage.getMigrated() == null) {
+            if (!LocalStorage.getMigrated()) {
                 var oldPlaylist = LocalStorage.getPlaylist(initialIdx, true);
                 var firstPlaylist = LocalStorage.getPlaylist(initialIdx);
                 if (!oldPlaylist.empty()) {
@@ -90,7 +90,7 @@ function PlaylistManager() {
         // We do not support multiple playlist yet.
         if (key) {
             var playlist = self.playlists[key];
-            if (playlist != null) {
+            if (playlist) {
                 playlist.toTable(true);
             }
         } else {
@@ -119,7 +119,7 @@ function PlaylistManager() {
     self.getCurrentLocalPlaylist = function() {
         var current =
             LocalStorage.getPlaylist(PlaylistTabs.currentIdx());
-        if (current != null) {
+        if (current) {
             return current.raw();
         }
     };
@@ -206,7 +206,7 @@ function PlaylistManager() {
         });
     };
     self.autogen = function(generate_type, key) {
-        if (self.generateType.artist == generate_type) {
+        if (self.generateType.artist === generate_type) {
             return self.genFromArtist(key);
         }
         // Raise for NotImplemented
@@ -246,7 +246,7 @@ var shareUriKey = '?playlist=';
 var autogenUriKey = '?artist=';
 function keyFromUri(key) {
     var uri = location.search;
-    if (uri.indexOf(key) != -1) {
+    if (uri.indexOf(key) !== -1) {
         return uri.slice(key.length);
     }
     return false;

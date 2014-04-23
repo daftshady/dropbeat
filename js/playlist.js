@@ -25,7 +25,7 @@ function Playlist() {
 
     self.add = function(music, updateView) {
         var idx = self.findIdx(music.id);
-        if (idx != -1) {
+        if (idx !== -1) {
             // Already exists
             return false;
         }
@@ -34,7 +34,7 @@ function Playlist() {
             self.toTable(true);
         }
 
-        if (playlistManager.playingLocalSeq == PlaylistTabs.currentIdx()) {
+        if (playlistManager.playingLocalSeq === PlaylistTabs.currentIdx()) {
             musicQ.push(music);
         }
         return true;
@@ -49,7 +49,7 @@ function Playlist() {
             self.toTable(true);
         }
 
-        if (playlistManager.playingLocalSeq == PlaylistTabs.currentIdx()) {
+        if (playlistManager.playingLocalSeq === PlaylistTabs.currentIdx()) {
 
             musicQ.removeWithId(music.id);
         }
@@ -65,7 +65,7 @@ function Playlist() {
     self.findIdx = function(musicId) {
         var idx = -1;
         for (var i=0; i<self.playlist.length; i++) {
-            if (self.playlist[i].id == musicId) {
+            if (self.playlist[i].id === musicId) {
                 idx = i;
             }
         }
@@ -110,8 +110,8 @@ function Playlist() {
         // Is bold needed for filter?
 
         // Re-bold current music if playing.
-        if (playerManager.currentMusic != null
-            && playlistManager.playingLocalSeq == PlaylistTabs.currentIdx()) {
+        if (playerManager.currentMusic
+            && playlistManager.playingLocalSeq === PlaylistTabs.currentIdx()) {
             var title = playerManager.currentMusic.title;
             boldPlaylistTitle(title);
         }
@@ -147,7 +147,7 @@ function Playlist() {
     };
 
     self.empty = function() {
-        return self.length() == 0;
+        return self.length() === 0;
     };
 }
 
@@ -155,7 +155,7 @@ function boldPlaylistTitle (title) {
     // XXX: Should bold with `id` (not `title`) later.
     var $rows = $('.playlist-section .playlist .a-playlist-music');
     $.each($rows, function(idx) {
-        if ($(".music-title", $(this)).text() == title) {
+        if ($(".music-title", $(this)).text() === title) {
             $(this).addClass("on");
         }
     });

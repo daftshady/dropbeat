@@ -60,8 +60,8 @@ function PlayerManager() {
     };
 
     self.play = function(music) {
-        if (music == null) {
-            if (self.currentPlayer != null) {
+        if (!music) {
+            if (self.currentPlayer) {
                 self.currentPlayer.play(music);
             } else {
                 // raise error
@@ -69,13 +69,13 @@ function PlayerManager() {
         } else {
             // Logging
             if (window.dropbeat &&
-                typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+                typeof window.dropbeat==="object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction("dropbeat", "player/play",
                     {title:music.title, id:music.id, type:music.type});
             }
 
-            if (self.currentPlayer != null && !self.isPlaying) {
-                if (self.currentPlayer.type != music.type) {
+            if (self.currentPlayer && !self.isPlaying) {
+                if (self.currentPlayer.type !== music.type) {
                     self.currentPlayer = self.players.get(music.type);
                 }
                 if (self.isSameMusic(music)) {
@@ -92,7 +92,7 @@ function PlayerManager() {
             }
 
             self.currentPlayer = self.players.get(music.type);
-            if (self.currentPlayer == null) {
+            if (!self.currentPlayer) {
                 // raise for Unsupported player
                 return;
             }
@@ -115,14 +115,14 @@ function PlayerManager() {
     };
 
     self.pause = function() {
-        if (self.currentPlayer != null && self.isPlaying) {
+        if (self.currentPlayer && self.isPlaying) {
             self.currentPlayer.pause();
         }
     };
 
     // Method for `play button` on the control panel.
     self.onPlayMusic = function(music) {
-        if (self.currentPlayer != null && self.isPlaying) {
+        if (self.currentPlayer && self.isPlaying) {
             // Pause the music.
             self.pause();
             Progress.stop();
@@ -132,7 +132,7 @@ function PlayerManager() {
 
         if (!self.isPlaying) {
             if (!music) {
-                if (self.currentMusic == null) {
+                if (!self.currentMusic) {
                     return;
                 }
                 music = self.currentMusic;
@@ -175,7 +175,7 @@ function PlayerManager() {
                 playlist = playlistManager.getCurrentPlaylist();
                 playlistManager.playingLocalSeq = PlaylistTabs.currentIdx();
             }
-            if (playlist != null) {
+            if (playlist) {
                 if (ShuffleControl.isShuffle()) {
                     musicQ.init(
                         ShuffleControl.shuffle(playlist.raw()));
@@ -190,7 +190,7 @@ function PlayerManager() {
 
         // Make prevNext clickable
         PlayerControl.updateButton(onPlaylist
-                && RepeatControl.state != RepeatState.repeatOne);
+                && RepeatControl.state !== RepeatState.repeatOne);
     };
 
     self.onMusicEnd = function() {
@@ -209,7 +209,7 @@ function PlayerManager() {
     self.move = function(forward) {
         var playlist =
             playlistManager.getLocalPlaylist(playlistManager.playingLocalSeq);
-        if (playlist != null && self.currentMusic != null) {
+        if (playlist && self.currentMusic) {
             /*
             XXX : If we handle shuffle on move btn clicked like this way,
             random queue will be the size of current playlist
@@ -218,22 +218,22 @@ function PlayerManager() {
             */
             var current = playlist.findIdx(self.currentMusic.id);
             var next = null;
-            if (current == -1) {
+            if (current === -1) {
                 return;
             }
 
             if (!ShuffleControl.isShuffle()) {
                 var pos;
                 if (forward) {
-                    pos = current + 1 == playlist.length() ? current : current + 1;
+                    pos = current + 1 === playlist.length() ? current : current + 1;
                 } else {
                     pos = current > 0 ? current - 1 : current;
                 }
 
-                if (current == pos) {
+                if (current === pos) {
                     if (forward) {
-                        if (RepeatControl.state == RepeatState.noRepeat
-                            || playlist.length() == 0) {
+                        if (RepeatControl.state === RepeatState.noRepeat
+                            || playlist.length() === 0) {
                             return -1;
                         }
                         pos = 0;
@@ -254,28 +254,28 @@ function PlayerManager() {
     };
 
     self.getCurrentPlaybackTime = function() {
-        if (self.currentPlayer != null && self.isPlaying) {
+        if (self.currentPlayer && self.isPlaying) {
             return self.currentPlayer.getCurrentPlaybackTime();
         }
         return 0;
     };
 
     self.getTotalPlaybackTime = function() {
-        if (self.currentPlayer != null && self.isPlaying) {
+        if (self.currentPlayer && self.isPlaying) {
             return self.currentPlayer.getTotalPlaybackTime();
         }
         return 0;
     };
 
     self.getBuffer = function() {
-        if (self.currentPlayer != null && self.isPlaying) {
+        if (self.currentPlayer && self.isPlaying) {
             return self.currentPlayer.getBuffer();
         }
         return 0;
     };
 
     self.seekTo = function(pos) {
-        if (self.currentPlayer != null) {
+        if (self.currentPlayer) {
             self.currentPlayer.seekTo(pos);
         }
     };
@@ -286,7 +286,7 @@ function PlayerManager() {
 
     // Private methods
     self.isSameMusic = function(music) {
-        return self.currentMusic != null && music.id == self.currentMusic.id;
+        return self.currentMusic && music.id === self.currentMusic.id;
     };
 }
 
@@ -296,12 +296,12 @@ function getFakeNext(playlist, current) {
     ShuffleControl.shuffle(fakePlaylist);
     while (fakePlaylist.length > 0) {
         next = fakePlaylist.shift();
-        if (next.id == current) {
+        if (next.id === current) {
             next = null;
         } else {
             break;
         }
     }
-    next = next == null ? current : next;
+    next = !next ? current : next;
     return next;
 }

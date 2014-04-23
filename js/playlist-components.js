@@ -8,7 +8,7 @@ var PlaylistTabs = {
         if (onSharedList) {
             // We don't need to make tabs clickable.
             $.each(lists, function(idx) {
-                if (idx != 0) {
+                if (idx !== 0) {
                     $(this).remove();
                 }
             });
@@ -75,7 +75,7 @@ var PlaylistControl = {
 
             // Logging
             if (window.dropbeat &&
-                typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+                typeof window.dropbeat==="object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction("dropbeat", "playlist-manage/share");
             }
         });
@@ -88,7 +88,7 @@ var PlaylistControl = {
 
             // Logging
             if (window.dropbeat &&
-                typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+                typeof window.dropbeat==="object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction("dropbeat", "playlist-manage/clear");
             }
         });
@@ -109,7 +109,7 @@ var PlaylistControl = {
         if (keyword) {
             for (var i=0; i<current.length(); i++) {
                 var m = current.getWithIdx(i);
-                if (m.title.toLowerCase().indexOf(keyword) != -1) {
+                if (m.title.toLowerCase().indexOf(keyword) !== -1) {
                     // XXX: Avoid public access to `playlist`!
                     tempPlaylist.playlist.push(m);
                 }
@@ -129,7 +129,7 @@ var PlaylistControl = {
 
         // Logging
         if (window.dropbeat &&
-            typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+            typeof window.dropbeat==="object" && dropbeat.logApiAction) {
             dropbeat.logApiAction("dropbeat", "playlist-manage/load");
         }
     },
@@ -184,10 +184,10 @@ var UrlAdder = {
         var that = this;
         $(this.elems.urlAddButton).click(function() {
             url = $(that.elems.urlAddInput).val();
-            if (url == null ||
-                (url.indexOf('youtube.com') == -1
-                    && url.indexOf('youtu.be') == -1
-                    && url.indexOf('soundcloud.com') == -1)) {
+            if (!url ||
+                (url.indexOf('youtube.com') === -1
+                    && url.indexOf('youtu.be') === -1
+                    && url.indexOf('soundcloud.com') === -1)) {
                 NotifyManager.invalidAdderUrl();
             } else {
                 UrlAdder.onSubmit(url);
@@ -207,7 +207,7 @@ var UrlAdder = {
 
         // Logging
         if (window.dropbeat &&
-            typeof window.dropbeat=="object" && dropbeat.logApiAction) {
+            typeof window.dropbeat==="object" && dropbeat.logApiAction) {
             dropbeat.logApiAction("dropbeat", "playlist-manage/load-from-url");
         }
     },
@@ -226,7 +226,7 @@ var UrlAdder = {
 
 function urlAddCallback(data) {
     // Add to current playlist
-    if (data != null) {
+    if (data) {
         var playlist = playlistManager.getCurrentPlaylist();
         data.title = titleEscape(data.title);
         var success = playlist.add(new Music(data), true);

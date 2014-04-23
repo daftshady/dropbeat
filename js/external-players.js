@@ -62,24 +62,24 @@ function BaseExternalPlayer() {
         playerManager.onMusicEnd();
         // XXX: Music end should be watched global observer (not here.)
         var music = null;
-        if (RepeatControl.state == RepeatState.noRepeat) {
+        if (RepeatControl.state === RepeatState.noRepeat) {
             if (ShuffleControl.isShuffle()) {
                 ShuffleControl.shuffle(musicQ.q);
             }
             music = musicQ.pop();
-            if (music == queueEOL) {
+            if (music === queueEOL) {
                 return;
             }
-        } else if (RepeatControl.state == RepeatState.repeatPlaylist) {
+        } else if (RepeatControl.state === RepeatState.repeatPlaylist) {
             if (ShuffleControl.isShuffle()) {
                 ShuffleControl.shuffle(musicQ.q);
             }
 
             music = musicQ.pop();
-            if (music == queueEOL) {
+            if (music === queueEOL) {
                 return;
             }
-            if (music == null) {
+            if (!music) {
                 var playlist =
                     playlistManager.getLocalPlaylist(
                         playlistManager.playingLocalSeq);
@@ -90,18 +90,18 @@ function BaseExternalPlayer() {
                 }
                 music = musicQ.pop();
             }
-        } else if (RepeatControl.state == RepeatState.repeatOne) {
+        } else if (RepeatControl.state === RepeatState.repeatOne) {
             music = playerManager.getCurrentMusic();
         }
 
-        if (music != null) {
+        if (music) {
             playerManager.onPlayMusic(music);
         }
     };
 
     self.onPlaying = function() {
         var title = playerManager.currentMusic.title;
-        if (playlistManager.playingLocalSeq == playlistManager.getCurrentPlaylistIdx())
+        if (playlistManager.playingLocalSeq === playlistManager.getCurrentPlaylistIdx())
             boldPlaylistTitle(title);
         PlayerMessageControl.setTitle(title);
     };
@@ -180,7 +180,7 @@ function YoutubePlayer() {
     };
 
     self.onStateChange = function(state) {
-        if (state == null) {
+        if (!state) {
             return;
         }
         switch (state.data) {
@@ -205,7 +205,7 @@ function YoutubePlayer() {
             case YT.PlayerState.CUED:
                 break;
             case YT.PlayerState.UNSTARTED:
-                if (self.currentVideo != null) {
+                if (self.currentVideo) {
                     self.prototype.onLoading();
                 }
                 break;
@@ -355,7 +355,7 @@ function SoundCloudPlayer() {
 
         if (self.titleHack && time > 0) {
             if (playlistManager.playingLocalSeq
-                == playlistManager.getCurrentPlaylistIdx())
+                === playlistManager.getCurrentPlaylistIdx())
                 boldPlaylistTitle(self.currentMusic.title);
             PlayerMessageControl.setTitle(self.currentMusic.title);
             self.titleHack = false;
@@ -375,7 +375,7 @@ function SoundCloudPlayer() {
     };
 
     self.getBuffer = function() {
-        if (self.currentMusic == null)
+        if (!self.currentMusic)
             return 0;
 
         var sound = soundManager.getSoundById(self.currentMusic.id);
@@ -389,25 +389,25 @@ function SoundCloudPlayer() {
     };
 
     self.onStateChange = function(success) {
-        if (success != null && !success) {
+        if (success !== undefined && success !== null && !success) {
             var current = playerManager.getCurrentMusic()
-            if (current != null && current.type == 'youtube') {
+            if (current && current.type === 'youtube') {
                 return;
             }
 
             NotifyManager.notPlayable(current.title);
-            if (playerManager.forth() == -1) {
+            if (playerManager.forth() === -1) {
                 var playlist = playlistManager.getCurrentPlaylist();
                 if (playlist.empty()) {
                     return;
                 }
                 var onPlaylist = false;
                 for (var i=0; i<playlist.length(); i++) {
-                    if (playlist.raw()[i].id == current.id) {
+                    if (playlist.raw()[i].id === current.id) {
                         onPlaylist = true;
                     }
                 }
-                if (onPlaylist && playlist.raw()[0].id != current.id) {
+                if (onPlaylist && playlist.raw()[0].id !== current.id) {
                     playerManager.onMusicClicked(playlist.raw()[0], true);
                 }
             }

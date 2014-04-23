@@ -1,14 +1,14 @@
 if (!window.dropbeat) window.dropbeat = window.dropbeat || {};
 
 dropbeat.logApiAction = function(apiName, apiAction, param){
-    if (!_gaq || !apiName || apiName == "" || !apiAction || apiAction == "") {
+    if (!_gaq || !apiName || apiName === "" || !apiAction || apiAction === "") {
         return false;
     }
     var path = "/api-call/" + apiName + "/" + apiAction;
-    if (param && typeof param == "object"){
+    if (param && typeof param === "object"){
         var q = "";
         $.each(param, function(key, value){
-          q += q == "" ? "?" : "&";
+          q += q === "" ? "?" : "&";
           q += key + "=" + value;
         });
         path += q;
@@ -25,16 +25,16 @@ $(function(){
     $(document).on("click", ".drop-click-log", function(){
     var apiName = $(this).data("api-name");
     var apiAction = $(this).data("api-action");
-    if (!apiName || apiName == "") {
+    if (!apiName || apiName === "") {
         apiName = "dropbeat";
     }
-    if (!apiAction || apiAction == "") {
+    if (!apiAction || apiAction === "") {
         return;
     }
     var params = {};
     $.each($(this).data(), function(key, value){
         var dashKey = dropbeat.camelToDashed(key);
-        if (dashKey == "api-name" || dashKey == "api-action") {
+        if (dashKey === "api-name" || dashKey === "api-action") {
             return true;
         }
         var apiDataKeyMatch = dashKey.match("^api-(.+)");

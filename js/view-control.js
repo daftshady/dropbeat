@@ -64,7 +64,7 @@ var ViewControl = {
             });
             $searchSection.animate({left:0}, 500, function(){
                 $('#dropbeat .body-section .search-result-section').show();
-                if (callback && typeof callback == "function")
+                if (callback && typeof callback === "function")
                     callback();
             });
         });

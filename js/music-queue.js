@@ -7,7 +7,7 @@ function MusicQueue () {
     self.init = function(listOfMusic) {
         delete self.q;
         self.q = [];
-        if (listOfMusic != null) {
+        if (listOfMusic) {
             self.q = self.q.concat(listOfMusic);
         }
     };
@@ -23,19 +23,19 @@ function MusicQueue () {
 
     self.pop = function() {
         // pop next played music from queue.
-        if (self.playType == 'normal') {
+        if (self.playType === 'normal') {
             return self.q.shift();
         }
     };
 
     self.top = function() {
-        if (self.q.length != 0)
+        if (self.q.length !== 0)
             return self.q[0];
     };
 
     self.removeWithId = function(musicId) {
         for (var i=0; i<self.q.length; i++) {
-            if (musicId == self.q[i].id) {
+            if (musicId === self.q[i].id) {
                 self.q.splice(i, 1);
             }
         }
