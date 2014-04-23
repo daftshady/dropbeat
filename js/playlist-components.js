@@ -75,7 +75,7 @@ var PlaylistControl = {
 
             // Logging
             if (window.dropbeat &&
-                typeof window.dropbeat==="object" && dropbeat.logApiAction) {
+                typeof window.dropbeat === "object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction("dropbeat", "playlist-manage/share");
             }
         });
@@ -88,7 +88,7 @@ var PlaylistControl = {
 
             // Logging
             if (window.dropbeat &&
-                typeof window.dropbeat==="object" && dropbeat.logApiAction) {
+                typeof window.dropbeat === "object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction("dropbeat", "playlist-manage/clear");
             }
         });
@@ -129,7 +129,7 @@ var PlaylistControl = {
 
         // Logging
         if (window.dropbeat &&
-            typeof window.dropbeat==="object" && dropbeat.logApiAction) {
+            typeof window.dropbeat === "object" && dropbeat.logApiAction) {
             dropbeat.logApiAction("dropbeat", "playlist-manage/load");
         }
     },
@@ -207,7 +207,7 @@ var UrlAdder = {
 
         // Logging
         if (window.dropbeat &&
-            typeof window.dropbeat==="object" && dropbeat.logApiAction) {
+            typeof window.dropbeat === "object" && dropbeat.logApiAction) {
             dropbeat.logApiAction("dropbeat", "playlist-manage/load-from-url");
         }
     },

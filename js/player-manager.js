@@ -69,7 +69,7 @@ function PlayerManager() {
         } else {
             // Logging
             if (window.dropbeat &&
-                typeof window.dropbeat==="object" && dropbeat.logApiAction) {
+                typeof window.dropbeat === "object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction("dropbeat", "player/play",
                     {title:music.title, id:music.id, type:music.type});
             }

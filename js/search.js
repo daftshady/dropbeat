@@ -64,7 +64,7 @@ var SearchBox = {
 
         // Logging
         if (window.dropbeat
-            && typeof window.dropbeat==="object" && dropbeat.logApiAction) {
+            && typeof window.dropbeat === "object" && dropbeat.logApiAction) {
             dropbeat.logApiAction("dropbeat", "search", {keyword:keyword});
         }
     },
@@ -162,7 +162,7 @@ var SearchList = {
 
             // Logging
             if (window.dropbeat
-                && typeof window.dropbeat==="object" && dropbeat.logApiAction) {
+                && typeof window.dropbeat === "object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction(
                     "dropbeat", "playlist/add-from-search", musicData);
             }
@@ -187,7 +187,7 @@ var SearchList = {
 
             // Logging
             if (window.dropbeat &&
-                typeof window.dropbeat==="object" && dropbeat.logApiAction) {
+                typeof window.dropbeat === "object" && dropbeat.logApiAction) {
                 dropbeat.logApiAction(
                     "dropbeat", "playlist/play-from-search", musicData);
             }
