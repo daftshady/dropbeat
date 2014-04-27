@@ -53,7 +53,11 @@ var SearchBox = {
         context.keyword = keyword;
         $.ajax({
             url: API_SEARCH_URL,
-            data: "keyword=" + keyword + "&type=jsonp",
+            data: decodeURIComponent(
+                $.param({
+                    'keyword': keyword,
+                    'type': 'jsonp'
+                })),
             dataType: "jsonp",
         });
         $(this.elems.searchSpinner).show();

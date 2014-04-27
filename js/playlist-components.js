@@ -123,7 +123,7 @@ var PlaylistControl = {
         // `playlistCallback` is executed later.
         $.ajax({
             url: API_PLAYLIST_URL,
-            data: "key=" + key + "&type=jsonp",
+            data: {'key': key, 'type': 'jsonp'},
             dataType: 'jsonp'
         });
 
@@ -133,18 +133,38 @@ var PlaylistControl = {
             dropbeat.logApiAction("dropbeat", "playlist-manage/load");
         }
     },
-    generate: function(key) {
-        // Load method for autogen.
-        // XXX: Generation should be done with `long polling`
-        // so that it cannot block whole playlist while generating.
-        // `playlistCallback` is executed later.
+    generate: function(key, id) {
+        if (!id) {
+            id = Math.floor((1 + Math.random()) * 0x10000).
+                toString(16).substring(1);
+            playlistManager.add(
+                playlistManager.shareKey, new Playlist());
+        }
+
+        // Will call `relayPoll`
         $.ajax({
             url: API_PLAYLIST_AUTOGEN,
-            data: "key=" + key + "&type=jsonp",
-            dataType: 'jsonp'
+            data: decodeURIComponent(
+                $.param({
+                    'key': key,
+                    'id': id,
+                    'type': 'jsonp'
+                })),
+            dataType: 'jsonp',
+            timeout: 15000
         });
     }
 };
+
+function relayPoll(data) {
+    if (data) {
+        data = data[0];
+        playlistManager.getCurrentPlaylist().add(new Music(data), true);
+        if (data.remains > 0) {
+            PlaylistControl.generate(data.key, data.poll_id);
+        }
+    }
+}
 
 function getidsCallback(data) {
     if (!data) {
@@ -160,6 +180,7 @@ function playlistCallback(data) {
         for (var i=0; i<data.length; i++) {
             m = new Music(data[i]);
             playlist.add(m);
+
         }
 
         playlistManager.add(
@@ -201,7 +222,7 @@ var UrlAdder = {
             UrlAdder.adding = true;
             $.ajax({
                 url: API_RESOLVE_URL,
-                data: "url=" + url + "&type=jsonp",
+                data: {'url':url, 'type':jsonp},
             });
         }
 

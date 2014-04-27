@@ -8,11 +8,12 @@ var RecomManager = {
     stupidRecom: function(music_id, music_title) {
         $.ajax({
             url: API_RECOM_URL,
-            data: {
-                'type': 'jsonp',
-                'id': music_id,
-                'title': music_title
-            }
+            data: decodeURIComponent(
+                $.param({
+                    'type': 'jsonp',
+                    'id': music_id,
+                    'title': music_title
+                }))
         });
         $(this.elems.loadingSpinner).show();
         $(this.elems.recomResultSection).hide();
