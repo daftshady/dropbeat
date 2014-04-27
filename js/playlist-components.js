@@ -222,7 +222,7 @@ var UrlAdder = {
             UrlAdder.adding = true;
             $.ajax({
                 url: API_RESOLVE_URL,
-                data: {'url':url, 'type':jsonp},
+                data: {'url': url, 'type': 'jsonp'},
             });
         }
 
