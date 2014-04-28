@@ -53,19 +53,8 @@ function PlaylistManager() {
                 }
             }
 
-            // Temporal migration for old user.
             var initialIdx = 0;
-            if (!LocalStorage.getMigrated()) {
-                var oldPlaylist = LocalStorage.getPlaylist(initialIdx, true);
-                var firstPlaylist = LocalStorage.getPlaylist(initialIdx);
-                if (!oldPlaylist.empty()) {
-                    firstPlaylist.playlist = oldPlaylist.raw();
-                }
-                firstPlaylist.sync();
-                LocalStorage.setMigrated();
-            }
             self.loadLocal(initialIdx);
-
         }
     };
 
@@ -79,7 +68,6 @@ function PlaylistManager() {
     };
 
     self.loadLocal = function(idx) {
-        // params migrate: Temporal migration variable.
         var playlist = LocalStorage.getPlaylist(idx);
 
         self.playlists[self.localKey+idx] = playlist;

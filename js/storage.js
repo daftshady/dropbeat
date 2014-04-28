@@ -2,13 +2,11 @@
 var LocalStorage = {
     playlistKey: 'playlist',
     visitedKey: 'first',
-    migratedKey: 'migrated',
 
     getPlaylist: function(idx, old) {
         // XXX: This method do not follow strong OOP.
         idx = !idx ? 0 : idx;
         raw = localStorage.getItem(LocalStorage.localPlaylistKey(idx));
-        // TODO: We don't need to migrate after first migration.
         if (old) {
             raw = localStorage.getItem(LocalStorage.playlistKey);
         }
@@ -49,13 +47,5 @@ var LocalStorage = {
 
     setVisited: function() {
         localStorage.setItem(LocalStorage.visitedKey, true);
-    },
-
-    getMigrated: function() {
-        return localStorage.getItem(LocalStorage.migratedKey);
-    },
-
-    setMigrated: function() {
-        localStorage.setItem(LocalStorage.migratedKey, true);
     }
 };
