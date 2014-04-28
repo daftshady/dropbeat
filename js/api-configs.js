@@ -1,7 +1,6 @@
 // Base config
 var SCHEME = "http";
-//var BASE_API_HOST = "api.dropbeat.net";
-var BASE_API_HOST = "127.0.0.1:8000";
+var BASE_API_HOST = "api.dropbeat.net";
 var URI = "/dropbeat/api/";
 var VERSION = "v1";
 var API_URL = SCHEME + "://" + BASE_API_HOST + URI + VERSION + "/";
