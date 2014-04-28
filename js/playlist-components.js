@@ -44,34 +44,26 @@ var PlaylistControl = {
         playlistFilterInput:".playlist-section #search-playlist-input"
     },
     init: function() {
-        if (!LocalStorage.hasLocalHash()) {
-            // `getidsCallback` is executed later.
-            $.ajax({
-                type: "GET",
-                url: API_PLAYLIST_URL,
-                data: {'type':'jsonp'},
-            });
-        }
-
         if (onSharedList) {
             $(PlaylistControl.elems.sharePlaylistBtn).remove();
         }
 
         $(this.elems.sharePlaylistBtn).click(function() {
-            var localHash = LocalStorage.getLocalHash();
+            // There's a possible collision, but it doesn't matter.
+            var uuid = Math.uuid(8);
             var playlist = playlistManager.getCurrentPlaylist();
             $.ajax({
                 type: "POST",
                 url: API_PLAYLIST_URL,
                 data: {
-                    'key' : localHash,
+                    'key' : uuid,
                     'playlist' : playlist.toJsonStr(true)
                 },
                 crossDomain: true
             });
 
             // XXX: Notify key to user.
-            NotifyManager.playlistShared(fullHost + '/?playlist=' + localHash);
+            NotifyManager.playlistShared(fullHost + '/?playlist=' + uuid);
 
             // Logging
             if (window.dropbeat &&
@@ -165,14 +157,6 @@ function relayPoll(data) {
         }
     }
 }
-
-function getidsCallback(data) {
-    if (!data) {
-        var localHash = LocalStorage.getLocalHash();
-        return;
-    }
-    var localHash = LocalStorage.getLocalHash(data);
-};
 
 function playlistCallback(data) {
     if (data) {

@@ -1,6 +1,5 @@
 /* This variable wraps `localStorage` in HTML5 */
 var LocalStorage = {
-    localHashKey: 'key',
     playlistKey: 'playlist',
     visitedKey: 'first',
     migratedKey: 'migrated',
@@ -42,39 +41,6 @@ var LocalStorage = {
 
     flushPlaylist: function(idx) {
         localStorage.setItem(LocalStorage.localPlaylistKey(idx), '[]');
-    },
-
-    initLocalHash: function() {
-        return generateKey();
-    },
-
-    getLocalHash: function(existings) {
-        hash = localStorage.getItem(LocalStorage.localHashKey);
-        if (hash) {
-            return hash;
-        }
-
-        if (existings) {
-            while(true) {
-                hash = LocalStorage.initLocalHash();
-                if (jQuery.inArray(hash, existings) === -1) {
-                    LocalStorage.setLocalHash(hash);
-                    break;
-                }
-            }
-        } else {
-            hash = LocalStorage.initLocalHash();
-            LocalStorage.setLocalHash(hash);
-        }
-        return hash;
-    },
-
-    hasLocalHash: function() {
-        return localStorage.getItem(LocalStorage.localHashKey) !== null;
-    },
-
-    setLocalHash: function(hash) {
-        localStorage.setItem(LocalStorage.localHashKey, hash);
     },
 
     getVisited: function() {

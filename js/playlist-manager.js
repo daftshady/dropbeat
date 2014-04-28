@@ -216,32 +216,6 @@ function PlaylistManager() {
     };
 }
 
-
-/* Playlist key related method declarations */
-function generateKey() {
-    var word = words[Math.floor(Math.random() * words.length)];
-    var num = Math.floor(Math.random() * 9000) + 1000;
-    return word + num;
-};
-
-// Temporally, key generation is done in js.
-// Because knowing other user's key has nothing to do with security.
-var words = [
-    'Apple', 'Apricot', 'Avocado', 'Banana', 'Breadfruit', 'Bilberry',
-    'Blackberry', 'Blueberry', 'Cantaloupe', 'Currant', 'Cherry',
-    'Cherimoya', 'Cloudberry', 'Coconut', 'Cranberry', 'Cucumber',
-    'Damson', 'Date', 'Durian', 'Eggplant', 'Elderberry', 'Feijoa',
-    'Fig', 'Gojiberry', 'Gooseberry', 'Grape', 'Raisin', 'Grapefruit',
-    'Guava', 'Honeydew', 'Jackfruit', 'Jambul', 'Jujube', 'Kiwifruit',
-    'Kumquat', 'Lemon', 'Lime', 'Loquat', 'Lychee', 'Mango', 'Melon',
-    'Cantaloupe', 'Honeydew', 'Watermelon', 'Mulberry', 'Nectarine',
-    'Nut', 'Olive', 'Orange', 'Clementine', 'Mandarine', 'BloodOrange',
-    'Tangerine', 'Pamelo', 'Papaya', 'Passionfruit', 'Peach', 'Pepper',
-    'ChiliPepper', 'BellPepper', 'Pear', 'Persimmon', 'Physalis', 'Pineapple',
-    'Pomelo', 'Quince', 'Raspberry', 'Rambutan', 'Redcurrant', 'Satsuma',
-    'Strawberry'
-];
-
 var shareUriKey = '?playlist=';
 var autogenUriKey = '?artist=';
 function keyFromUri(key) {

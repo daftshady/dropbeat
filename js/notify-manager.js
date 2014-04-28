@@ -23,9 +23,9 @@ var NotifyManager = {
         }
     },
 
-    playlistShared: function(localHash) {
+    playlistShared: function(uuid) {
         $('.playlist-section .playlist-footer').notify(
-            getMsg('shared') + localHash,
+            getMsg('shared') + uuid,
             {
                 position: 'top left',
                 className: 'success',
