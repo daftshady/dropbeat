@@ -94,7 +94,7 @@ function Playlist() {
         // Convertes `Playlist` to Table in HTML.
         // var table = document.creatElement('table'); doesn't work.
 
-        var playlistView = $(playlistManager.elems.playlist);
+        var playlistView = $(playlistManager.elems.playlistInner);
 
         if (clean) {
             var playlistRow =

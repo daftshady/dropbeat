@@ -10,7 +10,7 @@ function PlaylistManager() {
     self.playingLocalSeq = 0;
 
     self.elems = {
-        playlist:".playlist-section .playlist .playlist-inner",
+        playlistInner:".playlist-section .playlist .playlist-inner",
         playlistRowTemplate:"#tmpl-playlist-row",
         playlistMusicContainer:".a-playlist-music",
         musicPlayBtn:".music-title-wrapper",
@@ -141,7 +141,7 @@ function PlaylistManager() {
     self.delegateTriggers = function(){
         // Flush previous trigger bindings for the purpose of preventing
         // multiple binding on same parent elem.
-        $(self.elems.playlist).on(
+        $(self.elems.playlistInner).on(
             "click", self.elems.musicPlayBtn, function() {
             var $musicContainer = $(this).parents(self.elems.musicContainer);
             var musicData = {
@@ -152,7 +152,7 @@ function PlaylistManager() {
             playerManager.onMusicClicked(new Music(musicData), true);
         });
 
-        $(self.elems.playlist).on(
+        $(self.elems.playlistInner).on(
             "click", self.elems.musicRemoveBtn, function() {
             var $musicContainer = $(this).parents(self.elems.musicContainer);
             var musicData = {
@@ -168,9 +168,9 @@ function PlaylistManager() {
             }
         });
 
-        $(self.elems.playlist).on(
+        $(self.elems.playlistInner).on(
             "mouseenter", self.elems.musicPlayBtn, function(){
-            var e = self.elems.playlist;
+            var e = self.elems.playlistInner;
             var $marquee = $(this).find(self.elems.musicTitleScroller);
             var $title = $(this).find(self.elems.musicTitle);
             if ($title.width() <= $marquee.width())
@@ -196,7 +196,7 @@ function PlaylistManager() {
             });
         });
 
-        $(self.elems.playlist).on(
+        $(self.elems.playlistInner).on(
             "mouseleave", self.elems.musicPlayBtn, function(){
             var $title = $(this).find(".music-title");
             $title.unbind('marquee');
