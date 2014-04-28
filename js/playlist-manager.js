@@ -10,6 +10,7 @@ function PlaylistManager() {
     self.playingLocalSeq = 0;
 
     self.elems = {
+        playlist: ".playlist",
         playlistInner:".playlist-section .playlist .playlist-inner",
         playlistRowTemplate:"#tmpl-playlist-row",
         playlistMusicContainer:".a-playlist-music",

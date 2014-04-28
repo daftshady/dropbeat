@@ -32,6 +32,10 @@ function Playlist() {
         self.playlist.push(music);
         if (updateView) {
             self.toTable(true);
+            var elems = playlistManager.elems;
+            $(elems.playlist).animate({
+                scrollTop: 100 * self.length()
+            }, '1000');
         }
 
         if (playlistManager.playingLocalSeq === PlaylistTabs.currentIdx()) {
