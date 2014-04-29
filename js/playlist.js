@@ -33,6 +33,7 @@ function Playlist() {
         if (updateView) {
             self.toTable(true);
             var elems = playlistManager.elems;
+            $(elems.playlist).stop();
             $(elems.playlist).animate({
                 scrollTop: 100 * self.length()
             }, '1000');

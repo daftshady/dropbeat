@@ -154,11 +154,20 @@ var PlaylistControl = {
 
 function relayPoll(data) {
     if (data) {
-        data = data[0];
-        playlistManager.getCurrentPlaylist().add(new Music(data), true);
-        if (data.remains > 0) {
-            PlaylistControl.generate(data.key, data.poll_id);
+        var remains = data[0].remains;
+        for (var i=0; i<data.length; i++) {
+            if (data[i].remains < remains) {
+                remains = data[i].remains;
+            }
+            if (!data[i].id) {
+                continue;
+            }
+            playlistManager.getCurrentPlaylist().add(new Music(data[i]), true);
         }
+        if (remains > 0) {
+            PlaylistControl.generate(data[0].key, data[0].poll_id);
+        }
+
     }
 }
 
