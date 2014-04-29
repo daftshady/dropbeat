@@ -23,19 +23,21 @@ var NotifyManager = {
         }
     },
 
-    playlistShared: function(uuid) {
+    sharePlaylist: function(success, uuid) {
+        var msg = success ? getMsg('shared') + uuid : getMsg('cannotShare');
+        var style = success ? 'success' : 'warn';
         $('.playlist-section .playlist-footer').notify(
-            getMsg('shared') + uuid,
+            msg,
             {
                 position: 'top left',
-                className: 'success',
+                className: style,
                 autoHide: true,
                 autoHideDelay: 10000,
                 clickToHide: false
             }
         );
     },
-    // XXX: Remove code duplication
+
     playlistLoaded: function() {
         if (!notifyReady) {
             delayNotify(NotifyManager.playlistLoaded);

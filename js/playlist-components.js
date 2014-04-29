@@ -49,9 +49,14 @@ var PlaylistControl = {
         }
 
         $(this.elems.sharePlaylistBtn).click(function() {
+            var playlist = playlistManager.getCurrentPlaylist();
+            if (playlist.empty()) {
+                NotifyManager.sharePlaylist(false);
+                return;
+            }
+
             // There's a possible collision, but it doesn't matter.
             var uuid = Math.uuid(8);
-            var playlist = playlistManager.getCurrentPlaylist();
             $.ajax({
                 type: "POST",
                 url: API_PLAYLIST_URL,
@@ -62,8 +67,7 @@ var PlaylistControl = {
                 crossDomain: true
             });
 
-            // XXX: Notify key to user.
-            NotifyManager.playlistShared(fullHost + '/?playlist=' + uuid);
+            NotifyManager.sharePlaylist(true, fullHost + '/?playlist=' + uuid);
 
             // Logging
             if (window.dropbeat &&
