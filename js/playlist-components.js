@@ -154,17 +154,28 @@ var PlaylistControl = {
 
 function relayPoll(data) {
     if (data) {
-        var remains = data[0].remains;
-        for (var i=0; i<data.length; i++) {
-            if (data[i].remains < remains) {
-                remains = data[i].remains;
+        var noMorePoll =
+            $.grep(data, function(e) {return !e.remains}).length !== 0;
+        if (data.length > 1 && noMorePoll) {
+            function doSetTimeout(obj, i) {
+                setTimeout(function() {
+                    playlistManager.
+                        getCurrentPlaylist().add(new Music(obj), true);
+                }, 100 * i);
             }
+            for (i=0; i<data.length; i++) {
+                doSetTimeout(data[i], i);
+            }
+            return;
+        }
+
+        for (i=0; i<data.length; i++) {
             if (!data[i].id) {
                 continue;
             }
             playlistManager.getCurrentPlaylist().add(new Music(data[i]), true);
         }
-        if (remains > 0) {
+        if (!noMorePoll) {
             PlaylistControl.generate(data[0].key, data[0].poll_id);
         }
 
