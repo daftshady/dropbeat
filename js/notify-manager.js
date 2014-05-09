@@ -14,7 +14,9 @@ var NotifyManager = {
         This method will attach click event to whole notification box
         regardless of original click event in `notifyjs`.
         */
-        NotifyManager.getWrapper(elem).click(callback);
+        var box = NotifyManager.getWrapper(elem);
+        box.unbind('click');
+        box.click(callback);
     },
 
     playlistChangeNotify: function(success) {
