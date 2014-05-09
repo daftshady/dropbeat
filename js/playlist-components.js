@@ -67,7 +67,11 @@ var PlaylistControl = {
                 crossDomain: true
             });
 
-            NotifyManager.sharePlaylist(true, fullHost + '/?playlist=' + uuid);
+            var url = fullHost + '/?playlist=' + uuid;
+            NotifyManager.sharePlaylist(true, url);
+            NotifyManager.onclick('.playlist-section', function() {
+                window.open(url);
+            });
 
             // Logging
             if (window.dropbeat &&

@@ -1,8 +1,20 @@
 var NotifyManager = {
     init: function() {},
 
+    getWrapper: function(elem) {
+        return $(elem).find('.notifyjs-wrapper');
+    },
+
     hide: function(elem) {
-        $(elem).find('.notifyjs-wrapper').trigger('notify-hide');
+        NotifyManager.getWrapper(elem).trigger('notify-hide');
+    },
+
+    onclick: function(elem, callback) {
+        /*
+        This method will attach click event to whole notification box
+        regardless of original click event in `notifyjs`.
+        */
+        NotifyManager.getWrapper(elem).click(callback);
     },
 
     playlistChangeNotify: function(success) {

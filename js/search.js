@@ -78,8 +78,11 @@ function searchCallback(data) {
     if (data) {
         NotifyManager.hide('.search-input-field');
         if (data.is_singer) {
-            NotifyManager.artistUrl(
-                data.keyword, fullHost + '/?artist=' + data.keyword);
+            var url = fullHost + '/?artist=' + data.keyword;
+            NotifyManager.artistUrl(data.keyword, url);
+            NotifyManager.onclick('.search-input-field', function() {
+                window.open(url);
+            });
         }
         $(SearchBox.elems.searchSpinner).hide();
         context.searching = false;
