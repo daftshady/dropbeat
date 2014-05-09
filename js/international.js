@@ -27,7 +27,8 @@ var KR = {
     + '이 플레이리스트는 당신의 플레이리스트에 영향을 끼치지 않습니다.\n'
     + '플레이리스트를 만드시려면 ' + fullHost + ' 로 접속해주세요',
     notPlayable: 'Soundcloud의 문제로 현재 재생이 불가능한 곡입니다. : ',
-    cannotShare: '리스트가 비어있어서 공유할 수 없습니다.'
+    cannotShare: '리스트가 비어있어서 공유할 수 없습니다.',
+    artistUrl: ' 앨범 전곡 듣기 : '
 };
 
 var EN = {
@@ -42,5 +43,6 @@ var EN = {
     + 'If you want to make your own playlist, access to ' + fullHost,
     notPlayable: 'This track is currently unavailable '
     + 'because of trouble in soundcloud : ',
-    cannotShare: 'You cannot share an empty playlist'
+    cannotShare: 'You cannot share an empty playlist',
+    artistUrl: ' full album : '
 };

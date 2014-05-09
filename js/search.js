@@ -71,21 +71,20 @@ var SearchBox = {
             && typeof window.dropbeat === "object" && dropbeat.logApiAction) {
             dropbeat.logApiAction("dropbeat", "search", {keyword:keyword});
         }
-    },
-    retry: false
+    }
 };
 
 function searchCallback(data) {
-    if (!data && !SearchBox.retry) {
-        SearchBox.retry = true;
-        // Retry to wake google api.
-        SearchBox.onSubmit($(SearchBox.elems.searchInput).val());
-        return;
+    if (data) {
+        NotifyManager.hide('.search-input-field');
+        if (data.is_singer) {
+            NotifyManager.artistUrl(
+                data.keyword, fullHost + '/?artist=' + data.keyword);
+        }
+        $(SearchBox.elems.searchSpinner).hide();
+        context.searching = false;
+        SearchList.updateView(data.tracks);
     }
-    $(SearchBox.elems.searchSpinner).hide();
-    context.searching = false;
-    SearchList.updateView(data);
-    SearchBox.retry = false;
 };
 
 

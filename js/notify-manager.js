@@ -1,6 +1,10 @@
 var NotifyManager = {
     init: function() {},
 
+    hide: function(elem) {
+        $(elem).find('.notifyjs-wrapper').trigger('notify-hide');
+    },
+
     playlistChangeNotify: function(success) {
         if (success) {
             $.notify(
@@ -23,8 +27,8 @@ var NotifyManager = {
         }
     },
 
-    sharePlaylist: function(success, uuid) {
-        var msg = success ? getMsg('shared') + uuid : getMsg('cannotShare');
+    sharePlaylist: function(success, url) {
+        var msg = success ? getMsg('shared') + url : getMsg('cannotShare');
         var style = success ? 'success' : 'warn';
         $('.playlist-section .playlist-footer').notify(
             msg,
@@ -59,17 +63,6 @@ var NotifyManager = {
             {
                 position: 'top right',
                 className: 'success',
-                autoHide: true
-            }
-        );
-    },
-
-    invalidPlaylistKey: function() {
-        $.notify(
-            getMsg('invalidKey'),
-            {
-                position: 'top right',
-                className: 'error',
                 autoHide: true
             }
         );
@@ -116,7 +109,20 @@ var NotifyManager = {
                 autoHideDelay: 10000
             }
         );
-    }
+    },
+
+    artistUrl: function(artist, url) {
+        $('.input-field-suppliment').notify(
+            artist + getMsg('artistUrl') + url,
+            {
+                position: 'top right',
+                className: 'info',
+                clickToHide: false,
+                autoHide: true,
+                autoHideDelay: 60000
+            }
+        );
+    },
 };
 
 function delayNotify(method) {
