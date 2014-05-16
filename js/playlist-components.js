@@ -110,11 +110,10 @@ var PlaylistControl = {
             for (var i=0; i<current.length(); i++) {
                 var m = current.getWithIdx(i);
                 if (m.title.toLowerCase().indexOf(keyword) !== -1) {
-                    // XXX: Avoid public access to `playlist`!
-                    tempPlaylist.playlist.push(m);
+                    tempPlaylist.raw().push(m);
                 }
-                tempPlaylist.toTable(true);
             }
+            tempPlaylist.toTable(true);
         } else {
             playlistManager.getCurrentPlaylist().toTable(true);
         }
