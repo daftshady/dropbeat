@@ -12,52 +12,44 @@ http://github.com/daftshady
 <html>
     <head>
         <title>Dropbeat - Enjoy music better, simply.</title>
-        {% load staticfiles %}
-        {% load compress %}
         <meta charset="utf-8" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link rel="shortcut icon" href="{% static 'css/img/favicon.ico' %}">
+        <link rel="shortcut icon" href="css/img/favicon.ico">
         <meta name="description" content="Dropbeat is online music player that lets you listen to music in online streaming sources better."/>
         <meta name="author" content="Park Ilsu"/>
         <meta name="google" content="notranslate"/>
-        <script src="{% static 'lib/jquery-1.11.0.js' %}"></script>
-        <script src="{% static 'lib/soundmanager2-nodebug-jsmin.js' %}"></script>
-        <script src="{% static 'lib/notify.min.js' %}"></script>
-        <script src="{% static 'lib/underscore.min.js' %}"></script>
-        <script src="{% static 'lib/jquery.backgroundSize.js' %}"></script>
-        <script src="{% static 'lib/jquery.placeholder.js' %}"></script>
-        <script src="{% static 'lib/jquery.corner.js' %}"></script>
-        <script src="{% static 'lib/Math.uuid.js' %}"></script>
+        <script src="lib/jquery-1.11.0.js"></script>
+        <script src="lib/soundmanager2-nodebug-jsmin.js"></script>
+        <script src="lib/notify.min.js"></script>
+        <script src="lib/underscore.min.js"></script>
+        <script src="lib/jquery.backgroundSize.js"></script>
+        <script src="lib/jquery.placeholder.js"></script>
+        <script src="lib/jquery.corner.js"></script>
+        <script src="lib/Math.uuid.js"></script>
 
-
-
-        {% compress css %}
-        <link href="{% static 'css/base.css' %}" rel='stylesheet' type='text/css' />
-        {% endcompress %}
-        {% compress js %}
-        <script src="{% static 'js/external-players.js' %}"></script>
-        <script src="{% static 'js/music.js' %}"></script>
-        <script src="{% static 'js/player-control.js' %}"></script>
-        <script src="{% static 'js/player-manager.js' %}"></script>
-        <script src="{% static 'js/playlist.js' %}"></script>
-        <script src="{% static 'js/playlist-manager.js' %}"></script>
-        <script src="{% static 'js/playlist-components.js' %}"></script>
-        <script src="{% static 'js/progress.js' %}"></script>
-        <script src="{% static 'js/api-configs.js' %}"></script>
-        <script src="{% static 'js/search.js' %}"></script>
-        <script src="{% static 'js/music-queue.js' %}"></script>
-        <script src="{% static 'js/view-control.js' %}"></script>
-        <script src="{% static 'js/storage.js' %}"></script>
-        <script src="{% static 'js/recom.js' %}"></script>
-        <script src="{% static 'js/compat.js' %}"></script>
-        <script src="{% static 'js/notify-manager.js' %}"></script>
-        <script src="{% static 'js/initializer.js' %}"></script>
-        <script src="{% static 'js/escape.js' %}"></script>
-        <script src="{% static 'js/ga-logging.js' %}"></script>
-        <script src="{% static 'js/international.js' %}"></script>
-        {% endcompress %}
+        <link href="css/base.css" rel='stylesheet' type='text/css' />
+        <script src="js/external-players.js"></script>
+        <script src="js/music.js"></script>
+        <script src="js/player-control.js"></script>
+        <script src="js/player-manager.js"></script>
+        <script src="js/playlist.js"></script>
+        <script src="js/playlist-manager.js"></script>
+        <script src="js/playlist-components.js"></script>
+        <script src="js/progress.js"></script>
+        <script src="js/api-configs.js"></script>
+        <script src="js/search.js"></script>
+        <script src="js/music-queue.js"></script>
+        <script src="js/view-control.js"></script>
+        <script src="js/storage.js"></script>
+        <script src="js/recom.js"></script>
+        <script src="js/compat.js"></script>
+        <script src="js/notify-manager.js"></script>
+        <script src="js/initializer.js"></script>
+        <script src="js/escape.js"></script>
+        <script src="js/ga-logging.js"></script>
+        <script src="js/international.js"></script>
         <!--[if lt IE 9]>
-            <script src="{% static 'lib/respond.js' %}"></script>
+            <script src="lib/respond.js"></script>
         <![endif]-->
         <script src="http://www.youtube.com/player_api"></script>
 
@@ -110,7 +102,7 @@ http://github.com/daftshady
                         </a>
                     </div>
                     <div class="search-spinner">
-                        <img src="{% static 'css/img/ajax-loader.gif'%}"/>
+                        <img src="css/img/ajax-loader.gif"/>
                         <div class="status">Searching..</div>
                     </div>
                     <div class="search-result-section"></div>
@@ -127,7 +119,7 @@ http://github.com/daftshady
                             <div class="title">Recommendation</div>
                             <div class="recom-results-wrapper"></div>
                             <div class="loading-spinner">
-                                <img src="{% static 'css/img/ajax-loader.gif'%}"/>
+                                <img src="css/img/ajax-loader.gif"/>
                                 <div class="status">Loading..</div>
                             </div>
                         </div>
@@ -189,7 +181,7 @@ http://github.com/daftshady
                             </a>
                         </div>
                         <div class="loading-spinner">
-                            <img src="{% static 'css/img/ajax-loader.gif'%}"/>
+                            <img src="css/img/ajax-loader.gif"/>
                         </div>
                     </div>
                     <div class="playlist">
@@ -216,7 +208,7 @@ http://github.com/daftshady
                 <div class="player-initialize-filter">
                     <div class="filter-bg"></div>
                     <div class="loading-spinner">
-                        <img src="{% static 'css/img/ajax-loader.gif'%}"/>
+                        <img src="css/img/ajax-loader.gif"/>
                         <div class="status">Player initializing ..</div>
                     </div>
                 </div>
