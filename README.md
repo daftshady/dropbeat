@@ -12,8 +12,8 @@ I'm a developer who loves music, especially EDM.
 `Dropbeat` is the manifestation of my interest to make a better interface to enjoying streaming music.
 
 
-Deploy
-======
+Deployment
+==========
 
 We are providing simple running script `run_dropbeat.py` for anyone who want to develop or test `Dropbeat` in his own environment.
 
