@@ -27,10 +27,10 @@ function PlaylistManager() {
         if (shareKey) {
             PlaylistControl.load(shareKey);
             NotifyManager.inSharedPlaylist();
-            /*
-            We don't want to load original local playlist when
-            user accessed with shared uri.
-            */
+
+            // We don't want to load original local playlist when
+            // user accessed with shared uri.
+
             return;
         }
 

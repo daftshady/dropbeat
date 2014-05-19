@@ -10,10 +10,8 @@ var NotifyManager = {
     },
 
     onclick: function(elem, callback) {
-        /*
-        This method will attach click event to whole notification box
-        regardless of original click event in `notifyjs`.
-        */
+        // This method will attach click event to whole notification box
+        // regardless of original click event in `notifyjs`.
         var box = NotifyManager.getWrapper(elem);
         box.unbind('click');
         box.click(callback);

@@ -1,4 +1,4 @@
-/* This variable wraps `localStorage` in HTML5 */
+// This variable wraps `localStorage` in HTML5
 var LocalStorage = {
     playlistKey: 'playlist',
     visitedKey: 'first',

@@ -1,5 +1,3 @@
-/* External player declarations */
-
 function BaseExternalPlayer() {
     var self = this;
     self.type = undefined;
@@ -127,19 +125,17 @@ function YoutubePlayer() {
         initWidth = self.playerWidth
         initHeight = self.playerHeight
 
-        /*
-        Fucking safari blocks flash plugin automatically after `mavericks`.
-        (Because of fucking low energy policy)
-        There may be two hacks for this problem.
-        1. Emulate automatic mouse click to force use of flash plugin in safari
-        No initialize time is needed in next run of dropbeat in this solution.
-        2. When youtube frame size is large enough, youtube automatically
-        acquires flash plugin permission from safari.
-        Therefore, we make `500, 500` size frame to acquire flash plugin
-        permission, and hide it to left by `-(widthSize - 1)`.
-        If we fully hide youtube frame in this step, the whole youtube
-        javascript api crashes and is not initialized. So we leave just 1px.
-        */
+        // Fucking safari blocks flash plugin automatically after `mavericks`.
+        // (Because of fucking low energy policy)
+        // There may be two hacks for this problem.
+        // 1. Emulate automatic mouse click to force use of flash plugin in safari
+        // No initialize time is needed in next run of dropbeat in this solution.
+        // 2. When youtube frame size is large enough, youtube automatically
+        // acquires flash plugin permission from safari.
+        // Therefore, we make `500, 500` size frame to acquire flash plugin
+        // permission, and hide it to left by `-(widthSize - 1)`.
+        // If we fully hide youtube frame in this step, the whole youtube
+        // javascript api crashes and is not initialized. So we leave just 1px.
 
         // We choose second magical hack to fucking safari workaround.
         if (self.isSafariHack) {
@@ -242,7 +238,7 @@ function YoutubePlayer() {
         }
     };
 
-    /* Returns the current playback position in seconds */
+    // Returns the current playback position in seconds
     self.getCurrentPlaybackTime = function() {
         if (self.currentVideo) {
             return self.player.getCurrentTime();
@@ -250,7 +246,7 @@ function YoutubePlayer() {
         return 0;
     };
 
-    /* Returns the length of the video in seconds */
+    // Returns the length of the video in seconds
     self.getTotalPlaybackTime = function() {
         if (self.currentVideo) {
             return self.player.getDuration();

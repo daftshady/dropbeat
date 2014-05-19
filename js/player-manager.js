@@ -210,12 +210,12 @@ function PlayerManager() {
         var playlist =
             playlistManager.getLocalPlaylist(playlistManager.playingLocalSeq);
         if (playlist && self.currentMusic) {
-            /*
-            XXX : If we handle shuffle on move btn clicked like this way,
-            random queue will be the size of current playlist
-            everytime we click move btn.
-            But it may not matter in current use-case.
-            */
+
+            // XXX : If we handle shuffle on move btn clicked like this way,
+            // random queue will be the size of current playlist
+            // everytime we click move btn.
+            // But it may not matter in current use-case.
+
             var current = playlist.findIdx(self.currentMusic.id);
             var next = null;
             if (current === -1) {

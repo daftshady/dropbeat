@@ -45,5 +45,3 @@ $(function(){
     dropbeat.logApiAction(apiName, apiAction, params);
     });
 });
-
-

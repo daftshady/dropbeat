@@ -1,4 +1,3 @@
-// Defines music progress bar
 var Progress = {
     isDragging: null,
     $buffer: null,

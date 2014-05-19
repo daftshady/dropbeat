@@ -112,8 +112,6 @@ function Playlist() {
         ViewControl.resizePlaylistRow();
         $(playlistManager.elems.playlistMusicCount).text(self.playlist.length);
 
-        // Is bold needed for filter?
-
         // Re-bold current music if playing.
         if (playerManager.currentMusic
             && playlistManager.playingLocalSeq === PlaylistTabs.currentIdx()) {

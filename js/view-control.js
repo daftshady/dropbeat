@@ -1,4 +1,4 @@
-/* View control for flexible window size */
+// View control for flexible window size
 
 var ViewControl = {
     init: function() {
@@ -118,4 +118,3 @@ var ViewControl = {
         }
     }
 };
-

@@ -1,4 +1,3 @@
-/* Manages music queue */
 var queueEOL = 'stop';
 function MusicQueue () {
     var self = this;

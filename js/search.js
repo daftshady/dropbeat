@@ -90,8 +90,6 @@ function searchCallback(data) {
     }
 };
 
-
-/* SearchList Declarations */
 var SearchList = {
     elems:{
         searchResultSection:".body-section .search-result-section",
