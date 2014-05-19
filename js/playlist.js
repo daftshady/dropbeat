@@ -184,20 +184,12 @@ function initialPlaylistToNewComer() {
         }
     );
     initial.push(m);
+
     m = new Music(
         {
             'id':'id5NQwWX5zM',
             'title':'Dominik Eulberg - Opel Tantra (Original Mix)',
             'type':'youtube'
-        }
-    );
-    initial.push(m);
-
-    m = new Music(
-        {
-            'id':'82523324',
-            'title':'Alesso Vs OneRepublic - If I Lose Myself (Alesso Remix)',
-            'type':'soundcloud'
         }
     );
     initial.push(m);
