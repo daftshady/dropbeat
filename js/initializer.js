@@ -4,9 +4,7 @@ var playerManager = null;
 var playlistManager = null;
 var musicQ = null;
 var dropbeatReady = false;
-var countryCode = null;
 var fullHost = window.location.protocol + '//' +  window.location.host;
-var notifyReady = false;
 var onSharedList = keyFromUri(shareUriKey) || keyFromUri(autogenUriKey);
 
 // XXX: Immediate sync of playlist can affect performance
@@ -41,12 +39,6 @@ $(document).ready(function() {
     // Add playlist sync listener.
     $(window).unload(function() {
         playlistManager.getCurrentPlaylist().sync();
-    });
-
-    // Caches country code
-    LocationManager.getCountry(function(code) {
-        countryCode = code;
-        onNotifyReady();
     });
 
     // Make logo clickable

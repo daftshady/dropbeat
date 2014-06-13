@@ -55,10 +55,6 @@ var NotifyManager = {
     },
 
     playlistLoaded: function() {
-        if (!notifyReady) {
-            delayNotify(NotifyManager.playlistLoaded);
-            return;
-        }
         $.notify(
             getMsg('loaded'),
             {
@@ -92,13 +88,6 @@ var NotifyManager = {
     },
 
     inSharedPlaylist: function() {
-        // XXX: Temporal way to delay msg.
-        // Should fix the way to handle delaying.
-        if (!notifyReady) {
-            delayNotify(NotifyManager.inSharedPlaylist);
-            return;
-        }
-
         $.notify(
             getMsg('inSharedPlaylist'),
             {
@@ -135,15 +124,4 @@ var NotifyManager = {
             }
         );
     },
-};
-
-function delayNotify(method) {
-    setTimeout(function() {
-        method();
-    }, 1000);
-    return;
-}
-
-function onNotifyReady() {
-    notifyReady = true;
 };
