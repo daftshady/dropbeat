@@ -1,41 +1,41 @@
 var queueEOL = 'stop';
 function MusicQueue () {
-    var self = this;
-    self.q = [];
-    self.playType = 'normal';
-    self.init = function(listOfMusic) {
-        delete self.q;
-        self.q = [];
+    var that = this;
+    that.q = [];
+    that.playType = 'normal';
+    that.init = function(listOfMusic) {
+        delete that.q;
+        that.q = [];
         if (listOfMusic) {
-            self.q = self.q.concat(listOfMusic);
+            that.q = that.q.concat(listOfMusic);
         }
     };
-    self.push = function(music) {
-        self.q.push(music);
+    that.push = function(music) {
+        that.q.push(music);
     };
 
-    self.pushEOL = function() {
+    that.pushEOL = function() {
         // this method is needed for indicating stopping music iterating
         // Music play stops when EOL popped from queue.
-        self.q.push(queueEOL);
+        that.q.push(queueEOL);
     };
 
-    self.pop = function() {
+    that.pop = function() {
         // pop next played music from queue.
-        if (self.playType === 'normal') {
-            return self.q.shift();
+        if (that.playType === 'normal') {
+            return that.q.shift();
         }
     };
 
-    self.top = function() {
-        if (self.q.length !== 0)
-            return self.q[0];
+    that.top = function() {
+        if (that.q.length !== 0)
+            return that.q[0];
     };
 
-    self.removeWithId = function(musicId) {
-        for (var i=0; i<self.q.length; i++) {
-            if (musicId === self.q[i].id) {
-                self.q.splice(i, 1);
+    that.removeWithId = function(musicId) {
+        for (var i=0; i<that.q.length; i++) {
+            if (musicId === that.q[i].id) {
+                that.q.splice(i, 1);
             }
         }
     };

@@ -1,45 +1,45 @@
 function BaseExternalPlayer() {
-    var self = this;
-    self.type = undefined;
-    self.initialized = false;
+    var that = this;
+    that.type = undefined;
+    that.initialized = false;
 
-    self.init = function(callback) {
+    that.init = function(callback) {
         throw 'NotImplementedError';
     };
 
-    self.hide = function() {
+    that.hide = function() {
         throw 'NotImplementedError';
     };
 
-    self.show = function() {
+    that.show = function() {
         throw 'NotImplementedError';
     };
 
-    self.play = function(music) {
+    that.play = function(music) {
         throw 'NotImplementedError';
     };
 
-    self.stop = function() {
+    that.stop = function() {
         throw 'NotImplementedError';
     };
 
-    self.pause = function() {
+    that.pause = function() {
         throw 'NotImplementedError';
     };
 
-    self.seekTo = function(time) {
+    that.seekTo = function(time) {
         throw 'NotImplementedError';
     };
 
-    self.getCurrentPlaybackTime = function() {
+    that.getCurrentPlaybackTime = function() {
         throw 'NotImplementedError';
     };
 
-    self.getTotalPlaybackTime = function() {
+    that.getTotalPlaybackTime = function() {
         throw 'NotImplementedError';
     };
 
-    self.getBuffer = function(fraction) {
+    that.getBuffer = function(fraction) {
         var buffer = 0;
         if (fraction) {
             buffer = fraction * 100;
@@ -50,12 +50,12 @@ function BaseExternalPlayer() {
     };
 
     // State change listeners
-    self.onLoading = function() {
+    that.onLoading = function() {
         unboldPlaylistTitle();
         PlayerMessageControl.setLoading();
     };
 
-    self.onFinish = function() {
+    that.onFinish = function() {
         unboldPlaylistTitle();
         playerManager.onMusicEnd();
         // XXX: Music end should be watched global observer (not here.)
@@ -97,7 +97,7 @@ function BaseExternalPlayer() {
         }
     };
 
-    self.onPlaying = function() {
+    that.onPlaying = function() {
         var title = playerManager.currentMusic.title;
         if (playlistManager.playingLocalSeq === playlistManager.getCurrentPlaylistIdx())
             boldPlaylistTitle(title);
@@ -106,24 +106,24 @@ function BaseExternalPlayer() {
 }
 
 function YoutubePlayer() {
-    var self = this;
+    var that = this;
+
     this.prototype = new BaseExternalPlayer();
-    self.player = null;
-    self.view = null;
-    self.type = 'youtube';
-    self.playerWidth = $('#external-player').width();
-    self.playerHeight = $('#external-player').height();
-    self.playing = false;
-    self.isSafariHack = false;
-    self.safariHackDone = false;
-    self.currentVideo = null;
+    that.player = null;
+    that.view = null;
+    that.type = 'youtube';
+    that.playerWidth = $('#external-player').width();
+    that.playerHeight = $('#external-player').height();
+    that.playing = false;
+    that.isSafariHack = false;
+    that.safariHackDone = false;
+    that.currentVideo = null;
 
-    // Constructor
-    self.init = function() {
-        self.isSafariHack = isSafari();
+    that.init = function() {
+        that.isSafariHack = isSafari();
 
-        initWidth = self.playerWidth
-        initHeight = self.playerHeight
+        initWidth = that.playerWidth
+        initHeight = that.playerHeight
 
         // Fucking safari blocks flash plugin automatically after `mavericks`.
         // (Because of fucking low energy policy)
@@ -138,17 +138,17 @@ function YoutubePlayer() {
         // javascript api crashes and is not initialized. So we leave just 1px.
 
         // We choose second magical hack to fucking safari workaround.
-        if (self.isSafariHack) {
+        if (that.isSafariHack) {
             initWidth = 500;
             initHeight = 500;
             var options = {'autoplay': 1, 'controls': 0};
         } else {
             var options = {'autoplay': 0, 'controls': 0};
-            self.hide();
+            that.hide();
         }
 
         var videoId = 'sUGWyrx-gCc';
-        self.player = new YT.Player('youtube-player', {
+        that.player = new YT.Player('youtube-player', {
                 width: initWidth,
                 height: initHeight,
                 videoId: videoId,
@@ -157,41 +157,41 @@ function YoutubePlayer() {
                 playerVars: options,
                 events: {
                     'onReady' : function(data) {
-                        self.initialized = true;
-                        self.view = $('#youtube-player');
+                        that.initialized = true;
+                        that.view = $('#youtube-player');
                         data.target.addEventListener(
-                            'onStateChange', self.onStateChange);
+                            'onStateChange', that.onStateChange);
                     }
                 }
             }
         );
     };
 
-    self.hide = function() {
+    that.hide = function() {
         $('#dropbeat .external-player-section').css('left', '-539px');
     };
 
-    self.show = function() {
+    that.show = function() {
         $('#dropbeat .external-player-section').css('left', '0px');
     };
 
-    self.onStateChange = function(state) {
+    that.onStateChange = function(state) {
         if (!state) {
             return;
         }
         switch (state.data) {
             case YT.PlayerState.ENDED:
-                self.prototype.onFinish();
+                that.prototype.onFinish();
                 break;
             case YT.PlayerState.PLAYING:
-                if (self.isSafariHack) {
-                    self.stop();
-                    self.isSafariHack = false;
-                    self.view.height(self.playerHeight);
-                    self.view.width(self.playerWidth);
-                    self.hide();
+                if (that.isSafariHack) {
+                    that.stop();
+                    that.isSafariHack = false;
+                    that.view.height(that.playerHeight);
+                    that.view.width(that.playerWidth);
+                    that.hide();
                 } else {
-                    self.prototype.onPlaying();
+                    that.prototype.onPlaying();
                 }
                 break;
             case YT.PlayerState.PAUSED:
@@ -201,8 +201,8 @@ function YoutubePlayer() {
             case YT.PlayerState.CUED:
                 break;
             case YT.PlayerState.UNSTARTED:
-                if (self.currentVideo) {
-                    self.prototype.onLoading();
+                if (that.currentVideo) {
+                    that.prototype.onLoading();
                 }
                 break;
             default:
@@ -210,54 +210,54 @@ function YoutubePlayer() {
         }
     };
 
-    self.play = function(video) {
+    that.play = function(video) {
         var quality = 'hd720';
         if (video) {
-            self.currentVideo = video;
-            self.player.loadVideoById(video.id, 0, quality);
+            that.currentVideo = video;
+            that.player.loadVideoById(video.id, 0, quality);
         } else {
-            self.player.playVideo();
+            that.player.playVideo();
         }
     };
 
-    self.stop = function() {
-        if (self.player) {
-            self.player.stopVideo();
-            self.currentVideo = null;
+    that.stop = function() {
+        if (that.player) {
+            that.player.stopVideo();
+            that.currentVideo = null;
         }
     };
 
-    self.pause = function() {
-        if (self.player) {
-            self.player.pauseVideo();
+    that.pause = function() {
+        if (that.player) {
+            that.player.pauseVideo();
         }
     }
-    self.seekTo = function(time) {
-        if (self.currentVideo) {
-            self.player.seekTo(time, true);
+    that.seekTo = function(time) {
+        if (that.currentVideo) {
+            that.player.seekTo(time, true);
         }
     };
 
     // Returns the current playback position in seconds
-    self.getCurrentPlaybackTime = function() {
-        if (self.currentVideo) {
-            return self.player.getCurrentTime();
+    that.getCurrentPlaybackTime = function() {
+        if (that.currentVideo) {
+            return that.player.getCurrentTime();
         }
         return 0;
     };
 
     // Returns the length of the video in seconds
-    self.getTotalPlaybackTime = function() {
-        if (self.currentVideo) {
-            return self.player.getDuration();
+    that.getTotalPlaybackTime = function() {
+        if (that.currentVideo) {
+            return that.player.getDuration();
         }
         return 0;
     };
 
-    self.getBuffer = function() {
-        if (self.player) {
-            return self.prototype.getBuffer(
-                self.player.getVideoLoadedFraction());
+    that.getBuffer = function() {
+        if (that.player) {
+            return that.prototype.getBuffer(
+                that.player.getVideoLoadedFraction());
         } else {
             return 0;
         }
@@ -265,19 +265,20 @@ function YoutubePlayer() {
 }
 
 function SoundCloudPlayer() {
-    var self = this;
+    var that = this;
+
     this.prototype = new BaseExternalPlayer();
-    self.streamApiBase = 'https://api.soundcloud.com/tracks/';
-    self.developerKey = 'd5249ae899d7b26e6c6af608d876d12c';
-    self.currentMusic = null;
-    self.validationTimer = null;
-    self.titleHack = false;
-    self.type = 'soundcloud';
+    that.streamApiBase = 'https://api.soundcloud.com/tracks/';
+    that.developerKey = 'd5249ae899d7b26e6c6af608d876d12c';
+    that.currentMusic = null;
+    that.validationTimer = null;
+    that.titleHack = false;
+    that.type = 'soundcloud';
 
-    self.playing = false;
+    that.playing = false;
 
-    self.init = function(callback) {
-        self.initialized = true;
+    that.init = function(callback) {
+        that.initialized = true;
 
         soundManager.onready(function() {
             soundManagerReady = true;
@@ -289,80 +290,80 @@ function SoundCloudPlayer() {
         });
     };
 
-    self.hide = function() {
+    that.hide = function() {
         $('soundcloud-player').css('left', '-10000px');
     };
 
-    self.show = function() {
+    that.show = function() {
         $('soundcloud-player').css('left', '0px');
     };
 
-    self.play = function(music) {
+    that.play = function(music) {
         if (music) {
-            self.titleHack = true;
-            clearTimeout(self.validationTimer);
+            that.titleHack = true;
+            clearTimeout(that.validationTimer);
             // This `playing` variable is only used to
-            self.playing = false;
-            var streamUrl = self.streamApiBase + music.id +
-                    '/stream?consumer_key=' + self.developerKey;
+            that.playing = false;
+            var streamUrl = that.streamApiBase + music.id +
+                    '/stream?consumer_key=' + that.developerKey;
             soundManager.createSound({
                 id: music.id,
                 url: streamUrl,
                 volume: 100,
-                onload: self.onStateChange,
-                onplay: self.onStateChange,
-                onfinish: self.prototype.onFinish
+                onload: that.onStateChange,
+                onplay: that.onStateChange,
+                onfinish: that.prototype.onFinish
             });
             soundManager.play(music.id);
-            self.currentMusic = music;
+            that.currentMusic = music;
         } else {
-            soundManager.play(self.currentMusic.id);
+            soundManager.play(that.currentMusic.id);
         }
     };
 
-    self.stop = function() {
+    that.stop = function() {
         soundManager.stopAll();
-        if (self.currentMusic) {
-            soundManager.destroySound(self.currentMusic.id);
+        if (that.currentMusic) {
+            soundManager.destroySound(that.currentMusic.id);
         }
-        self.currentMusic = null;
+        that.currentMusic = null;
     };
 
-    self.pause = function() {
-        if (self.currentMusic) {
-            soundManager.pause(self.currentMusic.id);
-        }
-    };
-
-    self.seekTo = function(time) {
-        if (self.currentMusic) {
-            soundManager.setPosition(self.currentMusic.id, time*1000);
+    that.pause = function() {
+        if (that.currentMusic) {
+            soundManager.pause(that.currentMusic.id);
         }
     };
 
-    self.getCurrentPlaybackTime = function() {
+    that.seekTo = function(time) {
+        if (that.currentMusic) {
+            soundManager.setPosition(that.currentMusic.id, time*1000);
+        }
+    };
+
+    that.getCurrentPlaybackTime = function() {
         var time = 0;
-        if (self.currentMusic) {
-            var sound = soundManager.getSoundById(self.currentMusic.id);
+        if (that.currentMusic) {
+            var sound = soundManager.getSoundById(that.currentMusic.id);
             if (sound) {
                 time = sound.position / 1000.0;
             }
         }
 
-        if (self.titleHack && time > 0) {
+        if (that.titleHack && time > 0) {
             if (playlistManager.playingLocalSeq
                 === playlistManager.getCurrentPlaylistIdx())
-                boldPlaylistTitle(self.currentMusic.title);
-            PlayerMessageControl.setTitle(self.currentMusic.title);
-            self.titleHack = false;
+                boldPlaylistTitle(that.currentMusic.title);
+            PlayerMessageControl.setTitle(that.currentMusic.title);
+            that.titleHack = false;
         }
         return time;
     };
 
-    self.getTotalPlaybackTime = function() {
+    that.getTotalPlaybackTime = function() {
         var time = 0;
-        if (self.currentMusic) {
-            var sound = soundManager.getSoundById(self.currentMusic.id);
+        if (that.currentMusic) {
+            var sound = soundManager.getSoundById(that.currentMusic.id);
             if (sound) {
                 time = sound.durationEstimate / 1000.0;
             }
@@ -370,21 +371,21 @@ function SoundCloudPlayer() {
         return time;
     };
 
-    self.getBuffer = function() {
-        if (!self.currentMusic)
+    that.getBuffer = function() {
+        if (!that.currentMusic)
             return 0;
 
-        var sound = soundManager.getSoundById(self.currentMusic.id);
+        var sound = soundManager.getSoundById(that.currentMusic.id);
 
         if (sound) {
-            return self.prototype.getBuffer(
+            return that.prototype.getBuffer(
                 sound.bytesLoaded / sound.bytesTotal);
         } else {
             return 0;
         }
     };
 
-    self.onStateChange = function(success) {
+    that.onStateChange = function(success) {
         if (success !== undefined && success !== null && !success) {
             var current = playerManager.getCurrentMusic()
             if (current && current.type === 'youtube') {
@@ -409,11 +410,11 @@ function SoundCloudPlayer() {
             }
 
         }
-        if (!self.playing) {
-            self.prototype.onLoading();
-            self.playing = true;
+        if (!that.playing) {
+            that.prototype.onLoading();
+            that.playing = true;
         } else {
-            self.prototype.onPlaying();
+            that.prototype.onPlaying();
         }
     };
 }

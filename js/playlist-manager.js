@@ -1,15 +1,15 @@
 function PlaylistManager() {
-    var self = this;
+    var that = this;
     // This object has `k,v` of `playlist name, playlist.
-    self.playlists = {}
-    self.localKey = 'local';
+    that.playlists = {}
+    that.localKey = 'local';
     // Instant key for shared playlist.
-    self.shareKey = 'share';
-    self.generateType = {'artist':0};
-    self.maxLocalPlaylist = 3;
-    self.playingLocalSeq = 0;
+    that.shareKey = 'share';
+    that.generateType = {'artist':0};
+    that.maxLocalPlaylist = 3;
+    that.playingLocalSeq = 0;
 
-    self.elems = {
+    that.elems = {
         playlist: ".playlist",
         playlistInner:".playlist-section .playlist .playlist-inner",
         playlistRowTemplate:"#tmpl-playlist-row",
@@ -20,8 +20,8 @@ function PlaylistManager() {
         musicTitleScroller:".music-title-scroll-wrapper",
         musicTitle:".music-title"
     };
-    self.init = function() {
-        self.delegateTriggers();
+    that.init = function() {
+        that.delegateTriggers();
         // Load playlist in uri.
         var shareKey = keyFromUri(shareUriKey);
         if (shareKey) {
@@ -36,7 +36,7 @@ function PlaylistManager() {
 
         var autogenKey = keyFromUri(autogenUriKey);
         if (autogenKey) {
-            self.autogen(self.generateType.artist, autogenKey);
+            that.autogen(that.generateType.artist, autogenKey);
             NotifyManager.inSharedPlaylist();
             return;
         }
@@ -54,58 +54,58 @@ function PlaylistManager() {
             }
 
             var initialIdx = 0;
-            self.loadLocal(initialIdx);
+            that.loadLocal(initialIdx);
         }
     };
 
-    self.add = function(key, playlist) {
+    that.add = function(key, playlist) {
         // XXX: playlist type validation
-        self.playlists[key] = playlist;
+        that.playlists[key] = playlist;
     };
 
-    self.remove = function(key) {
-        delete self.playlists[key];
+    that.remove = function(key) {
+        delete that.playlists[key];
     };
 
-    self.loadLocal = function(idx) {
+    that.loadLocal = function(idx) {
         var playlist = LocalStorage.getPlaylist(idx);
 
-        self.playlists[self.localKey+idx] = playlist;
-        self.updatePlaylistView(self.localKey+idx);
+        that.playlists[that.localKey+idx] = playlist;
+        that.updatePlaylistView(that.localKey+idx);
     };
 
-    self.updatePlaylistView = function(key) {
+    that.updatePlaylistView = function(key) {
         // Temporal method.
         // We do not support multiple playlist yet.
         if (key) {
-            var playlist = self.playlists[key];
+            var playlist = that.playlists[key];
             if (playlist) {
                 playlist.toTable(true);
             }
         } else {
-            self.getCurrentPlaylist().toTable(true);
+            that.getCurrentPlaylist().toTable(true);
         }
     };
 
-    self.getCurrentPlaylist = function() {
+    that.getCurrentPlaylist = function() {
         // Temporally returns local playlist.
         var idx = PlaylistTabs.currentIdx();
-        return self.shareKey in self.playlists ?
-            self.playlists[self.shareKey] : self.playlists[self.localKey+idx];
+        return that.shareKey in that.playlists ?
+            that.playlists[that.shareKey] : that.playlists[that.localKey+idx];
     };
 
-    self.getCurrentPlaylistIdx = function() {
+    that.getCurrentPlaylistIdx = function() {
         return PlaylistTabs.currentIdx();
     };
 
-    self.getPlaylistWithIdx = function(idx) {
+    that.getPlaylistWithIdx = function(idx) {
         if (idx < 0)
             return [];
-        return self.shareKey in self.playlists ?
-            self.playlists[self.shareKey] : self.playlists[self.localKey+idx];
+        return that.shareKey in that.playlists ?
+            that.playlists[that.shareKey] : that.playlists[that.localKey+idx];
     };
 
-    self.getCurrentLocalPlaylist = function() {
+    that.getCurrentLocalPlaylist = function() {
         var current =
             LocalStorage.getPlaylist(PlaylistTabs.currentIdx());
         if (current) {
@@ -113,26 +113,26 @@ function PlaylistManager() {
         }
     };
 
-    self.getLocalPlaylist = function(idx) {
-        if (self.shareKey in self.playlists) {
-            return self.playlists[self.shareKey];
+    that.getLocalPlaylist = function(idx) {
+        if (that.shareKey in that.playlists) {
+            return that.playlists[that.shareKey];
         }
         return LocalStorage.getPlaylist(idx);
     };
 
-    self.changeCurrentPlaylist = function() {
+    that.changeCurrentPlaylist = function() {
     };
 
-    self.maxPlaylist = function() {
-        return self.maxLocalPlaylist;
+    that.maxPlaylist = function() {
+        return that.maxLocalPlaylist;
     };
 
-    self.delegateTriggers = function(){
+    that.delegateTriggers = function(){
         // Flush previous trigger bindings for the purpose of preventing
         // multiple binding on same parent elem.
-        $(self.elems.playlistInner).on(
-            "click", self.elems.musicPlayBtn, function() {
-            var $musicContainer = $(this).parents(self.elems.musicContainer);
+        $(that.elems.playlistInner).on(
+            "click", that.elems.musicPlayBtn, function() {
+            var $musicContainer = $(this).parents(that.elems.musicContainer);
             var musicData = {
                 id:$musicContainer.data("musicId"),
                 title:$musicContainer.data("musicTitle"),
@@ -141,9 +141,9 @@ function PlaylistManager() {
             playerManager.onMusicClicked(new Music(musicData), true);
         });
 
-        $(self.elems.playlistInner).on(
-            "click", self.elems.musicRemoveBtn, function() {
-            var $musicContainer = $(this).parents(self.elems.musicContainer);
+        $(that.elems.playlistInner).on(
+            "click", that.elems.musicRemoveBtn, function() {
+            var $musicContainer = $(this).parents(that.elems.musicContainer);
             var musicData = {
                 id:$musicContainer.data("musicId"),
                 title:$musicContainer.data("musicTitle"),
@@ -157,11 +157,11 @@ function PlaylistManager() {
             }
         });
 
-        $(self.elems.playlistInner).on(
-            "mouseenter", self.elems.musicPlayBtn, function(){
-            var e = self.elems.playlistInner;
-            var $marquee = $(this).find(self.elems.musicTitleScroller);
-            var $title = $(this).find(self.elems.musicTitle);
+        $(that.elems.playlistInner).on(
+            "mouseenter", that.elems.musicPlayBtn, function(){
+            var e = that.elems.playlistInner;
+            var $marquee = $(this).find(that.elems.musicTitleScroller);
+            var $title = $(this).find(that.elems.musicTitle);
             if ($title.width() <= $marquee.width())
                 return;
             var speed = 20;
@@ -185,8 +185,8 @@ function PlaylistManager() {
             });
         });
 
-        $(self.elems.playlistInner).on(
-            "mouseleave", self.elems.musicPlayBtn, function(){
+        $(that.elems.playlistInner).on(
+            "mouseleave", that.elems.musicPlayBtn, function(){
             var $title = $(this).find(".music-title");
             $title.unbind('marquee');
             $title.clearQueue();
@@ -194,13 +194,13 @@ function PlaylistManager() {
             $title.css({left:0});
         });
     };
-    self.autogen = function(generate_type, key) {
-        if (self.generateType.artist === generate_type) {
-            return self.genFromArtist(key);
+    that.autogen = function(generate_type, key) {
+        if (that.generateType.artist === generate_type) {
+            return that.genFromArtist(key);
         }
         // Raise for NotImplemented
     };
-    self.genFromArtist = function(artist) {
+    that.genFromArtist = function(artist) {
         PlaylistControl.generate(artist);
     };
 }

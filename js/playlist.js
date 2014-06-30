@@ -1,41 +1,41 @@
 function Playlist() {
-    var self = this;
+    var that = this;
     // Change in local playlist should be pushed into server.
-    self.playlist = [];
-    self.renderPlaylistRow = function(music, idx){
+    that.playlist = [];
+    that.renderPlaylistRow = function(music, idx){
         if (!music.id)
             return "";
-        if (!self.rowTemplate)
-            self.rowTemplate =
+        if (!that.rowTemplate)
+            that.rowTemplate =
                 _.template($(playlistManager.elems.playlistRowTemplate).html());
-        return self.rowTemplate({music:music, idx:idx});
+        return that.rowTemplate({music:music, idx:idx});
     };
-    self.init = function(params) {
+    that.init = function(params) {
         // `params` should be Array of music.
         if (params instanceof Array) {
-            self.playlist = self.playlist.concat(params);
+            that.playlist = that.playlist.concat(params);
         }
     };
 
-    self.getWithIdx = function(idx) {
-        if (idx < self.playlist.length) {
-            return self.playlist[idx];
+    that.getWithIdx = function(idx) {
+        if (idx < that.playlist.length) {
+            return that.playlist[idx];
         }
     };
 
-    self.add = function(music, updateView) {
-        var idx = self.findIdx(music.id);
+    that.add = function(music, updateView) {
+        var idx = that.findIdx(music.id);
         if (idx !== -1) {
             // Already exists
             return false;
         }
-        self.playlist.push(music);
+        that.playlist.push(music);
         if (updateView) {
-            self.toTable(true);
+            that.toTable(true);
             var elems = playlistManager.elems;
             $(elems.playlist).stop();
             $(elems.playlist).animate({
-                scrollTop: 100 * self.length()
+                scrollTop: 100 * that.length()
             }, '1000');
         }
 
@@ -45,13 +45,13 @@ function Playlist() {
         return true;
     };
 
-    self.remove = function(music, updateView) {
-        var idx = self.findIdx(music.id);
+    that.remove = function(music, updateView) {
+        var idx = that.findIdx(music.id);
         if (idx > -1) {
-            self.playlist.splice(idx, 1);
+            that.playlist.splice(idx, 1);
         }
         if (updateView) {
-            self.toTable(true);
+            that.toTable(true);
         }
 
         if (playlistManager.playingLocalSeq === PlaylistTabs.currentIdx()) {
@@ -61,41 +61,41 @@ function Playlist() {
 
     };
 
-    self.slicePlaylist = function(musicId) {
+    that.slicePlaylist = function(musicId) {
         // find idx
-        var idx = self.findIdx(musicId);
-        return self.playlist.slice(idx+1);
+        var idx = that.findIdx(musicId);
+        return that.playlist.slice(idx+1);
     };
 
-    self.findIdx = function(musicId) {
+    that.findIdx = function(musicId) {
         var idx = -1;
-        for (var i=0; i<self.playlist.length; i++) {
-            if (self.playlist[i].id === musicId) {
+        for (var i=0; i<that.playlist.length; i++) {
+            if (that.playlist[i].id === musicId) {
                 idx = i;
             }
         }
         return idx;
     };
 
-    self.sync = function() {
+    that.sync = function() {
         // We don't sync if we are on shared Playlist!
         if (onSharedList) {
             return;
         }
-        self.localSync();
+        that.localSync();
     };
 
-    self.localSync = function() {
+    that.localSync = function() {
         // Sync all local playlists.
         var idx = PlaylistTabs.currentIdx();
-        LocalStorage.setPlaylist(JSON.stringify(self.playlist), idx);
+        LocalStorage.setPlaylist(JSON.stringify(that.playlist), idx);
     };
 
     // Sync this playlist with server.
-    self.remoteSync = function() {
+    that.remoteSync = function() {
     };
 
-    self.toTable = function(clean) {
+    that.toTable = function(clean) {
         // Convertes `Playlist` to Table in HTML.
         // var table = document.creatElement('table'); doesn't work.
 
@@ -106,11 +106,11 @@ function Playlist() {
                 $(playlistManager.elems.playlistMusicContainer, playlistView);
             playlistRow.remove();
         }
-        for (var i=0; i<self.playlist.length; i++) {
-            playlistView.append(self.renderPlaylistRow(self.playlist[i], i+1));
+        for (var i=0; i<that.playlist.length; i++) {
+            playlistView.append(that.renderPlaylistRow(that.playlist[i], i+1));
         }
         ViewControl.resizePlaylistRow();
-        $(playlistManager.elems.playlistMusicCount).text(self.playlist.length);
+        $(playlistManager.elems.playlistMusicCount).text(that.playlist.length);
 
         // Re-bold current music if playing.
         if (playerManager.currentMusic
@@ -120,13 +120,13 @@ function Playlist() {
         }
     };
 
-    self.raw = function() {
-        return self.playlist;
+    that.raw = function() {
+        return that.playlist;
     };
 
-    self.toJsonStr = function(reverse_quote) {
-        for (var i=0; i<self.playlist.length; i++) {
-            m = self.playlist[i];
+    that.toJsonStr = function(reverse_quote) {
+        for (var i=0; i<that.playlist.length; i++) {
+            m = that.playlist[i];
             if (reverse_quote) {
                 m.title = m.title.replace(/'/g, "`");
                 m.title = m.title.replace(/"/g, "`");
@@ -134,23 +134,23 @@ function Playlist() {
                 m.title = m.title.replace(/`/g, "'");
             }
         }
-        raw = JSON.stringify(self.playlist);
+        raw = JSON.stringify(that.playlist);
         return raw;
     };
 
-    self.clear = function(updateView) {
-        self.playlist = []
+    that.clear = function(updateView) {
+        that.playlist = []
         if (updateView) {
-            self.toTable(true);
+            that.toTable(true);
         }
     };
 
-    self.length = function() {
-        return self.playlist.length;
+    that.length = function() {
+        return that.playlist.length;
     };
 
-    self.empty = function() {
-        return self.length() === 0;
+    that.empty = function() {
+        return that.length() === 0;
     };
 }
 

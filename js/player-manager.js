@@ -1,40 +1,40 @@
 function PlayerManager() {
-    var self = this;
+    var that = this;
     function Players() {
-        var self = this;
+        var that = this;
         var _players = {};
-        self.pop = function(k) {
+        that.pop = function(k) {
             v = _players[k];
             delete _players[k];
             return v;
         };
-        self.get = function(k) {
+        that.get = function(k) {
             return _players[k];
         };
-        self.set = function(k, v) {
+        that.set = function(k, v) {
             _players[k] = v;
         };
 
     };
-    self.players = new Players();
-    self.isPlaying = false;
-    self.currentPlayer = null;
-    self.currentMusic = null;
-    self.currentMusicLength = 0;
-    self.moving = false;
-    self.elems = {
+    that.players = new Players();
+    that.isPlaying = false;
+    that.currentPlayer = null;
+    that.currentMusic = null;
+    that.currentMusicLength = 0;
+    that.moving = false;
+    that.elems = {
         loadingFilter:".play-controls .player-initialize-filter"
     }
 
-    self.init = function() {
-        if ($(self.elems.loadingFilter).is(":hidden")) {
-            $(self.elems.loadingFilter).show();
+    that.init = function() {
+        if ($(that.elems.loadingFilter).is(":hidden")) {
+            $(that.elems.loadingFilter).show();
         }
         // Push all available players to `players`.
         // XXX: Should get player type from each player object.
         if (!youtubeApiReady) {
             setTimeout(function() {
-                self.init();
+                that.init();
             }, 1000);
             return;
         }
@@ -42,12 +42,12 @@ function PlayerManager() {
         var soundcloudPlayer = new SoundCloudPlayer();
         youtubePlayer.init();
         soundcloudPlayer.init();
-        self.players.set('youtube', youtubePlayer);
-        self.players.set('soundcloud', soundcloudPlayer);
+        that.players.set('youtube', youtubePlayer);
+        that.players.set('soundcloud', soundcloudPlayer);
 
         if (isSafari()) {
             setTimeout(function() {
-                $(self.elems.loadingFilter).hide();
+                $(that.elems.loadingFilter).hide();
                 dropbeatReady = true;
             }, 5000);
             return;
@@ -55,14 +55,14 @@ function PlayerManager() {
 
         setTimeout(function() {
             dropbeatReady = true;
-            $(self.elems.loadingFilter).hide();
+            $(that.elems.loadingFilter).hide();
         }, 1000);
     };
 
-    self.play = function(music) {
+    that.play = function(music) {
         if (!music) {
-            if (self.currentPlayer) {
-                self.currentPlayer.play(music);
+            if (that.currentPlayer) {
+                that.currentPlayer.play(music);
             } else {
                 // raise error
             }
@@ -74,93 +74,93 @@ function PlayerManager() {
                     {title:music.title, id:music.id, type:music.type});
             }
 
-            if (self.currentPlayer && !self.isPlaying) {
-                if (self.currentPlayer.type !== music.type) {
-                    self.currentPlayer = self.players.get(music.type);
+            if (that.currentPlayer && !that.isPlaying) {
+                if (that.currentPlayer.type !== music.type) {
+                    that.currentPlayer = that.players.get(music.type);
                 }
-                if (self.isSameMusic(music)) {
-                    self.currentPlayer.play();
+                if (that.isSameMusic(music)) {
+                    that.currentPlayer.play();
                     return;
                 } else {
-                    self.currentPlayer.stop();
+                    that.currentPlayer.stop();
                 }
                 PlayerButtonViewControl.setPause();
-                self.currentMusic = music;
+                that.currentMusic = music;
                 Progress.reset();
-                self.currentPlayer.play(music);
+                that.currentPlayer.play(music);
                 return;
             }
 
-            self.currentPlayer = self.players.get(music.type);
-            if (!self.currentPlayer) {
+            that.currentPlayer = that.players.get(music.type);
+            if (!that.currentPlayer) {
                 // raise for Unsupported player
                 return;
             }
 
             // Let's play new music.
             PlayerButtonViewControl.setPause();
-            self.currentMusic = music;
+            that.currentMusic = music;
             Progress.reset();
-            if (!self.currentPlayer.initialized) {
-                self.currentPlayer.init(
+            if (!that.currentPlayer.initialized) {
+                that.currentPlayer.init(
                     function() {
-                        self.play(music);
+                        that.play(music);
                     }
                     );
                 return;
             } else {
-                self.currentPlayer.play(music);
+                that.currentPlayer.play(music);
             }
         }
     };
 
-    self.pause = function() {
-        if (self.currentPlayer && self.isPlaying) {
-            self.currentPlayer.pause();
+    that.pause = function() {
+        if (that.currentPlayer && that.isPlaying) {
+            that.currentPlayer.pause();
         }
     };
 
     // Method for `play button` on the control panel.
-    self.onPlayMusic = function(music) {
-        if (self.currentPlayer && self.isPlaying) {
+    that.onPlayMusic = function(music) {
+        if (that.currentPlayer && that.isPlaying) {
             // Pause the music.
-            self.pause();
+            that.pause();
             Progress.stop();
-            self.isPlaying = false;
+            that.isPlaying = false;
             return;
         }
 
-        if (!self.isPlaying) {
+        if (!that.isPlaying) {
             if (!music) {
-                if (!self.currentMusic) {
+                if (!that.currentMusic) {
                     return;
                 }
-                music = self.currentMusic;
+                music = that.currentMusic;
             }
-            self.play(music);
+            that.play(music);
             Progress.start();
-            self.isPlaying = true;
+            that.isPlaying = true;
             return;
         }
     };
 
     // Method for `music` row on the playlist.
-    self.onMusicClicked = function(music, onPlaylist) {
+    that.onMusicClicked = function(music, onPlaylist) {
         // For safari hack. (Do not play music before init!)
         if (!dropbeatReady) {
             return;
         }
 
-        if (self.isSameMusic(music) && self.isPlaying) {
+        if (that.isSameMusic(music) && that.isPlaying) {
             return;
         }
 
-        self.onPlayMusic(music);
+        that.onPlayMusic(music);
         // In the case that another music is already playing.
-        if (!self.isPlaying) {
-            self.play(music);
+        if (!that.isPlaying) {
+            that.play(music);
             Progress.start();
-            self.isPlaying = true;
+            that.isPlaying = true;
         }
 
         // reorder queue
@@ -168,7 +168,7 @@ function PlayerManager() {
             var playlist;
             // For not updating playlistManager.playingLocalSeq
             // on Prev or Next click
-            if (self.moving){
+            if (that.moving){
                 playlist = playlistManager
                     .getLocalPlaylist(playlistManager.playingLocalSeq);
             } else{
@@ -193,30 +193,30 @@ function PlayerManager() {
                 && RepeatControl.state !== RepeatState.repeatOne);
     };
 
-    self.onMusicEnd = function() {
-        self.isPlaying = false;
+    that.onMusicEnd = function() {
+        that.isPlaying = false;
     };
 
     // XXX: Remove code duplication between `back` and `forth`.
-    self.back = function() {
-        return self.move(false);
+    that.back = function() {
+        return that.move(false);
     };
 
-    self.forth = function() {
-        return self.move(true);
+    that.forth = function() {
+        return that.move(true);
     };
 
-    self.move = function(forward) {
+    that.move = function(forward) {
         var playlist =
             playlistManager.getLocalPlaylist(playlistManager.playingLocalSeq);
-        if (playlist && self.currentMusic) {
+        if (playlist && that.currentMusic) {
 
             // XXX : If we handle shuffle on move btn clicked like this way,
             // random queue will be the size of current playlist
             // everytime we click move btn.
             // But it may not matter in current use-case.
 
-            var current = playlist.findIdx(self.currentMusic.id);
+            var current = playlist.findIdx(that.currentMusic.id);
             var next = null;
             if (current === -1) {
                 return;
@@ -243,50 +243,50 @@ function PlayerManager() {
                 }
                 next = playlist.getWithIdx(pos);
             } else {
-                next = getFakeNext(playlist, self.currentMusic.id);
+                next = getFakeNext(playlist, that.currentMusic.id);
             }
-            self.moving = true;
-            self.onMusicClicked(next, true);
-            self.moving = false;
+            that.moving = true;
+            that.onMusicClicked(next, true);
+            that.moving = false;
         } else {
             // Warn for null playlist
         }
     };
 
-    self.getCurrentPlaybackTime = function() {
-        if (self.currentPlayer && self.isPlaying) {
-            return self.currentPlayer.getCurrentPlaybackTime();
+    that.getCurrentPlaybackTime = function() {
+        if (that.currentPlayer && that.isPlaying) {
+            return that.currentPlayer.getCurrentPlaybackTime();
         }
         return 0;
     };
 
-    self.getTotalPlaybackTime = function() {
-        if (self.currentPlayer && self.isPlaying) {
-            return self.currentPlayer.getTotalPlaybackTime();
+    that.getTotalPlaybackTime = function() {
+        if (that.currentPlayer && that.isPlaying) {
+            return that.currentPlayer.getTotalPlaybackTime();
         }
         return 0;
     };
 
-    self.getBuffer = function() {
-        if (self.currentPlayer && self.isPlaying) {
-            return self.currentPlayer.getBuffer();
+    that.getBuffer = function() {
+        if (that.currentPlayer && that.isPlaying) {
+            return that.currentPlayer.getBuffer();
         }
         return 0;
     };
 
-    self.seekTo = function(pos) {
-        if (self.currentPlayer) {
-            self.currentPlayer.seekTo(pos);
+    that.seekTo = function(pos) {
+        if (that.currentPlayer) {
+            that.currentPlayer.seekTo(pos);
         }
     };
 
-    self.getCurrentMusic = function() {
-        return self.currentMusic;
+    that.getCurrentMusic = function() {
+        return that.currentMusic;
     };
 
     // Private methods
-    self.isSameMusic = function(music) {
-        return self.currentMusic && music.id === self.currentMusic.id;
+    that.isSameMusic = function(music) {
+        return that.currentMusic && music.id === that.currentMusic.id;
     };
 }
 
