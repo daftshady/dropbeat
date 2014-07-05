@@ -1,51 +1,72 @@
-// This variable wraps `localStorage` in HTML5
-var LocalStorage = {
-    playlistKey: 'playlist',
-    visitedKey: 'first',
+/*jslint browser: true*/
+var DROPBEAT = (function (module) {
+    'use strict';
 
-    getPlaylist: function(idx, old) {
-        // XXX: This method do not follow strong OOP.
-        idx = !idx ? 0 : idx;
-        raw = localStorage.getItem(LocalStorage.localPlaylistKey(idx));
-        if (old) {
-            raw = localStorage.getItem(LocalStorage.playlistKey);
-        }
-        if (raw) {
-            playlist = new Playlist();
-            raw = JSON.parse(raw);
-            for (var i=0; i<raw.length; i++) {
-                m = new Music(raw[i]);
-                playlist.add(m);
+    module.storage = {};
+
+    module.storage.localStorage = {
+// Defines wrapper for HTML5 localStorage.
+        playlistKey: 'playlist',
+        visitedKey: 'first',
+        getPlaylist: function (idx, old) {
+            var that = this,
+                raw,
+                playlist,
+                i,
+                m;
+
+            idx = !idx ? 0 : idx;
+            raw = localStorage.getItem(that.localPlaylistKey(idx));
+            if (old) {
+                raw = localStorage.getItem(that.playlistKey);
+            }
+            if (raw) {
+                playlist = new module.s.Playlist();
+                raw = JSON.parse(raw);
+                for (i = 0; i < raw.length; i += 1) {
+                    m = new module.s.Music(raw[i]);
+                    playlist.add(m);
+                }
+            } else {
+                playlist = new module.s.Playlist();
             }
             return playlist;
-        } else {
-            playlist = new Playlist();
-            return playlist;
+        },
+
+        setPlaylist: function (playlist, idx) {
+            var that = this;
+
+            localStorage.setItem(that.localPlaylistKey(idx), playlist);
+        },
+
+        localPlaylistKey: function (idx) {
+            var that = this,
+                key = that.playlistKey;
+
+            if (idx) {
+                key = key + idx;
+            }
+            return key;
+        },
+
+        flushPlaylist: function (idx) {
+            var that = this;
+
+            localStorage.setItem(that.localPlaylistKey(idx), '[]');
+        },
+
+        getVisited: function () {
+            var that = this;
+
+            return localStorage.getItem(that.visitedKey);
+        },
+
+        setVisited: function () {
+            var that = this;
+
+            localStorage.setItem(that.visitedKey, true);
         }
-    },
+    };
 
-    setPlaylist: function(playlist, idx) {
-        localStorage.setItem(
-            LocalStorage.localPlaylistKey(idx), playlist);
-    },
-
-    localPlaylistKey: function(idx) {
-        var key = LocalStorage.playlistKey;
-        if (idx) {
-            key = key + idx;
-        }
-        return key;
-    },
-
-    flushPlaylist: function(idx) {
-        localStorage.setItem(LocalStorage.localPlaylistKey(idx), '[]');
-    },
-
-    getVisited: function() {
-        return localStorage.getItem(LocalStorage.visitedKey);
-    },
-
-    setVisited: function() {
-        localStorage.setItem(LocalStorage.visitedKey, true);
-    }
-};
+    return module;
+}(DROPBEAT));
