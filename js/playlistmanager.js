@@ -56,7 +56,7 @@ var DROPBEAT = (function (module) {
             } else {
 // Load local playlist.
                 if (!module.s.localStorage.getVisited()) {
-                    module.s.setVisited();
+                    module.s.localStorage.setVisited();
                     if (module.s.localStorage.getPlaylist().empty()) {
 // Initialize initial playlist to newcomer here.
                         throw "CurrentlyDisabled";
