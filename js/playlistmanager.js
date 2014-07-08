@@ -6,7 +6,8 @@ var DROPBEAT = (function (module) {
     function PlaylistManager() {
         var that = this;
 
-        that.playlists = {}; // This object has `k,v` of `playlist name, playlist.
+// This `playlists` object has `k,v` of `playlist name, playlist.
+        that.playlists = {};
         that.localKey = 'local';
         that.shareKey = 'share';
         that.generateType = {'artist': 0};
@@ -20,25 +21,24 @@ var DROPBEAT = (function (module) {
             playlistMusicContainer: ".a-playlist-music",
             musicPlayBtn: ".music-title-wrapper",
             musicRemoveBtn: ".music-remove",
-            playlistMusicCount: ".playlist-section .playlist-footer .music-count",
+            playlistMusicCount:
+                ".playlist-section .playlist-footer .music-count",
             musicTitleScroller: ".music-title-scroll-wrapper",
             musicTitle: ".music-title"
         };
 
         that.init = function () {
             that.delegateTriggers();
-            // Load playlist in uri.
             var shareKey =
                 module.shareManager.keyFromUri(module.constants.shareUriKey),
                 autogenKey,
                 isLogined;
 
             if (shareKey) {
+// We don't want to load original local playlist when
+// user accessed with shared uri.
                 module.s.playlistBase.load(shareKey);
                 module.s.notifyManager.inSharedPlaylist();
-                // We don't want to load original local playlist when
-                // user accessed with shared uri.
-
                 return;
             }
 
@@ -59,7 +59,8 @@ var DROPBEAT = (function (module) {
                     module.s.localStorage.setVisited();
                     if (module.s.localStorage.getPlaylist().empty()) {
 // Initialize initial playlist to newcomer here.
-                        throw "CurrentlyDisabled";
+                        that.initialPlaylist();
+                        return;
                     }
                 }
 
@@ -68,8 +69,37 @@ var DROPBEAT = (function (module) {
             }
         };
 
+        that.initialPlaylist = function () {
+            var that = this;
+
+            $.ajax({
+                url: module.api.initialPlaylistUrl,
+                data: {'type': 'jsonp'},
+                dataType: 'jsonp',
+                jsonp: 'callback',
+                success: function (data) {
+                    that.initialPlaylistCallback(data);
+                }
+            });
+        };
+
+        that.initialPlaylistCallback = function (data) {
+            var initial = [],
+                initialPlaylist = new module.s.Playlist(),
+                i;
+
+            for (i = 0; i < data.length; i += 1) {
+                initial.push(
+                    new module.s.Music(data[i])
+                );
+            }
+            initialPlaylist.init(initial);
+            initialPlaylist.sync();
+            that.loadLocal(0);
+        };
+
         that.add = function (key, playlist) {
-            // XXX: playlist type validation
+// XXX: playlist type validation
             that.playlists[key] = playlist;
         };
 
@@ -100,7 +130,8 @@ var DROPBEAT = (function (module) {
             var idx = module.s.playlistTabs.currentIdx();
 
             return that.playlists.hasOwnProperty(that.shareKey) ?
-                    that.playlists[that.shareKey] : that.playlists[that.localKey + idx];
+                    that.playlists[that.shareKey] :
+                        that.playlists[that.localKey + idx];
         };
 
         that.getCurrentPlaylistIdx = function () {
@@ -112,7 +143,8 @@ var DROPBEAT = (function (module) {
                 return [];
             }
             return that.playlists.hasOwnProperty(that.shareKey) ?
-                    that.playlists[that.shareKey] : that.playlists[that.localKey + idx];
+                    that.playlists[that.shareKey] :
+                        that.playlists[that.localKey + idx];
         };
 
         that.getCurrentLocalPlaylist = function () {
@@ -148,7 +180,8 @@ var DROPBEAT = (function (module) {
                 that.elems.musicPlayBtn,
                 function () {
                     var self = this,
-                        $musicContainer = $(self).parents(that.elems.musicContainer),
+                        $musicContainer =
+                            $(self).parents(that.elems.musicContainer),
                         musicData = {
                             id: $musicContainer.data("musicId"),
                             title: $musicContainer.data("musicTitle"),
@@ -167,7 +200,8 @@ var DROPBEAT = (function (module) {
                 that.elems.musicRemoveBtn,
                 function () {
                     var self = this,
-                        $musicContainer = $(self).parents(that.elems.musicContainer),
+                        $musicContainer =
+                            $(self).parents(that.elems.musicContainer),
                         musicData = {
                             id: $musicContainer.data("musicId"),
                             title: $musicContainer.data("musicTitle"),
@@ -209,9 +243,12 @@ var DROPBEAT = (function (module) {
                     $title.bind(
                         'marquee',
                         function () {
-                            var contentsWidth = $(self).width(),
-                                frameWidth = $marquee.width(),
-                                animPeriod = speed * (frameWidth + contentsWidth);
+                            var contentsWidth =
+                                    $(self).width(),
+                                frameWidth =
+                                    $marquee.width(),
+                                animPeriod =
+                                    speed * (frameWidth + contentsWidth);
                             $(self).css({left: frameWidth});
                             $(self).animate(
                                 {left: -contentsWidth},

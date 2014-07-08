@@ -249,7 +249,8 @@ var DROPBEAT = (function (module) {
 
                 if (!module.s.shuffleControl.isShuffle()) {
                     if (forward) {
-                        pos = current + 1 === playlist.length() ? current : current + 1;
+                        pos = current + 1 ===
+                            playlist.length() ? current : current + 1;
                     } else {
                         pos = current > 0 ? current - 1 : current;
                     }

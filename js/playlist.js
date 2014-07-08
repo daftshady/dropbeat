@@ -7,7 +7,8 @@ var DROPBEAT = (function (module) {
     module.playlist = {};
 
     module.playlist.Playlist = function () {
-        var that = this;
+        var that = this,
+            playlistManager = module.playlistManager;
 
         that.playlist = [];
         that.renderPlaylistRow = function (music, idx) {
@@ -17,7 +18,7 @@ var DROPBEAT = (function (module) {
             if (!that.rowTemplate) {
                 that.rowTemplate =
                     _.template(
-                        $(module.playlistManager.elems.playlistRowTemplate).html()
+                        $(playlistManager.elems.playlistRowTemplate).html()
                     );
             }
             return that.rowTemplate({music: music, idx: idx});
@@ -102,9 +103,13 @@ var DROPBEAT = (function (module) {
         };
 
         that.localSync = function () {
-            // Sync all local playlists.
+// Sync all local playlists.
             var idx = module.s.playlistTabs.currentIdx();
-            module.s.localStorage.setPlaylist(JSON.stringify(that.playlist), idx);
+
+            module.s.localStorage.setPlaylist(
+                JSON.stringify(that.playlist),
+                idx
+            );
         };
 
         that.remoteSync = function () {
@@ -116,9 +121,10 @@ var DROPBEAT = (function (module) {
 
             var playlistManager = module.playlistManager,
                 playerManager = module.playerManager,
-                playlistView = $(playlistManager.elems.playlistInner),
+                playlistElems = playlistManager.elems,
+                playlistView = $(playlistElems.playlistInner),
                 playlistRow =
-                    $(playlistManager.elems.playlistMusicContainer, playlistView),
+                    $(playlistElems.playlistMusicContainer, playlistView),
                 title,
                 i;
 
@@ -126,10 +132,12 @@ var DROPBEAT = (function (module) {
                 playlistRow.remove();
             }
             for (i = 0; i < that.playlist.length; i += 1) {
-                playlistView.append(that.renderPlaylistRow(that.playlist[i], i + 1));
+                playlistView.append(
+                    that.renderPlaylistRow(that.playlist[i], i + 1)
+                );
             }
             module.s.viewControl.resizePlaylistRow();
-            $(playlistManager.elems.playlistMusicCount).text(that.playlist.length);
+            $(playlistElems.playlistMusicCount).text(that.playlist.length);
 
 // Re-bold current music if playing.
             if (playerManager.currentMusic

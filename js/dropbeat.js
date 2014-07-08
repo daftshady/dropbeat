@@ -100,7 +100,7 @@ var DROPBEAT = (function () {
         $(window).unload(function () {
 // Dropbeat syncs current playlist on localStorage in HTML5
 // when the window is unloaded.
-            that.s.playlistManager.getCurrentPlaylist().sync();
+            that.playlistManager.getCurrentPlaylist().sync();
         });
 
         $('#logo').click(function () {
@@ -132,6 +132,7 @@ var DROPBEAT = (function () {
             searchUrl: endpoint('search'),
             recommendUrl: endpoint('recom'),
             playlistUrl: endpoint('playlist'),
+            initialPlaylistUrl: endpoint('playlist/initial'),
             resolveUrl: endpoint('resolve'),
             playlistAutogenUrl: endpoint('generate')
         };

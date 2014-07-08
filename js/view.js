@@ -108,7 +108,8 @@ var DROPBEAT = (function (module) {
             landingPageTop = ($bodySection.height() -
                 $bodySection.offset().top - landingPageHeight) / 2;
             newSearchBarTop = landingPageTop + readyCommentHeight;
-            newSearchBarLeft = ($bodySection.width() - $searchSection.width()) / 2;
+            newSearchBarLeft =
+                ($bodySection.width() - $searchSection.width()) / 2;
             initializeLoaderTop = newSearchBarTop + $searchSection.height();
             $readyComment.css({top: landingPageTop});
             $searchSection.css({left: newSearchBarLeft, top: newSearchBarTop});
@@ -133,8 +134,10 @@ var DROPBEAT = (function (module) {
                 maxMusicIndexWidth = $(".music-index:last").width();
                 scrollWidth = $(".music-title-wrapper").width()
                     - Math.max(maxMusicIndexWidth, $(".music-on-icon").width());
-                scrollWidth -= parseInt($(".music-index").css("paddingRight"), 10);
-                scrollWidth -= parseInt($(".music-index").css("paddingLeft"), 10);
+                scrollWidth -=
+                    parseInt($(".music-index").css("paddingRight"), 10);
+                scrollWidth -=
+                    parseInt($(".music-index").css("paddingLeft"), 10);
                 $(".music-index").css("width", maxMusicIndexWidth);
                 $(".music-title-scroll-wrapper").css("width", scrollWidth);
             }

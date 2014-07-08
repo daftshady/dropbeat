@@ -95,9 +95,12 @@ var DROPBEAT = (function (module) {
 
                 url = module.host + '/?playlist=' + uuid;
                 module.s.notifyManager.sharePlaylist(true, url);
-                module.s.notifyManager.onclick('.playlist-section', function () {
-                    window.open(url);
-                });
+                module.s.notifyManager.onclick(
+                    '.playlist-section',
+                    function () {
+                        window.open(url);
+                    }
+                );
 
                 module.log("dropbeat", "playlist-manage/share");
             });
@@ -117,7 +120,9 @@ var DROPBEAT = (function (module) {
                 function (event) {
                     clearTimeout(that.filterTimer);
                     that.filterTimer = setTimeout(function () {
-                        that.filter(that.elems.playlistFilterInput.val().toLowerCase());
+                        that.filter(
+                            that.elems.playlistFilterInput.val().toLowerCase()
+                        );
                     });
                 },
                 800
@@ -225,7 +230,8 @@ var DROPBEAT = (function (module) {
                 wrapper = function (obj, j) {
                     setTimeout(function () {
                         module.playlistManager.
-                            getCurrentPlaylist().add(new module.s.Music(obj), true);
+                            getCurrentPlaylist().
+                                add(new module.s.Music(obj), true);
                     }, 100 * j);
                 };
 

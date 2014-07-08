@@ -88,7 +88,8 @@ var DROPBEAT = (function (module) {
                 module.s.unboldTitle();
                 module.playerManager.onMusicEnd();
 
-                if (module.s.repeatControl.state === module.s.repeatState.noRepeat) {
+                if (module.s.repeatControl.state
+                        === module.s.repeatState.noRepeat) {
                     if (module.s.shuffleControl.isShuffle()) {
                         module.s.shuffleControl.shuffle(module.s.musicQ.q);
                     }
@@ -96,7 +97,8 @@ var DROPBEAT = (function (module) {
                     if (music === module.constants.queueEOL) {
                         return;
                     }
-                } else if (module.s.repeatControl.state === module.s.repeatState.repeatPlaylist) {
+                } else if (module.s.repeatControl.state
+                        === module.s.repeatState.repeatPlaylist) {
                     if (module.s.shuffleControl.isShuffle()) {
                         module.s.shuffleControl.shuffle(module.s.musicQ.q);
                     }
@@ -111,13 +113,18 @@ var DROPBEAT = (function (module) {
                                 module.playlistManager.playingLocalSeq
                             );
                         if (module.s.shuffleControl.isShuffle()) {
-                            module.s.musicQ.init(module.s.shuffleControl.shuffle(playlist.raw()));
+                            module.s.musicQ.init(
+                                module.s.shuffleControl.shuffle(
+                                    playlist.raw()
+                                )
+                            );
                         } else {
                             module.s.musicQ.init(playlist.raw());
                         }
                         music = module.s.musicQ.pop();
                     }
-                } else if (module.s.repeatControl.state === module.s.repeatState.repeatOne) {
+                } else if (module.s.repeatControl.state
+                        === module.s.repeatState.repeatOne) {
                     music = module.playerManager.getCurrentMusic();
                 }
 
@@ -192,7 +199,10 @@ var DROPBEAT = (function (module) {
                         'onReady' : function (data) {
                             that.initialized = true;
                             that.view = $('#youtube-player');
-                            data.target.addEventListener('onStateChange', that.onStateChange);
+                            data.target.addEventListener(
+                                'onStateChange',
+                                that.onStateChange
+                            );
                         }
                     }
                 });
@@ -287,7 +297,9 @@ var DROPBEAT = (function (module) {
 
             that.getBuffer = function () {
                 if (that.player) {
-                    return that.calculateBuffer(that.player.getVideoLoadedFraction());
+                    return that.calculateBuffer(
+                        that.player.getVideoLoadedFraction()
+                    );
                 }
                 return 0;
             };
@@ -365,7 +377,10 @@ var DROPBEAT = (function (module) {
 
             that.seekTo = function (time) {
                 if (that.currentMusic) {
-                    soundManager.setPosition(that.currentMusic.id, time * 1000);
+                    soundManager.setPosition(
+                        that.currentMusic.id,
+                        time * 1000
+                    );
                 }
             };
 
@@ -411,7 +426,9 @@ var DROPBEAT = (function (module) {
                     return 0;
                 }
                 if (sound) {
-                    return that.calculateBuffer(sound.bytesLoaded / sound.bytesTotal);
+                    return that.calculateBuffer(
+                        sound.bytesLoaded / sound.bytesTotal
+                    );
                 }
                 return 0;
             };
@@ -429,7 +446,8 @@ var DROPBEAT = (function (module) {
 
                     module.s.notifyManager.notPlayable(current.title);
                     if (module.playerManager.forth() === -1) {
-                        playlist = module.s.playlistManager.getCurrentPlaylist();
+                        playlist =
+                            module.s.playlistManager.getCurrentPlaylist();
                         if (playlist.empty()) {
                             return;
                         }

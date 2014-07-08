@@ -39,7 +39,7 @@ var DROPBEAT = (function (module) {
             if (!that.adding) {
                 that.hideAll();
                 that.adding = true;
-                // `urlAddCallback` will be executed.
+
                 $.ajax({
                     url: module.api.resolveUrl,
                     data: {
@@ -128,7 +128,7 @@ var DROPBEAT = (function (module) {
                             that.onSubmit($(that.elems.searchInput).val());
                         });
                     } else {
-                        that.onSubmit($(that).val());
+                        that.onSubmit($(that.elems.searchInput).val());
                     }
                 }
             });
@@ -490,7 +490,11 @@ var DROPBEAT = (function (module) {
                         })
                     );
 
-                    module.log("dropbeat", "playlist/play-from-recom", musicData);
+                    module.log(
+                        "dropbeat",
+                        "playlist/play-from-recom",
+                        musicData
+                    );
                 }
             );
         },
