@@ -121,11 +121,11 @@ var DROPBEAT = (function (module) {
                     clearTimeout(that.filterTimer);
                     that.filterTimer = setTimeout(function () {
                         that.filter(
-                            that.elems.playlistFilterInput.val().toLowerCase()
+                            $(that.elems.playlistFilterInput).
+                                val().toLowerCase()
                         );
-                    });
-                },
-                800
+                    }, 800);
+                }
             );
         },
 
