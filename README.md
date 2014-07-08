@@ -27,6 +27,15 @@ You can run it with HOST:PORT pair like this
     
 
 
+Coding convention
+=================
+
+This project follows javascript style of `douglas crockford` and `Google Javascript Style Guide`.
+
+Always uses `ECMAScript 5's strict mode` on writing javascript modules.
+
+Limit all lines to a maximum of 80 characters.
+
 
 License
 =======
