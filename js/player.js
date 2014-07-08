@@ -104,7 +104,7 @@ var DROPBEAT = (function (module) {
                     }
 
                     music = module.s.musicQ.pop();
-                    if (music === module.s.queueEOL) {
+                    if (music === module.constants.queueEOL) {
                         return;
                     }
                     if (!music) {
@@ -385,7 +385,8 @@ var DROPBEAT = (function (module) {
             };
 
             that.getCurrentPlaybackTime = function () {
-                var time = 0,
+                var playlistManager = module.playlistManager,
+                    time = 0,
                     sound;
 
                 if (that.currentMusic) {
@@ -396,8 +397,8 @@ var DROPBEAT = (function (module) {
                 }
 
                 if (that.titleHack && time > 0) {
-                    if (module.playlistManager.playingLocalSeq
-                            === module.playlistManager.getCurrentPlaylistIdx()) {
+                    if (playlistManager.playingLocalSeq
+                            === playlistManager.getCurrentPlaylistIdx()) {
                         module.s.boldTitle(that.currentMusic.title);
                     }
                     module.s.playerMessage.setTitle(that.currentMusic.title);

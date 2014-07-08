@@ -107,11 +107,9 @@ var DROPBEAT = (function (module) {
 
                 that.currentPlayer = that.players.get(music.type);
                 if (!that.currentPlayer) {
-                    // raise for Unsupported player
                     return;
                 }
 
-                // Let's play new music.
                 module.s.playerButton.setPause();
                 that.currentMusic = music;
                 module.s.progress.reset();
@@ -275,7 +273,6 @@ var DROPBEAT = (function (module) {
                 that.onMusicClicked(next, true);
                 that.moving = false;
             } else {
-                // Warn for null playlist
                 throw "NullPlaylistError";
             }
         };
@@ -328,7 +325,6 @@ var DROPBEAT = (function (module) {
             return that.currentMusic;
         };
 
-        // Private methods
         that.isSameMusic = function (music) {
             return that.currentMusic && music.id === that.currentMusic.id;
         };
