@@ -339,10 +339,12 @@ var DROPBEAT = (function (module) {
             };
 
             that.play = function (music) {
-                var streamUrl = that.streamApiBase + music.id +
-                        '/stream?consumer_key=' + that.developerKey;
+                var streamUrl;
 
                 if (music) {
+                    streamUrl =
+                        that.streamApiBase + music.id +
+                        '/stream?consumer_key=' + that.developerKey;
                     that.titleHack = true;
                     clearTimeout(that.validationTimer);
                     that.playing = false;
