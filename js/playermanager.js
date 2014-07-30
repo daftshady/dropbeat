@@ -281,7 +281,7 @@ var DROPBEAT = (function (module) {
             var fakePlaylist = playlist.raw().slice(0),
                 next = null;
 
-            module.m.shuffeControl.shuffle(fakePlaylist);
+            module.s.shuffleControl.shuffle(fakePlaylist);
             while (fakePlaylist.length > 0) {
                 next = fakePlaylist.shift();
                 if (next.id === current) {
