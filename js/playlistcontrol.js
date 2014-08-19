@@ -189,7 +189,8 @@ var DROPBEAT = (function (module) {
         },
 
         generate: function (key, id) {
-            var playlistManager = module.playlistManager;
+            var that = this,
+                playlistManager = module.playlistManager;
 
             if (!id) {
                 id = Math.floor((1 + Math.random()) * 0x10000).
@@ -210,6 +211,9 @@ var DROPBEAT = (function (module) {
                     })
                 ),
                 dataType: 'jsonp',
+                success: function (data) {
+                    that.generateCallback(data);
+                },
                 timeout: 15000
             });
         },
