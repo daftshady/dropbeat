@@ -70,10 +70,11 @@ var DROPBEAT = (function (module) {
                     module.playlistManager.getCurrentPlaylist().sync();
                 }
                 module.s.notifyManager.playlistChangeNotify(success);
-                that.adding = false;
             } else {
                 module.s.notifyManager.invalidAdderUrl();
             }
+            that.adding = false;
+
             that.showAll();
             that.clearInput();
         },
