@@ -159,7 +159,7 @@ var DROPBEAT = (function (module) {
                 return;
             }
 
-            if (that.isSameMusic(music) && that.playing) {
+            if (that.isSameMusic(music)) {
                 return;
             }
 
