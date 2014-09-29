@@ -48,4 +48,4 @@ Authors
 
 Park Ilsu [@daftshady](http://github.com/daftshady) - Original developer 
 
-Lee Teksu [@vulpeszerda](http://github.com/vulpeszerda) - Super developer passionate about UI/UX
+Lee Taeksoo [@vulpeszerda](http://github.com/vulpeszerda)
