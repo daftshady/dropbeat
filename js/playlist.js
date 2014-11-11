@@ -103,7 +103,7 @@ var DROPBEAT = (function (module) {
         };
 
         that.localSync = function () {
-// Sync all local playlists.
+// Synchs all local playlists.
             var idx = module.s.playlistTabs.currentIdx();
 
             module.s.localStorage.setPlaylist(
@@ -117,7 +117,7 @@ var DROPBEAT = (function (module) {
         };
 
         that.toTable = function (clean) {
-// Convertes `Playlist` to Table in HTML.
+// Converts `Playlist` to Table in HTML.
 
             var playlistManager = module.playlistManager,
                 playerManager = module.playerManager,
