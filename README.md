@@ -46,6 +46,6 @@ This project is licensed under MIT License.
 Authors
 =======
 
-Park Ilsu [@daftshady](http://github.com/daftshady) - Original developer 
+Ilsu Park [@daftshady](http://github.com/daftshady) - Original developer 
 
-Lee Taeksoo [@vulpeszerda](http://github.com/vulpeszerda)
+Taeksoo Lee [@vulpeszerda](http://github.com/vulpeszerda)
