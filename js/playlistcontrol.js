@@ -101,8 +101,6 @@ var DROPBEAT = (function (module) {
                         window.open(url);
                     }
                 );
-
-                module.log("dropbeat", "playlist-manage/share");
             });
 
             $(that.elems.clearPlaylistBtn).click(function () {
@@ -111,8 +109,6 @@ var DROPBEAT = (function (module) {
                 playlist.clear(true);
                 playlist.sync();
                 module.s.notifyManager.playlistCleared();
-
-                module.log("dropbeat", "playlist-manage/clear");
             });
 
             $(that.elems.playlistFilterInput).bind(
@@ -162,8 +158,6 @@ var DROPBEAT = (function (module) {
                     that.loadCallback(data);
                 }
             });
-
-            module.log("dropbeat", "playlist-manage/load");
         },
 
         loadCallback: function (data) {

@@ -167,21 +167,6 @@ var DROPBEAT = (function () {
 
     that.host = window.location.protocol + '//' +  window.location.host;
 
-    that.log = function (apiName, apiAction, param) {
-        var path = "/api-call/" + apiName + "/" + apiAction,
-            query = '';
-
-        if (param) {
-            $.each(param, function (key, value) {
-                query += query === "" ? "?" : "&";
-                query += key + "=" + value;
-            });
-            path += query;
-        }
-        _gaq.push(["_trackPageview", path]);
-        return true;
-    };
-
     return dropbeat;
 }());
 

@@ -85,9 +85,6 @@ var DROPBEAT = (function (module) {
                     throw 'UndefinedError';
                 }
             } else {
-                module.log("dropbeat", "player/play",
-                    {title: music.title, id: music.id, type: music.type});
-
                 if (that.currentPlayer && !that.playing) {
                     if (that.currentPlayer.type !== music.type) {
                         that.currentPlayer = that.players.get(music.type);

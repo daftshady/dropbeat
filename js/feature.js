@@ -53,8 +53,6 @@ var DROPBEAT = (function (module) {
                     }
                 });
             }
-
-            module.log("dropbeat", "playlist-manage/load-from-url");
         },
 
         urlAdderCallback: function (data) {
@@ -181,7 +179,6 @@ var DROPBEAT = (function (module) {
                 module.s.recommendList.hideList();
             }
 
-            module.log("dropbeat", "search", {keyword: keyword});
         },
 
         searchCallback: function (data) {
@@ -307,12 +304,6 @@ var DROPBEAT = (function (module) {
 
                     module.playlistManager.getCurrentPlaylist().sync();
                     module.s.notifyManager.playlistChangeNotify(success);
-
-                    module.log(
-                        "dropbeat",
-                        "playlist/add-from-search",
-                        musicData
-                    );
                 }
             );
 
@@ -337,12 +328,6 @@ var DROPBEAT = (function (module) {
                             'title': musicData.title,
                             'type': musicData.type
                         })
-                    );
-
-                    module.log(
-                        "dropbeat",
-                        "playlist/play-from-search",
-                        musicData
                     );
                 }
             );
@@ -459,12 +444,6 @@ var DROPBEAT = (function (module) {
                     module.s.notifyManager.playlistChangeNotify(
                         playlist.add(new module.s.Music(musicData), true)
                     );
-
-                    module.log(
-                        "dropbeat",
-                        "playlist/add-from-recom",
-                        musicData
-                    );
                 }
             );
 
@@ -489,12 +468,6 @@ var DROPBEAT = (function (module) {
                             'title': musicData.title,
                             'type': musicData.type
                         })
-                    );
-
-                    module.log(
-                        "dropbeat",
-                        "playlist/play-from-recom",
-                        musicData
                     );
                 }
             );
