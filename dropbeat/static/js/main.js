@@ -11,6 +11,6 @@ require.config({
 require([
   'dropbeat',
 
-], function(Dropbeat) {
+], function (Dropbeat) {
   Dropbeat.initialize();
 });
