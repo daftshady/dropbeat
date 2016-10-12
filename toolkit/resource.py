@@ -192,12 +192,10 @@ class Resource(object):
             resp.update(data)
         return self.json_response(resp)
 
-    def on_error(self, msg, code=None):
-        resp = {'success': False, 'error': msg}
-        if code is not None:
-            resp['code'] = code
-
-        return self.json_response(resp)
+    def on_error(self, error=None):
+        return self.json_response({
+            'success': False, 'error': error
+        })
 
     def on_created(self, obj, json_resp=True):
         if json_resp:
@@ -220,8 +218,9 @@ class Resource(object):
         return HttpResponseServerError(msg)
 
     def on_bad_request(self, msg):
-        resp = {'success': False, 'error': msg}
-        return self.json_response(resp, status=400)
+        return self.json_response({
+            'success': False, 'error': msg
+        }, status=400)
 
     def on_redirect(self, url):
         return HttpResponseRedirect(url)
