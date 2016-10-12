@@ -4,18 +4,18 @@ define([
 ], function () {
 
 /*
- * Music object implementation.
+ * Track object implementation.
  */
 
-function Music (id, title, type) {
+function Track (id, title, type) {
   this.id = id;
   this.title = title;
   this.type = type;
 };
 
-Music.prototype = {
+Track.prototype = {
 };
 
-return Music;
+return Track;
 
 });
