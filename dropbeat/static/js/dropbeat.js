@@ -2,10 +2,10 @@
 
 define([
   'jquery'
-], function($) {
+], function ($) {
 
-function Dropbeat() {
-}
+function Dropbeat () {
+};
 
 /*
  * The core Dropbeat client
@@ -16,7 +16,7 @@ function Dropbeat() {
 Dropbeat.prototype = {
   debug: true,
 
-  initialize: function() {
+  initialize: function () {
   }
 };
 
