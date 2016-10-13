@@ -1,0 +1,10 @@
+- config:
+    - testset: 'Basic api integration test'
+- test:
+    - name: 'signup with email'
+    - url: '/api/v1/user'
+    - method: 'POST'
+    - body: '{"email": "foo@bar.com", "password": "coroutine"}'
+    - headers: {'Content-Type': 'application/json'}
+    - validators:
+        - compare: {jsonpath_mini: 'success', expected: true}

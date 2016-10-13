@@ -1,0 +1,26 @@
+# It's not possible for docker-compose to sequencially control execution order.
+# Though `depends_on` command can regulate start sequence, it doens't make some containers
+# to wait for booting of an another container. `sleep` is a temporal workaround for it. (it sucks)
+# TODO: third-party wrapper such as wait-for-it, dockerize would be possible solutions.
+sut:
+  build: .
+  dockerfile: Dockerfile.sut
+  command: bash -c "sleep 13 && pyresttest http://web:8000/ test-api.yaml"
+  links:
+    - web
+web:
+  build: .
+  dockerfile: Dockerfile.web
+  command: bash -c "sleep 10 && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+  environment:
+    - DBT_MYSQL_USER=root
+    - DBT_MYSQL_PASSWD=
+    - DBT_MYSQL_HOST=mysql
+    - DBT_MYSQL_PORT=3306
+  links:
+    - mysql
+mysql:
+  image: mysql:5.7
+  environment:
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    - MYSQL_DATABASE=dropbeat
