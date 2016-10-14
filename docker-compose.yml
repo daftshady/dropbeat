@@ -11,7 +11,7 @@ sut:
 web:
   build: .
   dockerfile: Dockerfile.web
-  command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+  command: bash -c "python manage.py makemigrations dropbeat && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
   environment:
     - DBT_MYSQL_USER=root
     - DBT_MYSQL_PASSWD=
