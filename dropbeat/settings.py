@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'toolkit',
-	'dropbeat'
+    'dropbeat'
 ]
 
 MIDDLEWARE = [
