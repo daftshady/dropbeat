@@ -1,4 +1,5 @@
 import os
+import ast
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -63,8 +64,19 @@ DATABASES = {
         'PASSWORD': os.getenv('DBT_MYSQL_PASSWD'),
         'HOST': os.getenv('DBT_MYSQL_HOST'),
         'PORT': os.getenv('DBT_MYSQL_PORT')
+    },
+    'test': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
     }
 }
+
+try:
+    if ast.literal_eval(os.environ['DBT_TEST']):
+        # To use sqlite in testing environment, set DBT_TEST=True
+        DATABASES['default'] = DATABASES['test']
+except (KeyError, ValueError):
+    pass
 
 
 # Password validation

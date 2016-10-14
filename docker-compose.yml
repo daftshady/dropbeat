@@ -5,22 +5,16 @@
 sut:
   build: .
   dockerfile: Dockerfile.sut
-  command: bash -c "sleep 13 && pyresttest http://web:8000/ test-api.yaml"
+  command: bash -c "/sut/runtest.sh"
   links:
     - web
 web:
   build: .
   dockerfile: Dockerfile.web
-  command: bash -c "sleep 10 && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+  command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
   environment:
     - DBT_MYSQL_USER=root
     - DBT_MYSQL_PASSWD=
     - DBT_MYSQL_HOST=mysql
     - DBT_MYSQL_PORT=3306
-  links:
-    - mysql
-mysql:
-  image: mysql:5.7
-  environment:
-    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-    - MYSQL_DATABASE=dropbeat
+    - DBT_TEST=True

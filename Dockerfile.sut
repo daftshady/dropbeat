@@ -1,9 +1,9 @@
-FROM ubuntu:latest
+FROM python:2.7
 
-RUN apt-get update && apt-get install --no-install-recommends -y python python-pip python-pycurl openssl python-setuptools \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && apt-get install -y openssl curl
 
 RUN pip install pyresttest future
 
-WORKDIR /app
-ADD test/test-api.yaml /app/test-api.yaml
+WORKDIR /sut
+
+ADD test /sut/
