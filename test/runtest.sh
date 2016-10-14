@@ -4,4 +4,4 @@ until $(curl --output /dev/null --silent --fail http://web:8000/api/v1/healthche
     sleep 1
 done
 
-pyresttest http://web:8000/ test-api.yaml
+python test-api.py
