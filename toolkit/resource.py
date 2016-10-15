@@ -155,7 +155,7 @@ class Resource(object):
     def _get_params(self, request, encode=True, validate=None):
         params = {}
         if request.method == 'GET':
-            # XXX: Why Django QuerySet has `list` value for GET params?
+            # Use only the first value of the param.
             for k, v in dict(request.GET).items():
                 params[k] = v[0]
         else:

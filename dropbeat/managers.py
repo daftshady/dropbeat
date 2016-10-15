@@ -1,9 +1,12 @@
-from dropbeat.exceptions import UserException
-from dropbeat.constants import ErrorCode
+import hashlib
+import datetime
+
+from dropbeat.exceptions import UserException, TrackException
+from dropbeat.constants import ErrorCode, TrackSource
 
 from django.db import models
 from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.contrib.auth.models import BaseUserManager
 
 
@@ -27,8 +30,48 @@ class UserManager(BaseUserManager):
 
 
 class PlaylistManager(models.Manager):
-    pass
+    def fetch_all_uids(self, user):
+        """Returns list of playlist uids.
+
+        """
+        return [x.uid for x in self.filter(user=user)]
+
+    def create_playlist(self, user, name):
+        # Hash email + current server time.
+        if self.filter(user=user, name=name).exists():
+            raise PlaylistException(ErrorCode.DUPLICATED_PLAYLIST_NAME)
+
+        uid = hashlib.md5(
+            user.email + str(datetime.datetime.now())).hexdigest()
+        return self.create(user=user, name=name, uid=uid)
+
+    def remove_playlist(self, user, uid):
+        try:
+            playlist = self.get(user=user, uid=uid)
+            playlist.delete()
+        except ObjectDoesNotExist:
+            raise PlaylistException(ErrorCode.PLAYLIST_NOT_EXIST)
+
+    def change_playlist_name(self, user, uid, name):
+        try:
+            # TODO: Check length of the new name.
+            playlist = self.get(user=user, uid=uid)
+            playlist.name = name
+            playlist.save()
+        except ObjectDoesNotExist:
+            raise PlaylistException(ErrorCode.PLAYLIST_NOT_EXIST)
 
 
 class TrackManager(models.Manager):
-    pass
+    def create_track(self, name, uid, playlist):
+        if self.filter(uid=uid, playlist=playlist).exists():
+            raise TrackException(ErrorCode.TRACK_ALREADY_EXIST)
+
+        youtube_uid_len = 11
+        source = TrackSource.youtube \
+            if len(uid) == youtube_uid_len else TrackSource.soundcloud
+        return self.create(
+            name=name, uid=uid, source=source, playlist=playlist)
+
+    def remove_track(self, uid, playlist):
+        pass

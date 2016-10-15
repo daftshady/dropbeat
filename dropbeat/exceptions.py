@@ -9,3 +9,10 @@ class DropbeatException(Exception):
 class UserException(DropbeatException):
     pass
 
+
+class PlaylistException(DropbeatException):
+    pass
+
+
+class TrackException(DropbeatException):
+    pass

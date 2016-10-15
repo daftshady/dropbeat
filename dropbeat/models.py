@@ -73,22 +73,55 @@ class User(AbstractBaseUser, SerializeMixins):
 
 
 class Playlist(models.Model, SerializeMixins):
+    """Playlist
+
+    @field: uid
+        Use this uid to identify playlist (per user) as we don't want to reveal
+        sequential primary key to client. However, making it a primary key is
+        not a good idea because 32 bytes primary key will make every secondary
+        index to become much longer while degrading mysql performance.
+        Also, even if md5 collision happens, there will be no problem unless
+        duplicated uids belong to a single user.
+
+    @field: name
+        Playlist name
+
+    @field: user
+        Playlist owner
+
+    """
     class Meta:
         db_table = 'playlist'
 
     objects = PlaylistManager()
+
+    uid = models.CharField(max_length=32, null=False)
     name = models.CharField(max_length=128, null=False)
     user = models.ForeignKey(
         'User', null=False, related_name='playlists')
-    data = models.TextField(null=False, default='[]')
     created_at = models.DateTimeField(auto_now_add=True)
+
+    _serializable = ['uid', 'name', 'created_at']
 
     def __repr__(self):
         return '<Playlist %s:%s>' % (self.id, self.name)
 
 
 class Track(models.Model, SerializeMixins):
-    """Track belongs to specific playlist.
+    """Track
+    @field: name
+        Track name from streaming sources.
+        This name is a string field which will not be synchronized with the
+        track name of the original source.
+
+    @field: uid
+        Unique id which is used to identify track in each service
+
+    @field: source
+        Streaming sources
+
+    @field: created_at
+        Date when this track is added to playlist
 
     """
     class Meta:
@@ -96,17 +129,14 @@ class Track(models.Model, SerializeMixins):
 
     objects = TrackManager()
 
-    # Track name from streaming sources.
-    # This track is a string field which is not synchronized with there
     name = models.CharField(max_length=128, null=False)
-    # Unique id which is used to identify track in each service
     uid = models.CharField(max_length=64, null=False)
-    # Streaming sources
     source = models.CharField(max_length=16, choices=TrackSource.choices())
-    # Date when this track is added to playlist
     created_at = models.DateTimeField(auto_now_add=True)
     playlist = models.ForeignKey(
         'Playlist', null=False, related_name='tracks')
+
+    _serializable = ['name', 'uid', 'source']
 
     def __repr__(self):
         return '<Track %s:%s>' % (self.id, self.name)

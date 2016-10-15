@@ -71,21 +71,61 @@ class UserResource(DropbeatResource):
 
 
 class PlaylistResource(DropbeatResource):
+    def prepare_urls(self):
+        self.add_path('list')
+
     @auth_required
     def handle_get(self, request, *args, **kwargs):
+        """Retrieve data of a single playlist.
+
+        """
         pass
 
     @auth_required
+    def handle_get_list(self, request, *args, **kwargs):
+        return self.on_success(data={
+            'list': Playlist.objects.fetch_all_uids(request.user)})
+
+    @auth_required
+    @parameters(['name'])
     def handle_post(self, request, *args, **kwargs):
-        pass
+        """Create a playlist.
+
+        """
+        try:
+            playlist = Playlist.objects. \
+                create_playlist(request.user, request.p['name'])
+        except PlaylistException as e:
+            return self.on_error(error=e.args[0])
+
+        return self.on_success(data={'playlist': playlist.to_dict()})
 
     @auth_required
+    @parameters(['uid', 'name'])
     def handle_put(self, request, *args, **kwargs):
-        pass
+        """Change a name of the playlist.
+
+        """
+        try:
+            Playlist.objects.change_playlist_name(
+                request.user, request.p['uid'], request.p['name'])
+        except PlaylistException as e:
+            return self.on_bad_request(e.args[0])
+
+        return self.on_success()
 
     @auth_required
+    @parameters(['uid'])
     def handle_delete(self, request, *args, **kwargs):
-        pass
+        """Delete a playlist.
+
+        """
+        try:
+            Playlist.objects.remove_playlist(request.user, request.p['uid'])
+        except PlaylistException as e:
+            return self.on_bad_request(e.args[0])
+
+        return self.on_success()
 
 
 class TrackResource(DropbeatResource):
@@ -94,6 +134,7 @@ class TrackResource(DropbeatResource):
         pass
 
     @auth_required
+    @parameters(['playlist_uid', 'track_uid'])
     def handle_delete(self, request, *args, **kwargs):
         pass
 

@@ -10,6 +10,9 @@ class ErrorCode:
     PASSWORD_TOO_SHORT = '102'
     EMAIL_NOT_EXIST = '103'
     PASSWORD_MISMATCH = '104'
+    DUPLICATED_PLAYLIST_NAME = '105'
+    TRACK_ALREADY_EXIST = '106'
+    PLAYLIST_NOT_EXIST = '107'
 
 
 class TrackSource(ChoiceEnum):

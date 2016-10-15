@@ -63,7 +63,8 @@ DATABASES = {
         'USER': os.getenv('DBT_MYSQL_USER'),
         'PASSWORD': os.getenv('DBT_MYSQL_PASSWD'),
         'HOST': os.getenv('DBT_MYSQL_HOST'),
-        'PORT': os.getenv('DBT_MYSQL_PORT')
+        'PORT': os.getenv('DBT_MYSQL_PORT'),
+        'ATOMIC_REQUESTS': True
     },
     'test': {
         'ENGINE': 'django.db.backends.sqlite3',
