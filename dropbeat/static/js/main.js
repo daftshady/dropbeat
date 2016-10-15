@@ -14,3 +14,6 @@ require([
 ], function (Dropbeat) {
   Dropbeat.initialize();
 });
+
+function onYouTubeIframeAPIReady () {
+};

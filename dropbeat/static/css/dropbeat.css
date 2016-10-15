@@ -1,0 +1,798 @@
+input, textarea, select, button {
+  font-family: "Roboto", sans-serif, Dotum, arial;
+  font-weight: 300;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+}
+html, body {
+  font-family: "Roboto", sans-serif, Dotum, arial;
+  font-weight: 300;
+  height: 100%;
+  overflow-y: hidden;
+}
+textarea, input, *:focus {
+  outline: none;
+}
+.search-spinner .status,
+.loading-spinner .status {
+  display: block;
+  margin-top: 5px;
+  font-weight: 400;
+  font-size: 12px;
+}
+input[type='submit'] {
+  position: absolute !important;
+  text-align: left !important;
+  text-indent: -9999px !important;
+  display: inline !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#search-result-player,
+#recom-player {
+  position: absolute;
+  top: 50%;
+  left: 0;
+}
+#search-result-player.safari-hack,
+#recom-player.safari-hack {
+  left: -499px;
+}
+#search-result-player.safari-hack iframe,
+#recom-player.safari-hack iframe {
+  width: 500px !important;
+}
+#search-result-player:not(.safari-hack),
+#recom-player:not(.safari-hack) {
+  width: 300px;
+}
+#search-result-player:not(.safari-hack) iframe,
+#recom-player:not(.safari-hack) iframe {
+  width: 300px !important;
+}
+#external-player {
+  position: absolute;
+  top: 54px;
+  right: 0;
+  width: 374px;
+  height: 211px;
+  z-index: 200;
+}
+#external-player iframe {
+  width: 374px;
+  height: 211px;
+}
+#external-player.exposed {
+  right: 374px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 900;
+  position: absolute;
+  width: auto;
+  height: auto;
+}
+#external-player.exposed iframe {
+  position: absolute;
+  left: 50%;
+}
+#external-player.exposed .player-bg {
+  display: block;
+}
+#external-player.exposed .close-button {
+  display: inline-block;
+}
+#external-player .player-bg {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: black;
+}
+#external-player .close-button {
+  display: none;
+  position: absolute;
+  top: 36px;
+  right: 36px;
+  width: 20px;
+  height: 20px;
+  background-image: url("../images/sprites.png");
+  background-position: -158px 0;
+  cursor: pointer;
+  text-indent: -9999px;
+}
+#external-player .close-button:hover {
+  background-position: -158px -20px;
+}
+
+#dropbeat {
+  height: 100%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#dropbeat .play-controls {
+  float: right;
+  width: 374px;
+  height: 100%;
+  background: #111111;
+  color: white;
+  position: relative;
+}
+#dropbeat .play-controls .account-menus {
+  background: #000000;
+  height: 54px;
+  color: white;
+  padding-left: 22px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  -khtml-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#dropbeat .play-controls .account-menus .signin-btn {
+  float: left;
+  display: block;
+  padding-right: 20px;
+  color: #7b7b7b;
+  line-height: 18px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-size: 13px;
+  cursor: pointer;
+}
+#dropbeat .play-controls .account-menus .account .signout-btn:hover {
+  color: #8e8e8e;
+}
+#dropbeat .play-controls .account-menus .account .signout-btn {
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 400;
+  color: #7b7b7b;
+}
+#dropbeat .play-controls .account-menus .account .signout-btn:hover {
+  color: #8e8e8e;
+}
+#dropbeat .play-controls .player-initialize-filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 300;
+}
+#dropbeat .play-controls .player-initialize-filter .loading-spinner {
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  position: absolute;
+  line-height: 20px;
+  height: 40px;
+  top: 50%;
+  left: 50%;
+  margin-left: -100px;
+  margin-top: -20px;
+  width: 200px;
+}
+#dropbeat .play-controls .player-initialize-filter .filter-bg {
+  background: #000000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* IE 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+  /* IE 5-7 */
+  filter: alpha(opacity=90);
+  /* Netscape */
+  -moz-opacity: 0.90;
+  /* Safari 1.x */
+  -khtml-opacity: 0.90;
+  /* Good browsers */
+  opacity: 0.90;
+}
+#dropbeat .play-controls .playlist-section {
+  padding-top: 36px;
+  padding-right: 36px;
+  padding-left: 36px;
+  position: absolute;
+  top: 265px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #111111;
+  z-index: 230;
+}
+#dropbeat .play-controls .playlist-section .playlist-name {
+  font-size: 29px;
+  font-weight: 100;
+  color: white;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+#dropbeat .play-controls .playlist-section .playlist-search {
+  margin-top: 12px;
+  padding-left: 13px;
+  padding-right: 13px;
+}
+#dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field {
+  position: relative;
+  padding-left: 28px;
+  padding-right: 10px;
+  border-bottom: 1px solid #1d1d1d;
+}
+#dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field .ic {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  width: 17px;
+  height: 16px;
+  background-image: url("../images/sprites.png");
+  background-position: 0 0;
+}
+#dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field input {
+  background: transparent;
+  border: none;
+  width: 100%;
+  height: 23px;
+  line-height: 23px;
+  font-size: 13px;
+  color: white;
+}
+#dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field input::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #494949;
+}
+#dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #494949;
+}
+#dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #494949;
+}
+#dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field input:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #494949;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section {
+  position: relative;
+  margin-top: 8px;
+  padding-left: 13px;
+  padding-right: 13px;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section .loading-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  display: none;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section .add-button {
+  cursor: pointer;
+  float: right;
+  width: 50px;
+  height: 27px;
+  background: #2e2e2e;
+  text-align: center;
+  color: #7b7b7b;
+  font-weight: 400;
+  display: block;
+  line-height: 27px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section .add-button:hover {
+  background: #353535;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section .url-input-field {
+  margin-right: 66px;
+  margin-top: 5px;
+  position: relative;
+  padding-left: 28px;
+  padding-right: 10px;
+  border-bottom: 1px solid #1d1d1d;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section .url-input-field .ic {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  width: 17px;
+  height: 16px;
+  background-image: url("../images/sprites.png");
+  background-position: 0 -16px;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section .url-input-field input {
+  background: transparent;
+  border: none;
+  width: 100%;
+  height: 23px;
+  line-height: 23px;
+  font-size: 13px;
+  color: white;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section .url-input-field input::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #494949;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section .url-input-field input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #494949;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section .url-input-field input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #494949;
+}
+#dropbeat .play-controls .playlist-section .add-by-url-section .url-input-field input:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #494949;
+}
+#dropbeat .play-controls .playlist-section .playlist-footer {
+  position: absolute;
+  bottom: 0;
+  height: 54px;
+  left: 0;
+  right: 0;
+  color: white;
+  background: #000000;
+}
+#dropbeat .play-controls .playlist-section .playlist-footer .button {
+  cursor: pointer;
+  display: block;
+  float: left;
+  width: 187px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+}
+#dropbeat .play-controls .playlist-section .playlist-footer .button .ic {
+  height: 20px;
+  background: url("../images/sprites.png");
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+#dropbeat .play-controls .playlist-section .playlist-footer .button .ic-my-playlist {
+  width: 21px;
+  background-position: -29px 0;
+}
+#dropbeat .play-controls .playlist-section .playlist-footer .button .ic-share-playlist {
+  background-position: -50px 0;
+  width: 18px;
+}
+#dropbeat .play-controls .playlist-section .playlist-footer .button .text {
+  vertical-align: middle;
+  color: white;
+  font-size: 13px;
+  font-weight: 400;
+}
+#dropbeat .play-controls .playlist-section .playlist-footer .button:hover .text {
+  color: #7b7b7b;
+}
+#dropbeat .play-controls .playlist-section .playlist-footer .button:hover .ic-my-playlist {
+  background-position: -29px -20px;
+}
+#dropbeat .play-controls .playlist-section .playlist-footer .button:hover .ic-share-playlist {
+  background-position: -50px -20px;
+  width: 18px;
+}
+#dropbeat .play-controls .playlist-section .playlist-footer .divider {
+  float: left;
+  width: 1px;
+  margin-left: -1px;
+  height: 24px;
+  margin-top: 18px;
+  background: #323232;
+}
+#dropbeat .play-controls .player-section {
+  position: relative;
+  width: 374px;
+  height: 211px;
+}
+#dropbeat .play-controls .player-section .player-filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000000;
+  z-index: 210;
+}
+#dropbeat .play-controls .player-section #player {
+  position: absolute;
+  top: 0;
+  left: 36px;
+  right: 36px;
+  bottom: 0;
+  z-index: 220;
+}
+#dropbeat .play-controls .player-section #player .status-wrapper {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #8d02ef;
+  line-height: 13px;
+  font-size: 13px;
+  font-weight: 400;
+}
+#dropbeat .play-controls .player-section #player .title-scroll-wrapper {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  height: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#dropbeat .play-controls .player-section #player .title-scroll-wrapper .title {
+  font-weight: 400;
+  color: white;
+  font-size: 15px;
+  line-height: 15px;
+  white-space: nowrap;
+  position: static;
+}
+#dropbeat .play-controls .player-section #player .controls {
+  position: absolute;
+  top: 161px;
+  left: 0;
+  right: 0;
+}
+#dropbeat .play-controls .player-section #player .controls .volume-bar {
+  display: none;
+  position: absolute;
+  bottom: -20px;
+  right: -2px;
+  padding: 14px 16px 38px;
+  cursor: pointer;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl {
+  cursor: pointer;
+  background-image: url("../images/player_icons.png");
+  text-indent: -9999px;
+  position: absolute;
+  top: 50%;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-shuffle {
+  left: 5px;
+  margin-top: -10px;
+  background-position: -110px -66px;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-shuffle.shuffle {
+  background-position: -110px -46px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-repeat {
+  left: 33px;
+  margin-top: -12px;
+  background-position: -132px 0;
+  width: 22px;
+  height: 24px;
+  display: inline-block;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-repeat.repeat {
+  background-position: -132px -24px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-repeat.repeat-one {
+  background-position: -132px -48px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-prev {
+  left: 98px;
+  margin-top: -11px;
+  background-position: -88px 0;
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-prev.disabled {
+  background-position: -88px -22px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-next {
+  right: 98px;
+  margin-top: -11px;
+  background-position: -88px -44px;
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-next.disabled {
+  background-position: -88px -66px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-play {
+  left: 132px;
+  margin-top: -22px;
+  background-position: -44px 0;
+  width: 44px;
+  height: 44px;
+  display: inline-block;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-play.disabled {
+  background-position: -44px -44px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-play.pause {
+  background-position: 0 0;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-play.pause.disabled {
+  background-position: 0 -44px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-video {
+  right: 35px;
+  margin-top: -9px;
+  background-position: -264px 0;
+  width: 24px;
+  height: 18px;
+  display: inline-block;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-video.hide-video {
+  background-position: -264px -18px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-video.disabled {
+  background-position: -264px -18px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-volume {
+  right: 5px;
+  margin-top: -11px;
+  background-position: -242px -66px;
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-volume.under20 {
+  background-position: -242px -22px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-volume.under60 {
+  background-position: -242px -44px;
+}
+#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-volume.muted {
+  background-position: -242px 0px;
+}
+#dropbeat .play-controls .player-section #player .progress {
+  position: absolute;
+  top: 103px;
+  left: 0;
+  right: 0;
+}
+#dropbeat .play-controls .player-section #player .progress .progress-bar {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-top: -4px;
+  margin-bottom: -4px;
+  cursor: pointer;
+}
+#dropbeat .play-controls .player-section #player .progress .progress-bar .progress-bar-inner {
+  background: #272727;
+  height: 2px;
+}
+#dropbeat .play-controls .player-section #player .progress .progress-bar .buffer {
+  background: #525252;
+  height: 2px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#dropbeat .play-controls .player-section #player .progress .progress-bar .bullet {
+  background: white;
+  height: 2px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#dropbeat .play-controls .player-section #player .progress .progress-handle {
+  position: absolute;
+  top: -7px;
+  left: 0px;
+  height: 16px;
+  margin-left: -7px;
+  padding-left: 6px;
+  padding-right: 6px;
+  cursor: pointer;
+}
+#dropbeat .play-controls .player-section #player .progress .progress-handle .progress-handle-inner {
+  width: 2px;
+  height: 16px;
+  background: white;
+}
+#dropbeat .play-controls .player-section #player .progress .total-play-time,
+#dropbeat .play-controls .player-section #player .progress .curr-play-time {
+  margin-top: 13px;
+  color: white;
+  font-size: 12px;
+}
+#dropbeat .play-controls .player-section #player .progress .curr-play-time {
+  float: left;
+}
+#dropbeat .play-controls .player-section #player .progress .total-play-time {
+  float: right;
+}
+#dropbeat .contents {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #171717;
+}
+#dropbeat .contents .header-section {
+  position: absolute;
+  top: 72px;
+  left: 72px;
+  z-index: 101;
+}
+#dropbeat .contents .header-section .logo {
+  cursor: pointer;
+  display: block;
+}
+#dropbeat .contents .header-section .logo .ic-logo {
+  display: block;
+  width: 145px;
+  height: 14px;
+  background-image: url("../images/ic_logo_small.png");
+}
+#dropbeat .contents .bg-body-filter {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  -webkit-opacity: 0.4;
+  -moz-opacity: 0.4;
+  opacity: 0.4;
+  z-index: 110;
+}
+#dropbeat .contents .footer-section {
+  display: none;
+  background: white;
+  padding-right: 36px;
+  padding-left: 36px;
+  position: absolute;
+  height: 60%;
+  bottom: -60%;
+  left: 0;
+  right: 0;
+  z-index: 910;
+  border-top: 1px solid #828283;
+  -khtml-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#dropbeat .contents .body-section {
+  position: absolute;
+  top: 0;
+  left: 72px;
+  right: 72px;
+  bottom: 0;
+  z-index: 100;
+}
+#dropbeat .contents .body-section .search-result-section {
+  position: absolute;
+  top: 203px;
+  left: 0;
+  right: -10px;
+  bottom: 0;
+  color: white;
+  padding-right: 10px;
+  overflow: auto;
+  scrollbar-face-color: #4b4b4b;
+  scrollbar-highlight-color: #4b4b4b;
+  scrollbar-shadow-color: #4b4b4b;
+  scrollbar-3dlight-color: #4b4b4b;
+  scrollbar-arrow-color: #4b4b4b;
+  scrollbar-track-color: #1e1e1e;
+  scrollbar-darkshadow-color: #4b4b4b;
+}
+#dropbeat .contents .body-section .search-spinner {
+  position: absolute;
+  color: white;
+  display: none;
+  top: 50%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 200px;
+  text-align: center;
+  margin: 0 auto;
+  height: 20px;
+  margin-top: -10px;
+}
+#dropbeat .contents .body-section .search-spinner .status {
+  margin-left: 5px;
+}
+#dropbeat .contents .body-section .autocomplete-filter {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  margin-left: -80px;
+  margin-right: -80px;
+}
+#dropbeat .contents .body-section .search-section {
+  position: absolute;
+  left: 0;
+  top: 140px;
+  height: 36px;
+  min-width: 506px;
+  border-bottom: 2px solid white;
+  z-index: 100;
+  -khtml-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#dropbeat .contents .body-section .search-section .search-input-field input {
+  width: 100%;
+  padding-left: 42px;
+  padding-right: 20px;
+  padding-bottom: 9px;
+  height: 34px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  font-weight: 100;
+  -khtml-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#dropbeat .contents .body-section .search-section .search-input-field input::-webkit-input-placeholder {
+  /* WebKit browsers */
+  font-weight: 100;
+}
+#dropbeat .contents .body-section .search-section .search-input-field input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  font-weight: 100;
+}
+#dropbeat .contents .body-section .search-section .search-input-field input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  font-weight: 100;
+}
+#dropbeat .contents .body-section .search-section .search-input-field input:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  font-weight: 100;
+}
+#dropbeat .contents .body-section .search-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 25px;
+  background-image: url("../images/sprites.png");
+  background-position: -100px 0;
+}

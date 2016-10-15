@@ -4,15 +4,178 @@
     <title>Dropbeat</title>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="shortcut icon" href="css/img/favicon.ico">
+    <meta name = "viewport" content = "user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
+    <link rel="shortcut icon" href="images/favicon.ico?">
     <meta name="google" content="notranslate"/>
 
-    <link href="css/base.css" rel="stylesheet" type="text/css" />
+    <link href="css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="css/dropbeat.css" rel="stylesheet" type="text/css" />
 
     <script data-main="js/main.js" src="js/lib/require.js"></script>
-    <script src="http://www.youtube.com/player_api"></script>
+    <script src="http://www.youtube.com/iframe_api"></script>
   </head>
   <body>
-    Dropbeat under heavy development.
+    <div id="dropbeat">
+      <div id="external-player">
+        <div class="player-bg"></div>
+        <a class="close-button">close</a>
+        <div id="youtube-player"></div>
+        <div id="soundcloud-player"></div>
+      </div>
+      <div id="search-result-player">
+        <div id="search-youtube-player"></div>
+        <div id="search-soundcloud-player"></div>
+      </div>
+      <div id="recom-player">
+        <div id="related-youtube-player"></div>
+        <div id="related-soundcloud-player"></div>
+      </div>
+      <div class="play-controls">
+        <div class="account-menus"></div>
+        <div class="player-section">
+          <div class="player-filter"></div>
+          <div id="player">
+            <div class="status-wrapper">- <span class="status">READY</span> -</div>
+            <div class="title-scroll-wrapper">
+              <span class="title">CHOOSE TRACK FROM PLAYLIST</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar">
+                <div class="progress-bar-inner">
+                  <div class="buffer"></div>
+                  <div class="bullet"></div>
+                </div>
+              </div>
+              <div class="curr-play-time">00:00</div>
+              <div class="total-play-time">00:00</div>
+              <div class="progress-handle">
+                <div class="progress-handle-inner"></div>
+              </div>
+            </div>
+            <div class="controls">
+              <a class="ctrl ctrl-shuffle">shuffle on</a>
+              <a class="ctrl ctrl-repeat">repeeat</a>
+              <a class="ctrl ctrl-prev">&lt;&lt;</a>
+              <a class="ctrl ctrl-play">&gt;</a>
+              <a class="ctrl ctrl-next">&gt;&gt;</a>
+              <a class="ctrl ctrl-video disabled">show video</a>
+              <div class="volume-bar">
+                <div class="volume-bar-bg"></div>
+                <div class="volume-bar-inner">
+                  <div class="volume-bar-value">
+                    <div class="volume-bar-handle"></div>
+                  </div>
+                </div>
+              </div>
+              <a class="ctrl ctrl-volume">volume</a>
+            </div>
+          </div>
+        </div>
+        <div class="playlist-section">
+          <div class="playlist-name">-</div>
+          <div class="playlist-search">
+            <div class="playlist-search-field">
+            <i class="ic"></i>
+            <input type="text" id="search-playlist-input" placeholder="Search within Playlist"/>
+            </div>
+          </div>
+          <div class="add-by-url-section">
+            <div class="url-input-field-wrapper">
+              <a class="add-button">ADD</a>
+              <div class="url-input-field">
+                <i class="ic"></i>
+                <form class="add-by-url-form">
+                  <input type="url" id="add-by-url-input" placeholder="Youtube or Soundcloud URL"
+                  autocomplete="off" />
+                  <input type="submit"/>
+                </form>
+              </div>
+            </div>
+            <div class="loading-spinner">
+              <img src="/images/ajax-loader.gif"/>
+            </div>
+          </div>
+          <div class="playlist">
+            <ul class="playlist-inner"></ul>
+          </div>
+          <div class="playlist-footer">
+            <a class="my-playlist-button button">
+              <i class="ic ic-my-playlist"></i>
+              <span class="text">MY PLAYLIST</span>
+            </a>
+            <div class="divider"></div>
+            <a class="share-playlist-button button">
+              <i class="ic ic-share-playlist"></i>
+              <span class="text">SHARE</span>
+            </a>
+          </div>
+        </div>
+        <div class="my-playlist">
+          <a class="close-button"></a>
+          <div class="title">MY PLAYLIST</div>
+          <div class="create-new-playlist-wrapper">
+            <a class="create-new-playlist-button">+ CREATE NEW PLAYLIST</a>
+          </div>
+          <div class="playlists-wrapper">
+            <ul class="playlists"></ul>
+          </div>
+        </div>
+        <!--<div class="player-initialize-filter">
+          <div class="filter-bg"></div>
+          <div class="loading-spinner">
+            <img src="/images/ajax-loader.gif"/>
+            <span class="status">LOADING</span>
+          </div>
+        </div>-->
+      </div>
+      <div class="contents">
+        <div class="header-section">
+          <a class="logo">
+            <i class="ic-logo"></i>
+          </a>
+        </div>
+        <div class="body-section">
+          <div class="autocomplete-filter"></div>
+          <div class="search-section">
+            <div class="search-input-field">
+            <form class="search-input-form">
+              <input type="text" id="search-input" autofocus autocomplete="off"/>
+              <input type="submit"/>
+            </form>
+            </div>
+            <div class="search-autocomplete overlay">
+              <div class="autocomplete-bg"></div>
+              <ul class="items"></ul>
+            </div>
+            <div class="recommended-keywords"></div>
+          </div>
+          <div class="search-spinner">
+            <img src="/images/ajax-loader.gif"/>
+            <span class="status">SEARCHING</span>
+          </div>
+          <div class="search-result-section"></div>
+        </div>
+        <div class="bg-body-filter"></div>
+        <div class="footer-section">
+          <div class="recom-section">
+            <div class="section-header">
+              <a class="fold-button expand">^</a>
+              <div class="title">Suggested Tracks based on</div>
+              <div class="music-name">
+                <i class="ic ic-sound"></i>
+                <span class="text">test</span>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="recom-results-wrapper"></div>
+              <div class="loading-spinner">
+                <!--<img src="/images/ajax-loader-purple.gif"/>-->
+                <span class="status">LOADING</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
