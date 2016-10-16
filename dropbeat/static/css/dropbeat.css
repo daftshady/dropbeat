@@ -435,7 +435,7 @@ input[type='submit'] {
   text-align: center;
   color: #8d02ef;
   line-height: 13px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
 }
 #dropbeat .play-controls .player-section #player .title-scroll-wrapper {
@@ -540,20 +540,6 @@ input[type='submit'] {
 }
 #dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-play.pause.disabled {
   background-position: 0 -44px;
-}
-#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-video {
-  right: 35px;
-  margin-top: -9px;
-  background-position: -264px 0;
-  width: 24px;
-  height: 18px;
-  display: inline-block;
-}
-#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-video.hide-video {
-  background-position: -264px -18px;
-}
-#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-video.disabled {
-  background-position: -264px -18px;
 }
 #dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-volume {
   right: 5px;
