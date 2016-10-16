@@ -47,7 +47,7 @@ class SerializeMixins(object):
             elif isinstance(value, models.Model):
                 # NOTE that only prefetched child model *must* be serialized
                 # here so that this method doesn't make any further queries.
-                raise NotImplementedError
+                pass
             elif value is None:
                 dict_[field] = None
 

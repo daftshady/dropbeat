@@ -1,6 +1,7 @@
 from dropbeat.auth import auth_required
 from dropbeat.constants import ErrorCode
-from dropbeat.exceptions import UserException
+from dropbeat.exceptions import (
+    UserException, TrackException, PlaylistException, DropbeatException)
 from dropbeat.models import User, Track, Playlist
 from toolkit.resource import Resource, parameters
 
@@ -36,8 +37,6 @@ class UserResource(DropbeatResource):
         try:
             User.objects.create_user(
                 request.p['email'], request.p['password'])
-        except IntegrityError:
-            return self.on_error(error=ErrorCode.DUPLICATED_EMAIL)
         except UserException as e:
             return self.on_error(error=e.args[0])
 
@@ -75,11 +74,23 @@ class PlaylistResource(DropbeatResource):
         self.add_path('list')
 
     @auth_required
+    @parameters(['uid'])
     def handle_get(self, request, *args, **kwargs):
         """Retrieve data of a single playlist.
 
         """
-        pass
+        try:
+            playlist = Playlist.objects. \
+                fetch_playlist(request.user, request.p['uid'])
+        except PlaylistException as e:
+            return self.on_error(error=e.args[0])
+
+        # One more query.
+        tracks = [x.to_dict() for x in playlist.tracks.all()]
+
+        playlist = playlist.to_dict()
+        playlist['tracks'] = tracks
+        return self.on_success(data={'playlist': playlist})
 
     @auth_required
     def handle_get_list(self, request, *args, **kwargs):
@@ -130,11 +141,33 @@ class PlaylistResource(DropbeatResource):
 
 class TrackResource(DropbeatResource):
     @auth_required
+    @parameters(['uid', 'name', 'playlist_uid'])
     def handle_post(self, request, *args, **kwargs):
-        pass
+        """Add track to playlist.
+
+        """
+        try:
+            playlist = Playlist.objects. \
+                fetch_playlist(request.user, request.p['playlist_uid'])
+            track = Track.objects.create_track(
+                request.p['name'], request.p['uid'], playlist)
+        except DropbeatException as e:
+            return self.on_error(error=e.args[0])
+
+        return self.on_success(data={'track': track.to_dict()})
 
     @auth_required
-    @parameters(['playlist_uid', 'track_uid'])
+    @parameters(['uid', 'playlist_uid'])
     def handle_delete(self, request, *args, **kwargs):
-        pass
+        """Remove track from playlist.
+
+        """
+        try:
+            playlist = Playlist.objects. \
+                fetch_playlist(request.user, request.p['playlist_uid'])
+            Track.objects.remove_track(request.p['uid'], playlist)
+        except DropbeatException as e:
+            return self.on_error(error=e.args[0])
+
+        return self.on_success()
 

@@ -13,6 +13,7 @@ class ErrorCode:
     DUPLICATED_PLAYLIST_NAME = '105'
     TRACK_ALREADY_EXIST = '106'
     PLAYLIST_NOT_EXIST = '107'
+    TRACK_NOT_EXIST = '108'
 
 
 class TrackSource(ChoiceEnum):

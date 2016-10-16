@@ -1,7 +1,8 @@
 import hashlib
 import datetime
 
-from dropbeat.exceptions import UserException, TrackException
+from dropbeat.exceptions import (
+    UserException, TrackException, PlaylistException)
 from dropbeat.constants import ErrorCode, TrackSource
 
 from django.db import models
@@ -23,9 +24,13 @@ class UserManager(BaseUserManager):
         if len(password) < min_password_len:
             raise UserException(ErrorCode.PASSWORD_TOO_SHORT)
 
-        user = self.model(email=email)
-        user.set_password(password)
-        user.save(using=self._db)
+        try:
+            user = self.model(email=email)
+            user.set_password(password)
+            user.save(using=self._db)
+        except IntegrityError:
+            raise UserException(ErrorCode.DUPLICATED_EMAIL)
+
         return user
 
 
@@ -35,6 +40,15 @@ class PlaylistManager(models.Manager):
 
         """
         return [x.uid for x in self.filter(user=user)]
+
+    def fetch_playlist(self, user, uid):
+        """This method only wraps django exception to ours.
+
+        """
+        try:
+            return self.get(user=user, uid=uid)
+        except ObjectDoesNotExist:
+            raise PlaylistException(ErrorCode.PLAYLIST_NOT_EXIST)
 
     def create_playlist(self, user, name):
         # Hash email + current server time.
@@ -71,7 +85,12 @@ class TrackManager(models.Manager):
         source = TrackSource.youtube \
             if len(uid) == youtube_uid_len else TrackSource.soundcloud
         return self.create(
-            name=name, uid=uid, source=source, playlist=playlist)
+            name=name, uid=uid, source=source.value, playlist=playlist)
 
     def remove_track(self, uid, playlist):
-        pass
+        try:
+            track = self.get(uid=uid, playlist=playlist)
+            track.delete()
+        except ObjectDoesNotExist:
+            raise TrackException(ErrorCode.TRACK_NOT_EXIST)
+
