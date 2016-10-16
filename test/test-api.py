@@ -177,7 +177,7 @@ class TestRunner(object):
 
     """
     def __init__(self, tests=None):
-        self._testcases = None or []
+        self._testcases = tests or []
         self._success = 0
         self._failure = 0
         self._error = 0
