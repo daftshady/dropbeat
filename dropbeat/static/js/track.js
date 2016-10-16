@@ -1,7 +1,6 @@
 'use strict';
 
-define([
-], function () {
+define(function () {
 
 /*
  * Track object implementation.

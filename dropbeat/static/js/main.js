@@ -15,5 +15,9 @@ require([
   Dropbeat.initialize();
 });
 
+// eslint-disable-next-line no-unused-vars
 function onYouTubeIframeAPIReady () {
+  require(['player'], function (players) {
+    players.YoutubePlayer.init();
+  });
 };

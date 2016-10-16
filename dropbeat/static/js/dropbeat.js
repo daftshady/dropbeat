@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'jquery'
-], function ($) {
+  'jquery', 'playercontrol'
+], function ($, controller) {
 
 function Dropbeat () {
 };
@@ -17,6 +17,7 @@ Dropbeat.prototype = {
   debug: true,
 
   initialize: function () {
+    controller.init();
   }
 };
 
