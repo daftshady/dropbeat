@@ -2,7 +2,7 @@
 
 define(function () {
 
-/*
+/**
  * Track object implementation.
  */
 

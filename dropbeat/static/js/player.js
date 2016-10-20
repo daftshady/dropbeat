@@ -3,7 +3,7 @@
 
 define(function () {
 
-/*
+/**
  * Basic Player APIs.
  *
  * All notImplemented functions are just abstraction
@@ -19,9 +19,6 @@ function PlayerBase () {
   this.ready = false;
 
   this.init = notImplemented;
-
-  this.hide = notImplemented;
-  this.show = notImplemented;
 
   this.play = notImplemented;
   this.pause = notImplemented;
@@ -46,11 +43,14 @@ function PlayerBase () {
     return buffer;
   };
 
-  this.onLoading = function () {
+  this.setPlayCallbacks = function () {
   };
 
   this.onPlay = function () {
   };
+
+  this.onPause = function () {
+  }
 
   this.onFinish = function() {
   };
@@ -64,8 +64,78 @@ function PlayerBase () {
  */
 
 function YoutubePlayer () {
+  var player = this;
   var id = 'youtube-player',
-      playerImpl;
+      playerImpl,
+      playCallbacks = {
+        onPlay: [],
+        onPause: [],
+        onFinish: [],
+      };
+
+  var onReady = function (event) {
+
+  },
+
+  onPlay = function (video) {
+    var key;
+    for (key in playCallbacks.onPlay) {
+      if (playCallbacks.onPlay.hasOwnProperty(key)) {
+        playCallbacks.onPlay[key](video);
+      }
+    }
+  },
+
+  onPause = function () {
+    var key;
+    for (key in playCallbacks.onPlay) {
+      if (playCallbacks.onPause.hasOwnProperty(key)) {
+        playCallbacks.onPause[key]();
+      }
+    }
+  },
+
+  onFinish = function () {
+  },
+
+  onStateChange = function (event) {
+    switch (event.data) {
+      case YT.PlayerState.PLAYING:
+        onPlay(player.currentVideo);
+        break;
+      case YT.PlayerState.PAUSED:
+        onPause();
+        break;
+      case YT.PlayerState.ENDED:
+        onFinish();
+        break;
+      case YT.PlayerState.UNSTARTED:
+// NOTE Youtube iframe player firstly send this after loading.
+      case YT.PlayerState.CUED:
+// TODO Implement onLoad functionality.
+      case YT.PlayerState.BUFFERING:
+        break;
+      default:
+        throw 'No such event ' + event.data;
+    }
+  };
+
+
+// TODO remove below `currentVideo` after implementing search.
+  this.currentVideo = {
+    id: '-aJH5WhyLro',
+    type: 'youtube',
+    title: 'Furture house yearmix 2016',
+  };
+
+  this.setPlayCallbacks = function (callbacks) {
+    var key;
+    for (key in callbacks) {
+      if (callbacks.hasOwnProperty(key) && key in playCallbacks) {
+        playCallbacks[key].push(callbacks[key]);
+      }
+    }
+  }
 
   this.type = 'youtube';
 
@@ -75,22 +145,16 @@ function YoutubePlayer () {
       videoId: 'BB5ydxD9GAo',
       playerVars: {},
       events: {
-        'onReady': function(e) {e.target.playVideo();},
-        'onStateChange': null,
-        'onPlaybackQualityChange': null,
-        'onPlaybackRateChange': null,
-        'onError': null,
-        'onApiChange': null,
-      }
+        onReady: onReady,
+        onStateChange: onStateChange,
+        onPlaybackQualityChange: null,
+        onPlaybackRateChange: null,
+        onError: null,
+        onApiChange: null,
+      },
     });
 
     this.ready = true;
-  };
-
-  this.hide = function () {
-  };
-
-  this.show = function () {
   };
 
   this.play = function (video) {

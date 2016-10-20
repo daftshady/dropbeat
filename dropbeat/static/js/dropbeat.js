@@ -1,13 +1,13 @@
 'use strict';
 
 define([
-  'jquery', 'playercontrol'
-], function ($, controller) {
+  'jquery', 'playerevent'
+], function ($, playerEvent) {
 
 function Dropbeat () {
 };
 
-/*
+/**
  * The core Dropbeat client
  *
  * @this {Dropbeat}
@@ -17,7 +17,7 @@ Dropbeat.prototype = {
   debug: true,
 
   initialize: function () {
-    controller.init();
+    playerEvent.init();
   }
 };
 
