@@ -26,6 +26,8 @@ function PlayerBase () {
 
   this.seek = notImplemented;
 
+  this.getCurrentTrack = notImplemented;
+
   this.getCurrentPosition = notImplemented;
   this.getDuration = notImplemented;
 
@@ -64,7 +66,6 @@ function PlayerBase () {
  */
 
 function YoutubePlayer () {
-  var player = this;
   var id = 'youtube-player',
       playerImpl,
       playCallbacks = {
@@ -77,11 +78,11 @@ function YoutubePlayer () {
 
   },
 
-  onPlay = function (video) {
+  onPlay = function (track) {
     var key;
     for (key in playCallbacks.onPlay) {
       if (playCallbacks.onPlay.hasOwnProperty(key)) {
-        playCallbacks.onPlay[key](video);
+        playCallbacks.onPlay[key](track);
       }
     }
   },
@@ -101,7 +102,7 @@ function YoutubePlayer () {
   onStateChange = function (event) {
     switch (event.data) {
       case YT.PlayerState.PLAYING:
-        onPlay(player.currentVideo);
+        onPlay(currentTrack);
         break;
       case YT.PlayerState.PAUSED:
         onPause();
@@ -122,10 +123,10 @@ function YoutubePlayer () {
 
 
 // TODO remove below `currentVideo` after implementing search.
-  this.currentVideo = {
-    id: '-aJH5WhyLro',
+  var currentTrack = {
+    id: '-dya3o2HjAY',
     type: 'youtube',
-    title: 'Furture house yearmix 2016',
+    title: 'ZHU - automatic',
   };
 
   this.setPlayCallbacks = function (callbacks) {
@@ -142,7 +143,7 @@ function YoutubePlayer () {
   this.init = function () {
     playerImpl = new YT.Player(id, {
 // TODO remove below line after search is implemented.
-      videoId: 'BB5ydxD9GAo',
+      videoId: '-dya3o2HjAY',
       playerVars: {},
       events: {
         onReady: onReady,
@@ -157,14 +158,18 @@ function YoutubePlayer () {
     this.ready = true;
   };
 
-  this.play = function (video) {
+  this.getCurrentTrack = function () {
+    return currentTrack;
+  };
+
+  this.play = function (track) {
     if (!(playerImpl && this.ready)) {
       throw 'Youtube player is not initialized';
     }
 
-    if (video) {
-      this.currentVideo = video;
-      playerImpl.loadVideoById(video.id, 0);
+    if (track) {
+      this.currentVideo = track;
+      playerImpl.loadVideoById(track.id, 0);
     } else {
       playerImpl.playVideo();
     }

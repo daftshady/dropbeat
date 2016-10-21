@@ -27,11 +27,15 @@ function PlayerEventListener () {
     buttons.playToggle.click(function () {
       var playstat = manager.getStatus();
 
-      if (playstat === manager.STATUS.PLAYING) {
-        manager.pause();
-      } else if (playstat === manager.STATUS.PAUSED ||
-                 playstat === manager.STATUS.STOPPED) {
-        manager.play();
+      switch(playstat) {
+        case manager.STATUS.PLAYING:
+          manager.pause();
+          break;
+        case manager.STATUS.PAUSED:
+          manager.resume();
+          break;
+        default:
+          break;
       }
 
     });
