@@ -10,8 +10,7 @@ define([
  */
 
 function PlayerManager () {
-  var manager = this;
-  var currentTrack, currentPlayer, currentStatus;
+  var currentPlayer, currentStatus;
 
   this.STATUS = {
     NOT_STARTED: -1,
@@ -27,30 +26,27 @@ function PlayerManager () {
   }
 
   this.play = function (track) {
-    if (!track && currentTrack) {
-
-// resume paused track.
-      currentPlayer.play();
-
-    } else if (!track) {
+    if (!track) {
       throw 'Do not play with unspecified track.';
-
-    } else {
-      currentTrack = track;
-      currentPlayer = players[this.TYPES[track.type]];
-
-      if (!currentPlayer) {
-        throw 'Player type ' + track.type + ' is not supported.';
-      }
-
-      currentPlayer.play(track);
     }
+
+    currentPlayer = players[this.TYPES[track.type]];
+    if (!currentPlayer) {
+      throw 'Player type ' + track.type + ' is not supported.';
+    }
+
+    currentPlayer.play(track);
+  };
+
+  this.resume = function () {
+    if (!currentPlayer || !currentPlayer.getCurrentTrack()) {
+      throw 'Cannot resume without playing any tracks.';
+    }
+    currentPlayer.play();
   };
 
   this.pause = function () {
-    if (currentPlayer && currentStatus === this.STATUS.PLAYING) {
-      currentPlayer.pause();
-    }
+    currentPlayer.pause();
   };
 
   this.getStatus = function () {
@@ -66,14 +62,13 @@ function PlayerManager () {
     }
   }
 
-// TODO Fix this status & track info after implementing search.
+// TODO Fix this status after implementing search.
   currentStatus = this.STATUS.PAUSED;
-  currentTrack = {
-    id: '-aJH5WhyLro',
-    type: 'youtube',
-    title: 'Furture house yearmix 2016',
-  };
 
+// NOTE this manager var should be assigned to `this`. (PlayerManager obj)
+// Because Youtube's iframe api calls this callbacks with changed context.
+// After this, `this` will lose our context. (maybe it will be null)
+  var manager = this;
   this.setPlayCallbacks({
     onPlay: function (track) {
       currentStatus = manager.STATUS.PLAYING;
