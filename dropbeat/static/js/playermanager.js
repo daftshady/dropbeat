@@ -1,7 +1,7 @@
 'use strict';
 
 define([
-    'player'
+  'player'
 ], function (players) {
 
 /**
@@ -26,7 +26,7 @@ function PlayerManager () {
   }
 
   this.play = function (track) {
-    if (!track) {
+    if (track === undefined) {
       throw 'Do not play with unspecified track.';
     }
 
@@ -39,10 +39,9 @@ function PlayerManager () {
   };
 
   this.resume = function () {
-    if (!currentPlayer || !currentPlayer.getCurrentTrack()) {
-      throw 'Cannot resume without playing any tracks.';
+    if (currentStatus == this.STATUS.PAUSED) {
+      currentPlayer.resume();
     }
-    currentPlayer.play();
   };
 
   this.pause = function () {
@@ -62,14 +61,14 @@ function PlayerManager () {
     }
   }
 
-// TODO Fix this status after implementing search.
-  currentStatus = this.STATUS.PAUSED;
-
 // NOTE this manager var should be assigned to `this`. (PlayerManager obj)
 // Because Youtube's iframe api calls this callbacks with changed context.
 // After this, `this` will lose our context. (maybe it will be null)
   var manager = this;
   this.setPlayCallbacks({
+    onReady: function (event) {
+      currentStatus = manager.STATUS.STOPPED;
+    },
     onPlay: function (track) {
       currentStatus = manager.STATUS.PLAYING;
     },
@@ -81,7 +80,7 @@ function PlayerManager () {
     },
   });
 
-  currentPlayer = players.YoutubePlayer;
+  currentStatus = this.STATUS.NOT_STARTED;
 };
 
 return new PlayerManager();

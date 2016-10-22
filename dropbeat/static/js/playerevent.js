@@ -34,6 +34,13 @@ function PlayerEventListener () {
         case manager.STATUS.PAUSED:
           manager.resume();
           break;
+        case manager.STATUS.STOPPED:
+          manager.play({
+            id: '-dya3o2HjAY',
+            type: 'youtube',
+            title: 'ZHU - automatic',
+          });
+          break;
         default:
           break;
       }
@@ -53,6 +60,11 @@ function PlayerEventListener () {
     });
 
     manager.setPlayCallbacks({
+      onReady: function () {
+        setStatus('READY');
+        setTitle('CHOOSE TRACK FROM PLAYLIST');
+        buttons.playToggle.removeClass('disabled');
+      },
       onPlay: function (track) {
         setTitle(track.title);
         setPlay();
@@ -61,6 +73,10 @@ function PlayerEventListener () {
         setStatus('PAUSED');
         setPaused();
       },
+      onFinish: function () {
+        setStatus('FINISHED');
+        setPlay();
+      }
     });
   };
 

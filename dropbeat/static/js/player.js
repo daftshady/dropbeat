@@ -67,15 +67,21 @@ function PlayerBase () {
 
 function YoutubePlayer () {
   var id = 'youtube-player',
-      playerImpl,
+      playerImpl, currentTrack,
       playCallbacks = {
+        onReady: [],
         onPlay: [],
         onPause: [],
         onFinish: [],
       };
 
   var onReady = function (event) {
-
+    var key;
+    for (key in playCallbacks.onReady) {
+      if (playCallbacks.onPlay.hasOwnProperty(key)) {
+        playCallbacks.onReady[key](event);
+      }
+    }
   },
 
   onPlay = function (track) {
@@ -121,14 +127,6 @@ function YoutubePlayer () {
     }
   };
 
-
-// TODO remove below `currentVideo` after implementing search.
-  var currentTrack = {
-    id: '-dya3o2HjAY',
-    type: 'youtube',
-    title: 'ZHU - automatic',
-  };
-
   this.setPlayCallbacks = function (callbacks) {
     var key;
     for (key in callbacks) {
@@ -142,8 +140,7 @@ function YoutubePlayer () {
 
   this.init = function () {
     playerImpl = new YT.Player(id, {
-// TODO remove below line after search is implemented.
-      videoId: '-dya3o2HjAY',
+      videoId: 'x',
       playerVars: {},
       events: {
         onReady: onReady,
@@ -163,20 +160,22 @@ function YoutubePlayer () {
   };
 
   this.play = function (track) {
-    if (!(playerImpl && this.ready)) {
+    if (!(playerImpl !== undefined && this.ready)) {
       throw 'Youtube player is not initialized';
     }
 
-    if (track) {
-      this.currentVideo = track;
+    if (track === undefined) {
+      currentTrack = track;
       playerImpl.loadVideoById(track.id, 0);
-    } else {
-      playerImpl.playVideo();
     }
   };
 
+  this.resume = function () {
+    playerImpl.playVideo();
+  }
+
   this.pause = function () {
-    if (playerImpl) {
+    if (playerImpl !== undefined) {
       playerImpl.pauseVideo();
     }
   };
