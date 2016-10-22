@@ -32,28 +32,6 @@ input[type='submit'] {
   padding: 0 !important;
   margin: 0 !important;
 }
-#search-result-player,
-#recom-player {
-  position: absolute;
-  top: 50%;
-  left: 0;
-}
-#search-result-player.safari-hack,
-#recom-player.safari-hack {
-  left: -499px;
-}
-#search-result-player.safari-hack iframe,
-#recom-player.safari-hack iframe {
-  width: 500px !important;
-}
-#search-result-player:not(.safari-hack),
-#recom-player:not(.safari-hack) {
-  width: 300px;
-}
-#search-result-player:not(.safari-hack) iframe,
-#recom-player:not(.safari-hack) iframe {
-  width: 300px !important;
-}
 #external-player {
   position: absolute;
   top: 54px;
@@ -66,51 +44,6 @@ input[type='submit'] {
   width: 374px;
   height: 211px;
 }
-#external-player.exposed {
-  right: 374px;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 900;
-  position: absolute;
-  width: auto;
-  height: auto;
-}
-#external-player.exposed iframe {
-  position: absolute;
-  left: 50%;
-}
-#external-player.exposed .player-bg {
-  display: block;
-}
-#external-player.exposed .close-button {
-  display: inline-block;
-}
-#external-player .player-bg {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  background: black;
-}
-#external-player .close-button {
-  display: none;
-  position: absolute;
-  top: 36px;
-  right: 36px;
-  width: 20px;
-  height: 20px;
-  background-image: url("../images/sprites.png");
-  background-position: -158px 0;
-  cursor: pointer;
-  text-indent: -9999px;
-}
-#external-player .close-button:hover {
-  background-position: -158px -20px;
-}
-
 #dropbeat {
   height: 100%;
   -webkit-touch-callout: none;
@@ -164,45 +97,6 @@ input[type='submit'] {
 }
 #dropbeat .play-controls .account-menus .account .signout-btn:hover {
   color: #8e8e8e;
-}
-#dropbeat .play-controls .player-initialize-filter {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 300;
-}
-#dropbeat .play-controls .player-initialize-filter .loading-spinner {
-  color: white;
-  font-size: 14px;
-  text-align: center;
-  position: absolute;
-  line-height: 20px;
-  height: 40px;
-  top: 50%;
-  left: 50%;
-  margin-left: -100px;
-  margin-top: -20px;
-  width: 200px;
-}
-#dropbeat .play-controls .player-initialize-filter .filter-bg {
-  background: #000000;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* IE 8 */
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-  /* IE 5-7 */
-  filter: alpha(opacity=90);
-  /* Netscape */
-  -moz-opacity: 0.90;
-  /* Safari 1.x */
-  -khtml-opacity: 0.90;
-  /* Good browsers */
-  opacity: 0.90;
 }
 #dropbeat .play-controls .playlist-section {
   padding-top: 36px;
