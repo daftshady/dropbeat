@@ -462,14 +462,6 @@ input[type='submit'] {
   left: 0;
   right: 0;
 }
-#dropbeat .play-controls .player-section #player .controls .volume-bar {
-  display: none;
-  position: absolute;
-  bottom: -20px;
-  right: -2px;
-  padding: 14px 16px 38px;
-  cursor: pointer;
-}
 #dropbeat .play-controls .player-section #player .controls .ctrl {
   cursor: pointer;
   background-image: url("../images/player_icons.png");
@@ -512,6 +504,7 @@ input[type='submit'] {
 }
 #dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-prev.disabled {
   background-position: -88px -22px;
+  cursor: default;
 }
 #dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-next {
   right: 98px;
@@ -523,6 +516,7 @@ input[type='submit'] {
 }
 #dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-next.disabled {
   background-position: -88px -66px;
+  cursor: default;
 }
 #dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-play {
   left: 132px;
@@ -534,29 +528,14 @@ input[type='submit'] {
 }
 #dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-play.disabled {
   background-position: -44px -44px;
+  cursor: default;
 }
 #dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-play.pause {
   background-position: 0 0;
 }
 #dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-play.pause.disabled {
   background-position: 0 -44px;
-}
-#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-volume {
-  right: 5px;
-  margin-top: -11px;
-  background-position: -242px -66px;
-  width: 22px;
-  height: 22px;
-  display: inline-block;
-}
-#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-volume.under20 {
-  background-position: -242px -22px;
-}
-#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-volume.under60 {
-  background-position: -242px -44px;
-}
-#dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-volume.muted {
-  background-position: -242px 0px;
+  cursor: default;
 }
 #dropbeat .play-controls .player-section #player .progress {
   position: absolute;
