@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'jquery', 'playerevent'
-], function ($, playerEvent) {
+  'jquery', 'playerevent', 'search'
+], function ($, playerEvent, search) {
 
 function Dropbeat () {
 };
@@ -18,6 +18,7 @@ Dropbeat.prototype = {
 
   initialize: function () {
     playerEvent.init();
+    search.init();
   }
 };
 

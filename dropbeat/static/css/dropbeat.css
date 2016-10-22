@@ -782,3 +782,8 @@ input[type='submit'] {
   background-image: url("../images/sprites.png");
   background-position: -100px 0;
 }
+#dropbeat .contents .body-section .search-section .autocomplete-items {
+  padding-top: 10px;
+  padding-left: 42px;
+  color: white;
+}
