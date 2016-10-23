@@ -164,7 +164,7 @@ function YoutubePlayer () {
       throw 'Youtube player is not initialized';
     }
 
-    if (track === undefined) {
+    if (track !== undefined) {
       currentTrack = track;
       playerImpl.loadVideoById(track.id, 0);
     }
