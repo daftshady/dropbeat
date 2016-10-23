@@ -23,6 +23,64 @@ function PlayerEventListener () {
         title: root.find('.title')
       };
 
+  var progress = (function () {
+    var that = {}, interval = 100, dragging = false,
+        bulletUpdate, bufferUpdate;
+
+    var formatTime = function (second) {
+      var min = ~~(second / 60),
+          sec = ~~(second % 60);
+
+      if (min < 10) {
+        min = '0' + min;
+      }
+
+      if (sec < 10) {
+        sec = '0' + sec;
+      }
+
+      return min + ':' + sec;
+    };
+
+    var progressWidth = root.find('.progress .progress-bar').width(),
+        buffer = root.find('.progress .progress-bar .buffer'),
+        bullet = root.find('.progress .progress-bar .bullet'),
+        marker = root.find('.progress .progress-handle'),
+        currentTime = root.find('.progress .curr-play-time'),
+        duration = root.find('.progress .total-play-time');
+
+    var onProgress = function () {
+      if (dragging) {
+        return;
+      }
+
+      var total = manager.getDuration(),
+          position = manager.getCurrentPosition(),
+          width = position / total * progressWidth;
+
+      bullet.width(width);
+      marker.css('left', width);
+
+      currentTime.text(formatTime(position));
+      duration.text(formatTime(total));
+    },
+    onBuffered = function () {
+      buffer.width(manager.getBuffer() / 100 * progressWidth);
+    };
+
+    that.start = function () {
+      bulletUpdate = setInterval(onProgress, interval);
+      bufferUpdate = setInterval(onBuffered, interval * 10);
+    };
+
+    that.stop = function () {
+      clearInterval(bulletUpdate);
+      clearInterval(bufferUpdate);
+    };
+
+    return that;
+  })();
+
   this.init = function () {
     buttons.playToggle.click(function () {
       var playstat = manager.getStatus();
@@ -44,7 +102,6 @@ function PlayerEventListener () {
         default:
           break;
       }
-
     });
 
     buttons.prev.click(function () {
@@ -68,14 +125,17 @@ function PlayerEventListener () {
       onPlay: function (track) {
         setTitle(track.title);
         setPlay();
+        progress.start();
       },
       onPause: function () {
         setStatus('PAUSED');
         setPaused();
+        progress.stop();
       },
       onFinish: function () {
         setStatus('FINISHED');
         setPlay();
+        progress.stop();
       }
     });
   };

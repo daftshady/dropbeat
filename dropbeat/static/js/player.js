@@ -152,6 +152,7 @@ function YoutubePlayer () {
       },
     });
 
+    this.currentTrack = null;
     this.ready = true;
   };
 
@@ -187,12 +188,15 @@ function YoutubePlayer () {
   };
 
   this.getCurrentPosition = function () {
+    return playerImpl.getCurrentTime();
   };
 
   this.getDuration = function () {
+    return playerImpl.getDuration();
   };
 
   this.getBuffer = function () {
+    return this.roundPercentage(playerImpl.getVideoLoadedFraction());
   };
 };
 
