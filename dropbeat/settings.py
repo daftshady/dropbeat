@@ -3,7 +3,7 @@ import ast
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'm6gg$f6#x3b7dyz#cnl4#=*tocsos=_slz=1@xpf*4vz^6-9pl'
+SECRET_KEY = os.getenv('DBT_DJANGO_SECRET')
 
 DEBUG = True
 
