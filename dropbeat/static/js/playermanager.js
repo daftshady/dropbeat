@@ -48,6 +48,10 @@ function PlayerManager () {
     currentPlayer.pause();
   };
 
+  this.seek = function (pos) {
+    currentPlayer.seek(pos);
+  }
+
   this.getStatus = function () {
     return currentStatus;
   };

@@ -184,7 +184,10 @@ function YoutubePlayer () {
   this.stop = function () {
   };
 
-  this.seek = function () {
+  this.seek = function (pos) {
+    if (currentTrack !== null) {
+      playerImpl.seekTo(pos, true);
+    }
   };
 
   this.getCurrentPosition = function () {
@@ -192,7 +195,9 @@ function YoutubePlayer () {
   };
 
   this.getDuration = function () {
-    return playerImpl.getDuration();
+    if (currentTrack !== null) {
+      return playerImpl.getDuration();
+    }
   };
 
   this.getBuffer = function () {
