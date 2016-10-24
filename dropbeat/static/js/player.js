@@ -152,6 +152,7 @@ function YoutubePlayer () {
       },
     });
 
+    this.currentTrack = null;
     this.ready = true;
   };
 
@@ -164,7 +165,7 @@ function YoutubePlayer () {
       throw 'Youtube player is not initialized';
     }
 
-    if (track === undefined) {
+    if (track !== undefined) {
       currentTrack = track;
       playerImpl.loadVideoById(track.id, 0);
     }
@@ -187,12 +188,15 @@ function YoutubePlayer () {
   };
 
   this.getCurrentPosition = function () {
+    return playerImpl.getCurrentTime();
   };
 
   this.getDuration = function () {
+    return playerImpl.getDuration();
   };
 
   this.getBuffer = function () {
+    return this.roundPercentage(playerImpl.getVideoLoadedFraction());
   };
 };
 

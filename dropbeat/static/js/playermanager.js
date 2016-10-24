@@ -23,7 +23,7 @@ function PlayerManager () {
   this.TYPES = {
     youtube: 'YoutubePlayer',
     soundcloud: 'SoundCloudPlayer'
-  }
+  };
 
   this.play = function (track) {
     if (track === undefined) {
@@ -39,7 +39,7 @@ function PlayerManager () {
   };
 
   this.resume = function () {
-    if (currentStatus == this.STATUS.PAUSED) {
+    if (currentStatus === this.STATUS.PAUSED) {
       currentPlayer.resume();
     }
   };
@@ -52,6 +52,18 @@ function PlayerManager () {
     return currentStatus;
   };
 
+  this.getDuration = function () {
+    return currentPlayer.getDuration();
+  };
+
+  this.getBuffer = function () {
+    return currentPlayer.getBuffer();
+  };
+
+  this.getCurrentPosition = function () {
+    return currentPlayer.getCurrentPosition();
+  };
+
   this.setPlayCallbacks = function (callbacks) {
     var key;
     for (key in players) {
@@ -59,7 +71,7 @@ function PlayerManager () {
         players[key].setPlayCallbacks(callbacks);
       }
     }
-  }
+  };
 
 // NOTE this manager var should be assigned to `this`. (PlayerManager obj)
 // Because Youtube's iframe api calls this callbacks with changed context.
