@@ -14,6 +14,7 @@ class ErrorCode:
     TRACK_ALREADY_EXIST = '106'
     PLAYLIST_NOT_EXIST = '107'
     TRACK_NOT_EXIST = '108'
+    RESULT_NOT_READY = '109'
 
 
 class TrackSource(ChoiceEnum):

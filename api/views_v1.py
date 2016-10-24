@@ -3,6 +3,7 @@ from dropbeat.constants import ErrorCode
 from dropbeat.exceptions import (
     UserException, TrackException, PlaylistException, DropbeatException)
 from dropbeat.models import User, Track, Playlist
+from dropbeat.youtube import youtube_search, Youtube
 from toolkit.resource import Resource, parameters
 
 from django.db import IntegrityError
@@ -171,3 +172,35 @@ class TrackResource(DropbeatResource):
 
         return self.on_success()
 
+
+class SearchResource(DropbeatResource):
+    def prepare_urls(self):
+        self.add_path('async')
+
+    @parameters(['q'])
+    def handle_get(self, request, *args, **kwargs):
+        """This method blocks working thread while doing HTTP i/o
+        XXX: Do not use this api in production env.
+
+        """
+        data = Youtube.search_from_html(request.p['q'])
+        return self.on_success(data={'data': data})
+
+    @parameters(['q'])
+    def handle_post_async(self, request, *args, **kwargs):
+        """Register async task.
+
+        """
+        task = youtube_search.delay(request.p['q'])
+        return self.on_success(data={'data': str(task)})
+
+    @parameters(['key'])
+    def handle_get_async(self, request, *args, **kwargs):
+        """Polls result of async task with provided key.
+
+        """
+        result = youtube_search.AsyncResult(request.p['key'])
+        if result.ready():
+            return self.on_success(data={'data': result.get()})
+        else:
+            return self.on_error(error=ErrorCode.RESULT_NOT_READY)

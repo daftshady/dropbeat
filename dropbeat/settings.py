@@ -123,3 +123,12 @@ STATICFILES_DIRS = [
 
 AUTH_USER_MODEL = 'dropbeat.User'
 AUTHENTICATION_BACKENDS = ('dropbeat.auth.AuthBackend',)
+
+# Celery
+
+BROKER_URL = os.getenv('DBT_REDIS_URL')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = os.getenv('DBT_REDIS_URL')
+
