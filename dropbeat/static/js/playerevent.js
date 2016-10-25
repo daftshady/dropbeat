@@ -5,6 +5,117 @@ define([
 ], function ($, manager) {
 
 /**
+ * Progress is in player and is responsible for
+ * updating progress (when playing) and handling player's seek actions.
+ */
+
+function ProgressHandler () {
+  var root = $('#player').find('.progress'),
+
+      buffer = root.find('.progress-bar .buffer'),
+      bullet = root.find('.progress-bar .bullet'),
+
+      marker = root.find('.progress-handle'),
+
+      currentTime = root.find('.curr-play-time'),
+      totalPlayTime = root.find('.total-play-time'),
+
+      progressWidth = root.find('.progress-bar').width(),
+      dragging = false,
+      bulletUpdate = null,
+      bufferUpdate = null,
+
+  formatTime = function (second) {
+    var min = Math.floor(second / 60),
+        sec = Math.floor(second % 60);
+
+    if (min < 10) { min = '0' + min; }
+    if (sec < 10) { sec = '0' + sec; }
+
+    return min + ':' + sec;
+  },
+
+  onProgress = function () {
+    if (dragging) {
+      return;
+    }
+
+    var total = manager.getDuration(),
+        position = manager.getCurrentPosition(),
+        width = position / total * progressWidth;
+
+    bullet.width(width);
+    marker.css('left', width);
+
+    currentTime.text(formatTime(position));
+    totalPlayTime.text(formatTime(total));
+  },
+
+  onBuffered = function () {
+    buffer.width(manager.getBuffer() / 100 * progressWidth);
+  },
+
+  seek = function (event) {
+    var stat = manager.getStatus();
+    if (stat === manager.STATUS.NOT_STARTED ||
+        stat === manager.STATUS.STOPPED) {
+      return;
+    }
+
+    var dx = event.pageX - bullet.offset().left,
+        duration = manager.getDuration();
+
+    if (dx < 0) {
+      dx = 0;
+    }
+
+    if (dx > progressWidth) {
+      dx = progressWidth;
+    }
+
+    bullet.width(dx);
+    marker.css('left', dx);
+
+    var currentPosition = dx / progressWidth * duration;
+    currentTime.text(formatTime(currentPosition));
+
+    if (!dragging) {
+      manager.seek(currentPosition);
+    }
+  },
+
+  startDrag = function () {
+    dragging = true;
+    $(window).mousemove(seek);
+    $(window).mouseup(stopDrag);
+  },
+
+  stopDrag = function (event) {
+    dragging = false;
+    seek(event);
+    $(window).off('mousemove');
+    $(window).off('mouseup');
+  };
+
+  this.start = function () {
+    bulletUpdate = setInterval(onProgress, 100);
+    bufferUpdate = setInterval(onBuffered, 1000);
+  };
+
+  this.stop = function () {
+    clearInterval(bulletUpdate);
+    clearInterval(bufferUpdate);
+  };
+
+  this.init = function () {
+// To implement both click & dragging, we are not implement `$.click`.
+// Instead, we implement click handling through `$.mousedown` and `$.mouseup`.
+    root.find('.progress-bar').mousedown(startDrag);
+    marker.mousedown(startDrag);
+  };
+};
+
+/**
  * Player Controller.
  * This controller is responsible for user's interactions.
  */
@@ -21,65 +132,8 @@ function PlayerEventListener () {
       playerStatus = {
         stat: root.find('.status'),
         title: root.find('.title')
-      };
-
-  var progress = (function () {
-    var that = {}, interval = 100, dragging = false,
-        bulletUpdate, bufferUpdate;
-
-    var formatTime = function (second) {
-      var min = ~~(second / 60),
-          sec = ~~(second % 60);
-
-      if (min < 10) {
-        min = '0' + min;
-      }
-
-      if (sec < 10) {
-        sec = '0' + sec;
-      }
-
-      return min + ':' + sec;
-    };
-
-    var progressWidth = root.find('.progress .progress-bar').width(),
-        buffer = root.find('.progress .progress-bar .buffer'),
-        bullet = root.find('.progress .progress-bar .bullet'),
-        marker = root.find('.progress .progress-handle'),
-        currentTime = root.find('.progress .curr-play-time'),
-        duration = root.find('.progress .total-play-time');
-
-    var onProgress = function () {
-      if (dragging) {
-        return;
-      }
-
-      var total = manager.getDuration(),
-          position = manager.getCurrentPosition(),
-          width = position / total * progressWidth;
-
-      bullet.width(width);
-      marker.css('left', width);
-
-      currentTime.text(formatTime(position));
-      duration.text(formatTime(total));
-    },
-    onBuffered = function () {
-      buffer.width(manager.getBuffer() / 100 * progressWidth);
-    };
-
-    that.start = function () {
-      bulletUpdate = setInterval(onProgress, interval);
-      bufferUpdate = setInterval(onBuffered, interval * 10);
-    };
-
-    that.stop = function () {
-      clearInterval(bulletUpdate);
-      clearInterval(bufferUpdate);
-    };
-
-    return that;
-  })();
+      },
+      progress = new ProgressHandler();
 
   this.init = function () {
     buttons.playToggle.click(function () {
@@ -138,6 +192,8 @@ function PlayerEventListener () {
         progress.stop();
       }
     });
+
+    progress.init();
   };
 
 /**
@@ -150,15 +206,17 @@ function PlayerEventListener () {
     buttons.playToggle.addClass('pause');
     setStatus('PLAYING');
   },
+
   setPaused = function () {
     buttons.playToggle.removeClass('pause');
     setStatus('PAUSED');
-  };
+  },
 
 // Title & status text.
-  var setTitle = function (title) {
+  setTitle = function (title) {
     playerStatus.title.text(title);
   },
+
   setStatus = function (playstat) {
     playerStatus.stat.text(playstat);
   };
