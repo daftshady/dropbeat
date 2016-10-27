@@ -53,6 +53,63 @@ input[type='submit'] {
   -ms-user-select: none;
   user-select: none;
 }
+#dropbeat .signin-container {
+  display: none;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 240;
+}
+#dropbeat .signin-container .signin-filter {
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  -webkit-opacity: 0.6;
+  -moz-opacity: 0.6;
+  opacity: 0.6;
+}
+#dropbeat .signin-container .form-wrapper {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+}
+#dropbeat .signin-container .form-wrapper form {
+  position: relative;
+  top: -50%;
+  left: -50%;
+}
+#dropbeat .signin-container .form-wrapper form input {
+  background: transparent;
+  border: none;
+  color: white;
+  margin: 8px 0;
+  width: 100%;
+  display: inline-block;
+  font-size: 16px;
+  border-bottom: 1px solid white;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#dropbeat .signin-container .form-wrapper button {
+  margin-top: 10px;
+  background: none;
+  border: 0;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+#dropbeat .signin-container .form-wrapper button[type='submit'] {
+  position: absolute;
+  right: 10px;
+}
+#dropbeat .signin-container .form-wrapper button.cancel {
+  position: absolute;
+  left: -50%;
+}
 #dropbeat .play-controls {
   float: right;
   width: 374px;
@@ -75,28 +132,26 @@ input[type='submit'] {
   -o-box-sizing: border-box;
   box-sizing: border-box;
 }
-#dropbeat .play-controls .account-menus .signin-btn {
+#dropbeat .play-controls .account-menus .signin-btn,
+#dropbeat .play-controls .account-menus .signout-btn {
   float: left;
   display: block;
   padding-right: 20px;
-  color: #7b7b7b;
+  color: #8d02ef;
   line-height: 18px;
   padding-top: 2px;
   padding-bottom: 2px;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 }
-#dropbeat .play-controls .account-menus .account .signout-btn:hover {
-  color: #8e8e8e;
+#dropbeat .play-controls .account-menus .signin-btn:hover,
+#dropbeat .play-controls .account-menus .signout-btn:hover {
+  color: #a218ff;
 }
-#dropbeat .play-controls .account-menus .account .signout-btn {
-  cursor: pointer;
-  text-decoration: none;
-  font-weight: 400;
+#dropbeat .play-controls .account-menus .help-text {
   color: #7b7b7b;
-}
-#dropbeat .play-controls .account-menus .account .signout-btn:hover {
-  color: #8e8e8e;
+  font-size: 11px;
+  font-weight: 400;
 }
 #dropbeat .play-controls .playlist-section {
   padding-top: 36px;

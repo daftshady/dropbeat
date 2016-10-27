@@ -32,7 +32,7 @@ function AutoCompletor (driver) {
       var query = $(this).val();
 
       if (that.lastInputLen > 0 && query.length === 0) {
-        // Clear items as existing strings has beed removed
+        // Clear items as existing string has been removed
         that.clearItems();
       }
 
