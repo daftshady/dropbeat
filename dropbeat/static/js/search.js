@@ -32,7 +32,11 @@ function AutoCompletor (searchBar, driver) {
       that.clearItems();
     }
 
-    if (query.length > 0) {
+    if (query.length > 0 && that.lastInputLen !== query.length) {
+      // In case that word list is hidden bacause of search result.
+      that.showWordList();
+
+      // If there is a change in query string
       driver.fetch(query, function (parsedResult) {
         // `parsedResult` should be a list of suggested strings.
         var i, maxResult = 10;
@@ -53,13 +57,21 @@ function AutoCompletor (searchBar, driver) {
 
         that.lastInputLen = query.length;
       });
-    } else {
+    } else if (query.length === 0) {
       that.lastInputLen = 0;
     }
   };
 
   this.clearItems = function () {
     $('.' + this.itemClass).remove();
+  };
+
+  this.showWordList = function () {
+    this.wordList.show();
+  };
+
+  this.hideWordList = function () {
+    this.wordList.hide();
   };
 };
 
@@ -71,7 +83,7 @@ function YoutubeDriver () {
     var that = this;
 
     $.ajax({
-      url: this.baseUrl,
+      url: that.baseUrl,
       type: 'GET',
       dataType: 'jsonp',
       data: {client: 'youtube', q: query},
@@ -105,7 +117,7 @@ function SearchManager () {
 
       // 13 is keycode for `enter`
       if (e.which === 13) {
-        that.autoCompletor.clearItems();
+        that.autoCompletor.hideWordList();
         that.search(query);
       } else {
         that.autoCompletor.handleKeyEvent(query, e);
