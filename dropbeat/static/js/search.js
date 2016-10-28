@@ -175,6 +175,8 @@ function SearchManager () {
     var template = hb.compile($('#search-result-template').html()),
         items = {searchResults: data},
         renderedHtml = template(items);
+    // Clear existing view
+    $('.search-result-item').remove();
 
     // Render search result
     $('.search-result-section').append(renderedHtml);
