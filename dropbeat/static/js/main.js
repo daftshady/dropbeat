@@ -3,15 +3,16 @@
 require.config({
   baseUrl: 'js',
   paths: {
-    jquery: 'lib/jquery-3.1.1.min'
+    jquery: 'lib/jquery-3.1.1.min',
+    handlebars: 'lib/handlebars-4.0.5'
   }
 
 });
 
 require([
-  'dropbeat',
+  'dropbeat', 'handlebars'
 
-], function (Dropbeat) {
+], function (Dropbeat, handlebars) {
   Dropbeat.initialize();
 });
 

@@ -13,9 +13,34 @@
 
     <script data-main="js/main.js" src="js/lib/require.js"></script>
     <script src="http://www.youtube.com/iframe_api"></script>
+    <script id="tmpl-signout" type="text/x-handlebars-template">
+      <a class="signout-btn">
+        <span>SIGN OUT</span>
+        </br>
+        <span class="help-text">YOU SIGNED IN AS {{email}}</span>
+      </a>
+    </script>
+    <script id="tmpl-signin" type="text/x-handlebars-template">
+      <a class="signin-btn">
+        <span>SIGN IN</span>
+        </br>
+        <span class="help-text">YOUR PLAYLIST CAN BE SAVED AFTER SIGN-IN</span>
+      </a>
+    </script>
   </head>
   <body>
     <div id="dropbeat">
+      <div class="signin-container">
+        <div class="signin-filter"></div>
+        <div class="form-wrapper">
+          <form class="signin-form" action="/api/v1/user/signin?redirect=/" method="post">
+            <input type="text" placeholder="Email" name="email" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <button type="submit">Login</button>
+          </form>
+          <button class="cancel">Cancel</button>
+        </div>
+      </div>
       <div id="external-player">
         <div id="youtube-player"></div>
         <div id="soundcloud-player"></div>
