@@ -26,17 +26,30 @@
         </br>
         <span class="help-text">YOUR PLAYLIST CAN BE SAVED AFTER SIGN-IN</span>
       </a>
+      <a class="signup-btn">
+        <span>SIGN UP</span>
+      </a>
     </script>
   </head>
   <body>
     <div id="dropbeat">
       <div class="signin-container">
         <div class="signin-filter"></div>
-        <div class="form-wrapper">
+        <div class="form-wrapper signin">
+          <label class="title">SIGN IN</label>
           <form class="signin-form" action="/api/v1/user/signin?redirect=/" method="post">
             <input type="text" placeholder="Email" name="email" required>
             <input type="password" placeholder="Password" name="password" required>
             <button type="submit">Login</button>
+          </form>
+          <button class="cancel">Cancel</button>
+        </div>
+        <div class="form-wrapper signup">
+          <label class="title">SIGN UP</label>
+          <form class="signup-form" action="/api/v1/user?redirect=/" method="post">
+            <input type="text" placeholder="Email" name="email" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <button type="submit">Register</button>
           </form>
           <button class="cancel">Cancel</button>
         </div>

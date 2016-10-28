@@ -72,14 +72,20 @@ input[type='submit'] {
   opacity: 0.6;
 }
 #dropbeat .signin-container .form-wrapper {
+  display: none;
   position: absolute;
   top: 30%;
   left: 50%;
+}
+#dropbeat .signin-container .form-wrapper .title{
+  position: relative;
+  left: -50%;
 }
 #dropbeat .signin-container .form-wrapper form {
   position: relative;
   top: -50%;
   left: -50%;
+  margin-top: 10px;
 }
 #dropbeat .signin-container .form-wrapper form input {
   background: transparent;
@@ -122,7 +128,7 @@ input[type='submit'] {
   background: #000000;
   height: 54px;
   color: white;
-  padding-left: 22px;
+  padding-left: 0;
   padding-top: 8px;
   padding-bottom: 8px;
   -khtml-box-sizing: border-box;
@@ -133,10 +139,11 @@ input[type='submit'] {
   box-sizing: border-box;
 }
 #dropbeat .play-controls .account-menus .signin-btn,
+#dropbeat .play-controls .account-menus .signup-btn,
 #dropbeat .play-controls .account-menus .signout-btn {
   float: left;
   display: block;
-  padding-right: 20px;
+  padding: 0 20px;
   color: #8d02ef;
   line-height: 18px;
   padding-top: 2px;
@@ -145,6 +152,7 @@ input[type='submit'] {
   cursor: pointer;
 }
 #dropbeat .play-controls .account-menus .signin-btn:hover,
+#dropbeat .play-controls .account-menus .signup-btn:hover,
 #dropbeat .play-controls .account-menus .signout-btn:hover {
   color: #a218ff;
 }
