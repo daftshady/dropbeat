@@ -1,12 +1,8 @@
 'use strict';
 
 define([
-  'jquery', 'handlebars'
-], function ($, handlebars) {
-
-var URI_USER = '/api/v1/user',
-    URI_SIGNIN = '/api/v1/user/signin',
-    URI_SIGNOUT = '/api/v1/user/signout';
+  'jquery', 'handlebars', 'api',
+], function ($, handlebars, api) {
 
 /**
  * User model.
@@ -22,16 +18,20 @@ function User (params) {
 
 function UserManager () {
   var menus = $('.account-menus'),
-      tmplSignout, tmplSignin,
+      tmplSignout = $('#tmpl-signout'),
+      tmplSignin = $('#tmpl-signin'),
 
   fillMenu = function () {
+    var render;
     if (this.currentUser != null) {
-      var render = handlebars.compile(tmplSignout);
+      render = handlebars.compile(tmplSignout.html());
 
       menus.html(render({email: this.currentUser.email}));
       menus.find('.signout-btn').click(signout);
     } else {
-      menus.html(tmplSignin);
+      render = handlebars.compile(tmplSignin.html());
+
+      menus.html(render());
       menus.find('.signin-btn').click(signin);
       menus.find('.signup-btn').click(signup);
     }
@@ -65,7 +65,7 @@ function UserManager () {
   },
 
   signout = function () {
-    $.post(URI_SIGNOUT).always(function () {
+    $.post(api.Router.getPath('signout')).always(function () {
       window.location.href = '/';
     });
   };
@@ -73,12 +73,7 @@ function UserManager () {
   this.currentUser = null;
 
   this.init = function () {
-    tmplSignout = $('#tmpl-signout').html();
-    // NOTE Because sign in template do not need a context,
-    // compiled html is generated previously for performance. (slightly better)
-    tmplSignin = handlebars.compile($('#tmpl-signin').html())();
-
-    $.get(URI_USER)
+    $.get(api.Router.getPath('user'))
       .done(function (resp) {
         if (resp.success) {
           this.currentUser = new User(resp.user);
