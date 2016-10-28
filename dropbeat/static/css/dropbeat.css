@@ -609,8 +609,8 @@ input[type='submit'] {
 #dropbeat .contents .body-section {
   position: absolute;
   top: 0;
-  left: 72px;
-  right: 72px;
+  left: 55px;
+  right: 15px;
   bottom: 0;
   z-index: 100;
 }
@@ -630,6 +630,23 @@ input[type='submit'] {
   scrollbar-arrow-color: #4b4b4b;
   scrollbar-track-color: #1e1e1e;
   scrollbar-darkshadow-color: #4b4b4b;
+}
+#dropbeat .search-result-section::-webkit-scrollbar {
+    width:8px;
+    background-color:transparent;
+}
+#dropbeat .search-result-section::-webkit-scrollbar-thumb {
+    background-color: #1e1e1e;
+    border-radius: 4px;
+    border:1px solid #333333;
+}
+#dropbeat .search-result-section::-webkit-scrollbar-thumb:hover {
+    background-color:#111;
+    border:1px solid #333333;
+}
+#dropbeat .search-result-section::-webkit-scrollbar-thumb:active {
+    background-color:#111;
+    border:1px solid #333333;
 }
 #dropbeat .contents .body-section .search-result-section .search-result-item {
   padding: 10px 15px;
@@ -677,17 +694,6 @@ input[type='submit'] {
 }
 #dropbeat .contents .body-section .search-spinner .status {
   margin-left: 5px;
-}
-#dropbeat .contents .body-section .autocomplete-filter {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 50;
-  margin-left: -80px;
-  margin-right: -80px;
 }
 #dropbeat .contents .body-section .search-section {
   position: absolute;
@@ -747,6 +753,13 @@ input[type='submit'] {
   height: 25px;
   background-image: url("../images/sprites.png");
   background-position: -100px 0;
+}
+#dropbeat .contents .body-section .search-section .search-autocomplete.overlay {
+  margin-top: 3px;
+  background: #111111;
+  -webkit-opacity: 0.85;
+  -moz-opacity: 0.85;
+  opacity: 0.85;
 }
 #dropbeat .contents .body-section .search-section .autocomplete-items {
   padding-top: 10px;

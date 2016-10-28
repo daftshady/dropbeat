@@ -18,11 +18,11 @@ function User (params) {
 
 function UserManager () {
   var menus = $('.account-menus'),
-      tmplSignout = $('#tmpl-signout'),
-      tmplSignin = $('#tmpl-signin'),
+      tmplSignout, tmplSignin,
 
   fillMenu = function () {
     var render;
+
     if (this.currentUser != null) {
       render = handlebars.compile(tmplSignout.html());
 
@@ -73,6 +73,9 @@ function UserManager () {
   this.currentUser = null;
 
   this.init = function () {
+    tmplSignout = $('#tmpl-signout');
+    tmplSignin = $('#tmpl-signin');
+
     $.get(api.Router.getPath('user'))
       .done(function (resp) {
         if (resp.success) {
