@@ -10,10 +10,10 @@ require.config({
 });
 
 require([
-  'dropbeat', 'handlebars'
+  'dropbeat', 'jquery'
 
-], function (Dropbeat, handlebars) {
-  Dropbeat.initialize();
+], function (Dropbeat, $) {
+  $(document).ready(Dropbeat.initialize);
 });
 
 // eslint-disable-next-line no-unused-vars
