@@ -96,7 +96,13 @@ function YoutubeDriver () {
   };
 };
 
+function SearchManager () {
+  this.autoCompletor = new AutoCompletor(new YoutubeDriver());
 
-return new AutoCompletor(new YoutubeDriver());
+
+};
+
+
+return new SearchManager();
 
 });
