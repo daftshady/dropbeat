@@ -2,7 +2,7 @@
 
 define([
   'jquery', 'handlebars', 'api'
-], function ($, handlebars, api) {
+], function ($, hb, api) {
 
 /**
   * Defines modules for search features such as autocomplete, youtube & soundcloud
@@ -94,19 +94,21 @@ function YoutubeDriver () {
 function SearchManager () {
   this.searchBar = $('#search-input');
 
+  this.autoCompletor = new AutoCompletor(this.searchBar, new YoutubeDriver());
+
   this.init = function () {
     // Bind events to search bar.
-    var that = this, searchBar = $('#search-input'),
-        autoCompletor = new AutoCompletor(that.searchBar, new YoutubeDriver());
+    var that = this, searchBar = $('#search-input');
 
     searchBar.keyup(function (e) {
       var query = $(this).val();
 
       // 13 is keycode for `enter`
       if (e.which === 13) {
+        that.autoCompletor.clearItems();
         that.search(query);
       } else {
-        autoCompletor.handleKeyEvent(query, e);
+        that.autoCompletor.handleKeyEvent(query, e);
       }
     });
   };
@@ -146,6 +148,7 @@ function SearchManager () {
                 clearPoller(poller);
 
                 // Update search result view.
+                that.updateView(resp.data);
               } else {
                 // TODO: Check error code.
                 if (curPoll < maxPoll) {
@@ -168,7 +171,14 @@ function SearchManager () {
     });
   };
 
-  this.updateView = function () {};
+  this.updateView = function (data) {
+    var template = hb.compile($('#search-result-template').html()),
+        items = {searchResults: data},
+        renderedHtml = template(items);
+
+    // Render search result
+    $('.search-result-section').append(renderedHtml);
+  };
 
   this.searching = false;
 };

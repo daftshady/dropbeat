@@ -168,7 +168,20 @@
             <img src="/images/ajax-loader.gif"/>
             <span class="status">SEARCHING</span>
           </div>
-          <div class="search-result-section"></div>
+          <div class="search-result-section">
+            <script id="search-result-template" type="text/x-handlebars-template">
+                {{#searchResults}}
+                <div class="search-result-item">
+                  <img class="item-thumbnail" src="{{thumbnail}}" />
+                  <div class="item-content">
+                    <div class="item-id">{{uid}}</div>
+                    <div class="item-title">{{title}}</div>
+                    <div class="item-duration">{{duration}}</div>
+                  </div>
+                </div>
+                {{/searchResults}}
+            </script>
+          </div>
         </div>
         <div class="bg-body-filter"></div>
         <div class="footer-section">
