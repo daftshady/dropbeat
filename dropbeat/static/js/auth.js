@@ -33,18 +33,33 @@ function UserManager () {
     } else {
       menus.html(tmplSignin);
       menus.find('.signin-btn').click(signin);
+      menus.find('.signup-btn').click(signup);
     }
   },
 
-  // Just open dialog (DO NOT sign in really).
+  // Function signin and signup just open dialog (DO NOT sign in/up really).
   signin = function () {
-    var container = $('#dropbeat').find('.signin-container').show();
+    var container = $('#dropbeat').find('.signin-container').show(),
+        form = container.find('.signin').show();
 
-    container.find('.form-wrapper .cancel')
+    form.find('.cancel')
       .click(function () {
         container.hide();
+        form.hide();
         // NOTE Click listener of cancel button is removed
         // or multiple-call is invoked.
+        $(this).off('click');
+      });
+  },
+
+  signup = function () {
+    var container = $('#dropbeat').find('.signin-container').show(),
+        form = container.find('.signup').show();
+
+    form.find('.cancel')
+      .click(function () {
+        container.hide();
+        form.hide();
         $(this).off('click');
       });
   },
