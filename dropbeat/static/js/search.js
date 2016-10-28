@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'jquery'
-], function ($) {
+  'jquery', 'handlebars', 'api'
+], function ($, handlebars, api) {
 
 /**
   * Defines modules for search features such as autocomplete, youtube & soundcloud
@@ -10,9 +10,9 @@ define([
   *
   */
 
-function AutoCompletor (driver) {
+function AutoCompletor (searchBar, driver) {
   // Search form
-  this.searchBar = $('#search-input');
+  this.searchBar = searchBar;
 
   // View which holds resulting autocompleted words
   this.wordList = $('#autocomplete-words');
@@ -24,43 +24,38 @@ function AutoCompletor (driver) {
   // field becomes empty.
   this.lastInputLen = 0;
 
-  // Binds event listener which detects keyboard input to search bar.
-  this.init = function () {
+  this.handleKeyEvent = function (query, event) {
     var that = this;
 
-    this.searchBar.keyup(function (event) {
-      var query = $(this).val();
+    if (that.lastInputLen > 0 && query.length === 0) {
+      // Clear items as existing string has been removed
+      that.clearItems();
+    }
 
-      if (that.lastInputLen > 0 && query.length === 0) {
-        // Clear items as existing string has been removed
+    if (query.length > 0) {
+      driver.fetch(query, function (parsedResult) {
+        // `parsedResult` should be a list of suggested strings.
+        var i, maxResult = 10;
+
         that.clearItems();
-      }
 
-      if (query.length > 0) {
-        driver.fetch(query, function (parsedResult) {
-          // `parsedResult` should be a list of suggested strings.
-          var i, maxResult = 10;
+        // Update view with the result
+        for (i = 0; i < parsedResult.length; i++) {
+          $('<ul />', {
+            class: that.itemClass,
+            text: parsedResult[i]
+          }).appendTo(that.wordList);
 
-          that.clearItems();
-
-          // Update view with the result
-          for (i = 0; i < parsedResult.length; i++) {
-            $('<ul />', {
-              class: that.itemClass,
-              text: parsedResult[i]
-            }).appendTo(that.wordList);
-
-            if (i === maxResult) {
-              break;
-            }
+          if (i === maxResult) {
+            break;
           }
+        }
 
-          that.lastInputLen = query.length;
-        });
-      } else {
-        that.lastInputLen = 0;
-      }
-    });
+        that.lastInputLen = query.length;
+      });
+    } else {
+      that.lastInputLen = 0;
+    }
   };
 
   this.clearItems = function () {
@@ -97,9 +92,85 @@ function YoutubeDriver () {
 };
 
 function SearchManager () {
-  this.autoCompletor = new AutoCompletor(new YoutubeDriver());
+  this.searchBar = $('#search-input');
 
+  this.init = function () {
+    // Bind events to search bar.
+    var that = this, searchBar = $('#search-input'),
+        autoCompletor = new AutoCompletor(that.searchBar, new YoutubeDriver());
 
+    searchBar.keyup(function (e) {
+      var query = $(this).val();
+
+      // 13 is keycode for `enter`
+      if (e.which === 13) {
+        that.search(query);
+      } else {
+        autoCompletor.handleKeyEvent(query, e);
+      }
+    });
+  };
+
+  this.search = function (query) {
+    var that = this;
+    // send request to execute search asynchronously
+    if (that.searching) {
+      // If a user press enter again while waiting for search result.
+      return;
+    }
+
+    that.searching = true;
+    $.ajax({
+      url: api.Router.getPath('searchAsync'),
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify({q: query}),
+      contentType: 'application/json; charset=utf-8',
+      success: function (keyResp) {
+        var curPoll = 0, maxPoll = 10;
+
+        // We've got the key. Let's start polling.
+        function clearPoller(poller) {
+          clearInterval(poller);
+          that.searching = false;
+        }
+
+        var poller = setInterval(function () {
+          $.ajax({
+            url: api.Router.getPath('searchAsync'),
+            type: 'GET',
+            dataType: 'json',
+            data: {key: keyResp.data},
+            success: function (resp) {
+              if (resp.success) {
+                clearPoller(poller);
+
+                // Update search result view.
+              } else {
+                // TODO: Check error code.
+                if (curPoll < maxPoll) {
+                  curPoll += 1;
+                } else {
+                  // Timeout expired.
+                  clearPoller(poller);
+                }
+              }
+            },
+            error: function () {
+              clearPoller(poller);
+            }
+          });
+        }, 500);
+      },
+      error: function (keyResp) {
+        that.searching = false;
+      }
+    });
+  };
+
+  this.updateView = function () {};
+
+  this.searching = false;
 };
 
 
