@@ -147,11 +147,6 @@ function PlayerEventListener () {
           manager.resume();
           break;
         case manager.STATUS.STOPPED:
-          manager.play({
-            id: '-dya3o2HjAY',
-            type: 'youtube',
-            title: 'ZHU - automatic',
-          });
           break;
         default:
           break;
@@ -219,9 +214,14 @@ function PlayerEventListener () {
 
   setStatus = function (playstat) {
     playerStatus.stat.text(playstat);
-  };
+  },
 
 // Repeat & shuffle.
+  setShuffle = function (shuffled) {
+  },
+
+  setRepeat = function (repeated) {
+  };
 };
 
 return new PlayerEventListener();

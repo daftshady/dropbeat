@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'jquery', 'handlebars', 'api'
-], function ($, hb, api) {
+  'jquery', 'handlebars', 'api', 'playermanager'
+], function ($, hb, api, playerManager) {
 
 /**
   * Defines modules for search features such as autocomplete, youtube & soundcloud
@@ -186,12 +186,26 @@ function SearchManager () {
   this.updateView = function (data) {
     var template = hb.compile($('#search-result-template').html()),
         items = {searchResults: data},
-        renderedHtml = template(items);
-    // Clear existing view
-    $('.search-result-item').remove();
+        renderedHtml = template(items),
+        clickable = '.item-wrapper',
+        container = $('.search-result-section');
 
     // Render search result
-    $('.search-result-section').append(renderedHtml);
+    container.html(renderedHtml);
+    container.find(clickable).click(function () {
+      var uid = $(this).attr('data-uid'),
+          title = $(this).find('.item-title').text();
+
+      if (uid.length !== 11) {
+        throw 'Invalid track id.';
+      }
+
+      playerManager.play({
+        type: 'youtube',
+        id: uid,
+        title: title
+      });
+    })
   };
 
   this.searching = false;

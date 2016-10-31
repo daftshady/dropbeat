@@ -78,7 +78,7 @@ function YoutubePlayer () {
   var onReady = function (event) {
     var key;
     for (key in playCallbacks.onReady) {
-      if (playCallbacks.onPlay.hasOwnProperty(key)) {
+      if (playCallbacks.onReady.hasOwnProperty(key)) {
         playCallbacks.onReady[key](event);
       }
     }
@@ -95,7 +95,7 @@ function YoutubePlayer () {
 
   onPause = function () {
     var key;
-    for (key in playCallbacks.onPlay) {
+    for (key in playCallbacks.onPause) {
       if (playCallbacks.onPause.hasOwnProperty(key)) {
         playCallbacks.onPause[key]();
       }
@@ -103,6 +103,12 @@ function YoutubePlayer () {
   },
 
   onFinish = function () {
+    var key;
+    for (key in playCallbacks.onFinish) {
+      if (playCallbacks.onFinish.hasOwnProperty(key)) {
+        playCallbacks.onFinish[key]();
+      }
+    }
   },
 
   onStateChange = function (event) {
