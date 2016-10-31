@@ -17,8 +17,7 @@ function User (params) {
  */
 
 function UserManager () {
-  var menus = $('.account-menus'),
-      tmplSignout, tmplSignin,
+  var menus, tmplSignout, tmplSignin,
 
   fillMenu = function () {
     var render;
@@ -73,6 +72,7 @@ function UserManager () {
   this.currentUser = null;
 
   this.init = function () {
+    menus = $('.account-menus');
     tmplSignout = $('#tmpl-signout');
     tmplSignin = $('#tmpl-signin');
 

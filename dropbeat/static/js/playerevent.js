@@ -121,22 +121,26 @@ function ProgressHandler () {
  */
 
 function PlayerEventListener () {
-  var root = $('#player'),
-      buttons = {
-        playToggle: root.find('.ctrl.ctrl-play'),
-        prev: root.find('.ctrl.ctrl-prev'),
-        next: root.find('.ctrl.ctrl-next'),
-        repeat: root.find('.ctrl.ctrl-repeat'),
-        shuffle: root.find('.ctrl.ctrl-shuffle')
-      },
-      playerStatus = {
-        stat: root.find('.status'),
-        title: root.find('.title')
-      },
-      progress = new ProgressHandler();
+  var that = this;
 
   this.init = function () {
-    buttons.playToggle.click(function () {
+    var root = $('#player'),
+        progress = new ProgressHandler();
+
+    that.buttons = {
+      playToggle: root.find('.ctrl.ctrl-play'),
+      prev: root.find('.ctrl.ctrl-prev'),
+      next: root.find('.ctrl.ctrl-next'),
+      repeat: root.find('.ctrl.ctrl-repeat'),
+      shuffle: root.find('.ctrl.ctrl-shuffle')
+    };
+
+    that.playerStatus = {
+      stat: root.find('.status'),
+      title: root.find('.title')
+    };
+
+    that.buttons.playToggle.click(function () {
       var playstat = manager.getStatus();
 
       switch(playstat) {
@@ -153,23 +157,23 @@ function PlayerEventListener () {
       }
     });
 
-    buttons.prev.click(function () {
+    that.buttons.prev.click(function () {
     });
 
-    buttons.next.click(function () {
+    that.buttons.next.click(function () {
     });
 
-    buttons.repeat.click(function () {
+    that.buttons.repeat.click(function () {
     });
 
-    buttons.shuffle.click(function () {
+    that.buttons.shuffle.click(function () {
     });
 
     manager.setPlayCallbacks({
       onReady: function () {
         setStatus('READY');
         setTitle('CHOOSE TRACK FROM PLAYLIST');
-        buttons.playToggle.removeClass('disabled');
+        that.buttons.playToggle.removeClass('disabled');
       },
       onPlay: function (track) {
         setTitle(track.title);
@@ -198,22 +202,22 @@ function PlayerEventListener () {
 
 // Play button
   var setPlay = function () {
-    buttons.playToggle.addClass('pause');
+    that.buttons.playToggle.addClass('pause');
     setStatus('PLAYING');
   },
 
   setPaused = function () {
-    buttons.playToggle.removeClass('pause');
+    that.buttons.playToggle.removeClass('pause');
     setStatus('PAUSED');
   },
 
 // Title & status text.
   setTitle = function (title) {
-    playerStatus.title.text(title);
+    that.playerStatus.title.text(title);
   },
 
   setStatus = function (playstat) {
-    playerStatus.stat.text(playstat);
+    that.playerStatus.stat.text(playstat);
   },
 
 // Repeat & shuffle.

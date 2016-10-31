@@ -66,8 +66,7 @@ function PlayerBase () {
  */
 
 function YoutubePlayer () {
-  var id = 'youtube-player',
-      playerImpl, currentTrack,
+  var playerImpl, currentTrack,
       playCallbacks = {
         onReady: [],
         onPlay: [],
@@ -145,7 +144,7 @@ function YoutubePlayer () {
   this.type = 'youtube';
 
   this.init = function () {
-    playerImpl = new YT.Player(id, {
+    playerImpl = new YT.Player('youtube-player', {
       videoId: 'x',
       playerVars: {},
       events: {
