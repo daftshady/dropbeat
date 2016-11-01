@@ -17,7 +17,8 @@ function User (params) {
  */
 
 function UserManager () {
-  var menus, tmplSignout, tmplSignin,
+  var that = this,
+      menus, tmplSignout, tmplSignin,
 
   fillMenu = function () {
     var render;
@@ -70,6 +71,15 @@ function UserManager () {
   };
 
   this.currentUser = null;
+  this.loginCallbacks = [];
+
+  this.onLogin = function (callback) {
+    if (this.currentUser === null) {
+      this.loginCallbacks.push(callback);
+    } else {
+      callback();
+    }
+  };
 
   this.init = function () {
     menus = $('.account-menus');
@@ -78,8 +88,14 @@ function UserManager () {
 
     $.get(api.Router.getPath('user'))
       .done(function (resp) {
+        var key;
         if (resp.success) {
-          this.currentUser = new User(resp.user);
+          that.currentUser = new User(resp.user);
+          for (key in that.loginCallbacks) {
+            if (that.loginCallbacks.hasOwnProperty(key)) {
+              that.loginCallbacks[key]();
+            }
+          }
         }
       })
       .always(fillMenu);
