@@ -631,6 +631,9 @@ input[type='submit'] {
   scrollbar-track-color: #1e1e1e;
   scrollbar-darkshadow-color: #4b4b4b;
 }
+#dropbeat .contents .body-section .spinner {
+  background: url("../images/ajax-spinner.gif") center center no-repeat;
+}
 #dropbeat .search-result-section::-webkit-scrollbar {
     width:8px;
     background-color:transparent;
@@ -658,6 +661,9 @@ input[type='submit'] {
   display: inline-block;
   cursor: pointer;
 }
+#dropbeat .contents .body-section .search-result-section .search-result-item .item-thumbnail:hover {
+  opacity: 0.5;
+}
 #dropbeat .contents .body-section .search-result-section .search-result-item .item-content {
   position: relative;
   display: inline-block;
@@ -665,17 +671,22 @@ input[type='submit'] {
   width: 550px;
 }
 #dropbeat .contents .body-section .search-result-section .search-result-item .item-content .item-title {
-  margin-top: 30px;
+  position: absolute;
+  left: 0px;
+  margin-top: 10px;
   margin-left: 10px;
   font-size: 20px;
   color: #167ac6;
   font: 15px Roboto,arial,sans-serif;
   cursor: pointer;
 }
+#dropbeat .contents .body-section .search-result-section .search-result-item .item-content .item-title:hover {
+  text-decoration: underline;
+}
 #dropbeat .contents .body-section .search-result-section .search-result-item .item-content .item-duration {
   position: absolute;
-  bottom: 0px;
-  margin-bottom: 30px;
+  bottom: 10px;
+  left: 0px;
   margin-left: 10px;
   color: #fff;
   font: 12px Roboto,arial,sans-serif;

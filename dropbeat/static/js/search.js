@@ -106,6 +106,8 @@ function YoutubeDriver () {
 function SearchManager () {
   this.searchBar = $('#search-input');
 
+  this.searchResultSection = $('.search-result-section');
+
   this.autoCompletor = new AutoCompletor(this.searchBar, new YoutubeDriver());
 
   this.init = function () {
@@ -133,7 +135,9 @@ function SearchManager () {
       return;
     }
 
+    that.showSpinner();
     that.searching = true;
+
     $.ajax({
       url: api.Router.getPath('searchAsync'),
       type: 'POST',
@@ -141,12 +145,13 @@ function SearchManager () {
       data: JSON.stringify({q: query}),
       contentType: 'application/json; charset=utf-8',
       success: function (keyResp) {
-        var curPoll = 0, maxPoll = 10;
+        var curPoll = 0, maxPoll = 10, pollIntervalMillis = 500;
 
         // We've got the key. Let's start polling.
         function clearPoller(poller) {
           clearInterval(poller);
           that.searching = false;
+          that.hideSpinner();
         }
 
         var poller = setInterval(function () {
@@ -175,7 +180,7 @@ function SearchManager () {
               clearPoller(poller);
             }
           });
-        }, 500);
+        }, pollIntervalMillis);
       },
       error: function (keyResp) {
         that.searching = false;
@@ -187,28 +192,41 @@ function SearchManager () {
     var template = hb.compile($('#search-result-template').html()),
         items = {searchResults: data},
         renderedHtml = template(items),
-        clickable = '.item-wrapper',
-        container = $('.search-result-section');
+        clickable = ['.item-title', '.item-thumbnail'],
+        container = this.searchResultSection;
 
-    // Render search result
-    container.html(renderedHtml);
-    container.find(clickable).click(function () {
-      var uid = $(this).attr('data-uid'),
-          title = $(this).find('.item-title').text();
+    // Event which will be fired when search result item is clicked.
+    function onItemClicked (item) {
+      var uid = item.attr('data-uid'),
+          title = item.find('.item-title').text();
 
-      if (uid.length !== 11) {
-        throw 'Invalid track id.';
-      }
-
+      // Play music. Other platforms except for youtube are not implemented yet.
       playerManager.play({
         type: 'youtube',
         id: uid,
         title: title
+      });     
+    }
+
+    // Render search result and attach click listeners.
+    container.html(renderedHtml);
+    for (var i = 0; i < clickable.length; i++) {
+      container.find(clickable[i]).click(function () {
+        var itemWrapper = $(this).closest('.item-wrapper');
+        onItemClicked(itemWrapper);
       });
-    })
+    }
   };
 
   this.searching = false;
+
+  this.showSpinner = function () {
+    this.searchResultSection.addClass('spinner');
+  };
+
+  this.hideSpinner = function () {
+    this.searchResultSection.removeClass('spinner');
+  }
 };
 
 
