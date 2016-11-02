@@ -776,6 +776,10 @@ input[type='submit'] {
 }
 #dropbeat .contents .body-section .search-section .autocomplete-items {
   padding-top: 10px;
+  padding-bottom: 10px;
   padding-left: 42px;
   color: white;
+}
+#dropbeat .contents .body-section .search-section .autocomplete-items-selected {
+  background-color: #6845ce;
 }

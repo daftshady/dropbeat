@@ -24,6 +24,12 @@ function AutoCompletor (searchBar, driver) {
   // field becomes empty.
   this.lastInputLen = 0;
 
+  // Word in wordlist can be selected by pressing arrow up/down button.
+  // XXX: Actual item starts with 1 because 0 is `autocomplete-bg` 
+  // We should move it to another level as it's so confusing to include non-item in
+  // `autocomplete-items`.
+  this.selectedIdx = 0;
+
   this.handleKeyEvent = function (query, event) {
     var that = this;
 
@@ -55,6 +61,7 @@ function AutoCompletor (searchBar, driver) {
           }
         }
 
+        that.resetSelectedIdx();
         that.lastInputLen = query.length;
       });
     } else if (query.length === 0) {
@@ -72,6 +79,55 @@ function AutoCompletor (searchBar, driver) {
 
   this.hideWordList = function () {
     this.wordList.hide();
+  };
+
+  // Select next, prev words.
+  this.selectNext = function () {
+    if (this.selectedIdx < this.wordList.children().length - 1) {
+      this.clearSelectedItem(this.selectedIdx);
+      this.selectedIdx++;
+      this.selectTo(this.selectedIdx);
+    }
+  };
+
+  this.selectPrev = function () {
+    if (this.selectedIdx > 1) {
+      this.clearSelectedItem(this.selectedIdx);
+      this.selectedIdx--;
+      this.selectTo(this.selectedIdx);
+    }
+  };
+
+  this.clearSelectedItem = function () {
+    // This method is used to clear style of previously selected item without
+    // updating `selectedIdx`.
+    var children = this.wordList.children();
+    for (var i = 0; i < children.length; i++) {
+      $(children[i]).removeClass('autocomplete-items-selected');
+    }
+  }
+
+  this.selectTo = function (idx) {
+    var item = this.wordList.children()[idx];
+    $(item).addClass('autocomplete-items-selected');
+
+    // If this method is called from selectNext, selectPrev,
+    // `selectedIdx` will be updated twice with the same value.
+    // While it may seem to be buggy, this ensures that `selectedIdx` is updated 
+    // correctly even if this method is called outside context.
+    this.selectedIdx = idx;
+  }
+
+  this.selectFirst = function () {
+    this.selectTo(1);
+  }
+
+  this.getSelectedText = function () {
+    return $(this.wordList.children()[this.selectedIdx]).text();
+  }
+
+  this.resetSelectedIdx = function () {
+    this.selectedIdx = 0;
   };
 };
 
@@ -114,13 +170,37 @@ function SearchManager () {
     // Bind events to search bar.
     var that = this, searchBar = $('#search-input');
 
+    searchBar.keydown(function (e) {
+      // For arrow up/down, we ignore default behavior in text field
+      // (move cursor to front/back of the text) by calling `preventDefault`.
+      if (e.which == 38 || e.which == 40) {
+        e.preventDefault();
+      }
+    });
+
     searchBar.keyup(function (e) {
       var query = $(this).val();
 
-      // 13 is keycode for `enter`
       if (e.which === 13) {
+        // keycode for `enter`
         that.autoCompletor.hideWordList();
+
+        // If selected autocompletion item exists, we it as a search query.
+        var selectedText = that.autoCompletor.getSelectedText();
+        if (selectedText.length !== 0) {
+          query = selectedText;
+
+          // Change value in search input also.
+          that.searchBar.val(query);
+        }
+
         that.search(query);
+      } else if (e.which == 38) {
+        // keycode for arrow up.
+        that.autoCompletor.selectPrev();
+      } else if (e.which == 40) {
+        // keycode for arrow down.
+        that.autoCompletor.selectNext();
       } else {
         that.autoCompletor.handleKeyEvent(query, e);
       }
