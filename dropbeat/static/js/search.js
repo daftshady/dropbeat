@@ -205,7 +205,7 @@ function SearchManager () {
         type: 'youtube',
         id: uid,
         title: title
-      });     
+      });
     }
 
     // Render search result and attach click listeners.

@@ -138,8 +138,12 @@ function YoutubePlayer () {
       if (callbacks.hasOwnProperty(key) && key in playCallbacks) {
         playCallbacks[key].push(callbacks[key]);
       }
+
+      if (key === 'onReady' && playerImpl !== null) {
+        callbacks[key]();
+      }
     }
-  }
+  };
 
   this.type = 'youtube';
 

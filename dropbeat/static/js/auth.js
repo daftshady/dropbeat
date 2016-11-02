@@ -23,10 +23,10 @@ function UserManager () {
   fillMenu = function () {
     var render;
 
-    if (this.currentUser != null) {
+    if (that.currentUser !== null) {
       render = handlebars.compile(tmplSignout.html());
 
-      menus.html(render({email: this.currentUser.email}));
+      menus.html(render({email: that.currentUser.email}));
       menus.find('.signout-btn').click(signout);
     } else {
       render = handlebars.compile(tmplSignin.html());

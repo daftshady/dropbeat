@@ -43,6 +43,24 @@
         </div>
         {{/searchResults}}
     </script>
+    <script id="playlist-track-template" type="text/x-handlebars-template">
+      {{#tracks}}
+      <li class="playlist-track">
+        <div class="playlist-track-inner">
+          <a class="track-title-wrapper">
+            <span class="track-index">{{@key}}.</span>
+            <span class="track-on-icon"></span>
+            <span class="track-title-scroll-wrapper">
+            <span class="track-title">{{name}}</span>
+            </span>
+          </a>
+          <div class="menus">
+            <a class="track-remove">remove</a>
+          </div>
+        </div>
+      </li>
+      {{/tracks}}
+    </script>
   </head>
   <body>
     <div id="dropbeat">
@@ -166,10 +184,6 @@
             <div id="autocomplete-words" class="search-autocomplete overlay">
               <div class="autocomplete-bg"></div>
             </div>
-          </div>
-          <div class="search-spinner">
-            <img src="/images/ajax-loader.gif"/>
-            <span class="status">SEARCHING</span>
           </div>
           <div class="search-result-section"></div>
         </div>

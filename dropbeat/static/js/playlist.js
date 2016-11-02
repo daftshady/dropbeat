@@ -7,8 +7,10 @@ define([
  * Playlist Constructor.
  */
 
-function Playlist (params) {
+function Playlist (uid, tracks) {
   var innerList = [];
+
+  this.uid = uid;
 
   this.get = function (idx) {
     if (idx < innerList.length) {
@@ -20,7 +22,7 @@ function Playlist (params) {
     var i, len = innerList.length;
 
     for (i = 0; i < len; i += 1) {
-      if (inenrList[i].id === musicId) {
+      if (innerList[i].id === track.uid) {
         return i;
       }
     }
@@ -65,8 +67,8 @@ function Playlist (params) {
     return innerList.length === 0;
   };
 
-  if (params instanceof Array) {
-    innerList = innerList.concat(params);
+  if (tracks instanceof Array) {
+    innerList = innerList.concat(tracks);
   }
 };
 
