@@ -2,12 +2,14 @@
 
 define([
   'jquery', 'playermanager'
-], function ($, manager) {
+], function ($, getManager) {
 
 /**
  * Progress is in player and is responsible for
  * updating progress (when playing) and handling player's seek actions.
  */
+
+var manager = getManager();
 
 function ProgressHandler () {
   var root = $('#player').find('.progress'),
@@ -176,7 +178,7 @@ function PlayerEventListener () {
         that.buttons.playToggle.removeClass('disabled');
       },
       onPlay: function (track) {
-        setTitle(track.title);
+        setTitle(track.name);
         setPlay();
         progress.start();
       },

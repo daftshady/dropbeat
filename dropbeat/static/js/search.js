@@ -25,7 +25,7 @@ function AutoCompletor (searchBar, driver) {
   this.lastInputLen = 0;
 
   // Word in wordlist can be selected by pressing arrow up/down button.
-  // XXX: Actual item starts with 1 because 0 is `autocomplete-bg` 
+  // XXX: Actual item starts with 1 because 0 is `autocomplete-bg`
   // We should move it to another level as it's so confusing to include non-item in
   // `autocomplete-items`.
   this.selectedIdx = 0;
@@ -113,7 +113,7 @@ function AutoCompletor (searchBar, driver) {
 
     // If this method is called from selectNext, selectPrev,
     // `selectedIdx` will be updated twice with the same value.
-    // While it may seem to be buggy, this ensures that `selectedIdx` is updated 
+    // While it may seem to be buggy, this ensures that `selectedIdx` is updated
     // correctly even if this method is called outside context.
     this.selectedIdx = idx;
   }
@@ -173,7 +173,7 @@ function SearchManager () {
     searchBar.keydown(function (e) {
       // For arrow up/down, we ignore default behavior in text field
       // (move cursor to front/back of the text) by calling `preventDefault`.
-      if (e.which == 38 || e.which == 40) {
+      if (e.which === 38 || e.which === 40) {
         e.preventDefault();
       }
     });
@@ -195,10 +195,10 @@ function SearchManager () {
         }
 
         that.search(query);
-      } else if (e.which == 38) {
+      } else if (e.which === 38) {
         // keycode for arrow up.
         that.autoCompletor.selectPrev();
-      } else if (e.which == 40) {
+      } else if (e.which === 40) {
         // keycode for arrow down.
         that.autoCompletor.selectNext();
       } else {

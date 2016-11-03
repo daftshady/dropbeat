@@ -6,10 +6,10 @@ define(function () {
  * Track object implementation.
  */
 
-function Track (id, title, type) {
-  this.id = id;
-  this.title = title;
-  this.type = type;
+function Track (uid, name, source) {
+  this.uid = uid;
+  this.name = name;
+  this.source = source;
 };
 
 Track.prototype = {

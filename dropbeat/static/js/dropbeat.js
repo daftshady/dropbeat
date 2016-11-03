@@ -1,9 +1,9 @@
 'use strict';
 
 define([
-  'jquery', 'playerevent', 'search', 'auth',
-  'playlistevent'
-], function ($, playerEvent, search, auth, playlistEvent) {
+  'jquery', 'search', 'auth',
+  'playerevent', 'playlistevent'
+], function ($, search, auth, playerEvent, playlistEvent) {
 
 function Dropbeat () {
 };
@@ -18,9 +18,9 @@ Dropbeat.prototype = {
   debug: true,
 
   initialize: function () {
-    playerEvent.init();
-    search.init();
     auth.init();
+    search.init();
+    playerEvent.init();
     playlistEvent.init();
   }
 };

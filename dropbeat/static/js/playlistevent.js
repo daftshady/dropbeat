@@ -1,23 +1,38 @@
 'use strict';
 
 define([
-  'handlebars', 'playlistmanager'
-], function (hb, playlistManager) {
+  'jquery', 'handlebars', 'track',
+  'playlistmanager', 'playermanager'
+], function ($, hb, Track, playlistManager, getPlayerManager) {
+
+var playerManager = getPlayerManager();
 
 /**
  * It binds user actions for playlist.
  */
 function PlaylistEventListener () {
   var that = this,
-      playlists = [],
+      baseQuery = '.playlist-track .playlist-track-inner ',
+      trackTitleQuery = baseQuery + '.track-title-wrapper',
+      trackRemoveQuery = baseQuery + '.menus .track-remove',
       currentPlaylist = null,
 
-  changePlaylist = function (list) {
+  changePlaylist = function (playlist) {
     var template = hb.compile(that.elems.playlistTmpl.html());
 
-    currentPlaylist = list;
-    that.elems.playlistName.text(list.name);
-    that.elems.playlistInner.html(template(list));
+    currentPlaylist = playlist;
+    that.elems.playlistName.text(playlist.name);
+    that.elems.playlistInner.html(template(playlist));
+
+    that.elems.playlistInner.find(trackTitleQuery)
+      .click(function (event) {
+        var elem = $(this),
+            title = elem.find('.track-title').text(),
+            uid = elem.parent().attr('data-uid'),
+            source = elem.parent().attr('data-source');
+
+        playerManager.play(new Track(uid, title, source));
+      });
   };
 
   this.init = function () {
@@ -31,13 +46,12 @@ function PlaylistEventListener () {
       playlistTmpl: $('#playlist-track-template')
     };
 
-    playlistManager.onGetPlaylist(function (list) {
-      if (playlists.length === 0) {
-        changePlaylist(list);
+    playlistManager.onGetPlaylist(function (playlist) {
+      if (currentPlaylist === null) {
+        changePlaylist(playlist);
       }
-
-      playlists.push(list);
     });
+
   };
 };
 

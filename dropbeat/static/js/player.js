@@ -176,7 +176,7 @@ function YoutubePlayer () {
 
     if (track !== undefined) {
       currentTrack = track;
-      playerImpl.loadVideoById(track.id, 0);
+      playerImpl.loadVideoById(track.uid);
     }
   };
 

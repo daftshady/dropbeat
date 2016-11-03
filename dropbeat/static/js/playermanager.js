@@ -30,9 +30,9 @@ function PlayerManager () {
       throw 'Do not play with unspecified track.';
     }
 
-    currentPlayer = players[this.TYPES[track.type]];
-    if (!currentPlayer) {
-      throw 'Player type ' + track.type + ' is not supported.';
+    currentPlayer = players[this.TYPES[track.source]];
+    if (currentPlayer === undefined) {
+      throw 'Player type ' + track.source + ' is not supported.';
     }
 
     currentPlayer.play(track);
@@ -77,6 +77,10 @@ function PlayerManager () {
     }
   };
 
+  this.getCurrentTrack = function () {
+    return currentPlayer.getCurrentTrack();
+  };
+
 // NOTE this manager var should be assigned to `this`. (PlayerManager obj)
 // Because Youtube's iframe api calls this callbacks with changed context.
 // After this, `this` will lose our context. (maybe it will be null)
@@ -99,6 +103,22 @@ function PlayerManager () {
   currentStatus = this.STATUS.NOT_STARTED;
 };
 
-return new PlayerManager();
+// NOTE returning `new PlayerManager()` can construct each object
+// when we import this module multiple times. Because it breaks `player`
+// module's consistency, we made it to singletone and provide
+// as factory method.
+var getInstance = (function (instance) {
+  function wrap () {
+    if (instance === null) {
+      instance = new PlayerManager();
+    }
+
+    return instance;
+  };
+
+  return wrap;
+})(null);
+
+return getInstance;
 
 });

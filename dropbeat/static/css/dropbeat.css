@@ -831,6 +831,7 @@ input[type='submit'] {
   display: inline-block;
   overflow: hidden;
   float: left;
+  cursor: pointer;
 }
 #dropbeat .play-controls .playlist-section .playlist .playlist-inner .playlist-track .track-title-wrapper .track-index {
   min-width: 15px;
@@ -872,7 +873,6 @@ input[type='submit'] {
   margin-right: 10px;
 }
 #dropbeat .play-controls .playlist-section .playlist .playlist-inner .playlist-track .track-title-wrapper .track-title-scroll-wrapper .track-title {
-  cursor: pointer;
   position: absolute;
   left: 0;
   height: 15px;

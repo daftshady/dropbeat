@@ -7,22 +7,24 @@ define([
  * Playlist Constructor.
  */
 
-function Playlist (uid, tracks) {
-  var innerList = [];
+function Playlist (uid, name, tracks) {
+  var that = this;
 
+  this.name = name;
   this.uid = uid;
+  this.tracks = tracks || [];
 
   this.get = function (idx) {
-    if (idx < innerList.length) {
-      return innerList[idx];
+    if (idx < that.tracks.length) {
+      return that.tracks[idx];
     }
   };
 
   this.index = function (track) {
-    var i, len = innerList.length;
+    var i, len = that.tracks.length;
 
     for (i = 0; i < len; i += 1) {
-      if (innerList[i].id === track.uid) {
+      if (that.tracks[i].id === track.uid) {
         return i;
       }
     }
@@ -31,45 +33,41 @@ function Playlist (uid, tracks) {
   };
 
   this.add = function (track) {
-    var idx = this.index(track);
+    var idx = that.index(track);
 
     if (idx !== -1) {
       return false;
     }
 
-    innerList.push(track);
+    that.tracks.push(track);
     return true;
   };
 
   this.remove = function (track) {
-    var idx = this.index(track);
+    var idx = that.index(track);
 
     if (idx === -1) {
       return false;
     }
 
-    innerList.splice(idx, 1);
+    that.tracks.splice(idx, 1);
   };
 
   this.toArray = function () {
-    return innerList;
+    return that.tracks;
   };
 
   this.clear = function () {
-    innerList = [];
+    that.tracks = [];
   };
 
   this.size = function () {
-    return innerList.length;
+    return that.tracks.length;
   };
 
   this.isEmpty = function () {
-    return innerList.length === 0;
+    return that.tracks.length === 0;
   };
-
-  if (tracks instanceof Array) {
-    innerList = innerList.concat(tracks);
-  }
 };
 
 return Playlist;

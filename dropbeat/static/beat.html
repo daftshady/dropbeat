@@ -46,12 +46,12 @@
     <script id="playlist-track-template" type="text/x-handlebars-template">
       {{#tracks}}
       <li class="playlist-track">
-        <div class="playlist-track-inner">
+        <div class="playlist-track-inner" data-uid={{uid}} data-source={{source}}>
           <a class="track-title-wrapper">
             <span class="track-index">{{@key}}.</span>
             <span class="track-on-icon"></span>
             <span class="track-title-scroll-wrapper">
-            <span class="track-title">{{name}}</span>
+              <span class="track-title">{{name}}</span>
             </span>
           </a>
           <div class="menus">

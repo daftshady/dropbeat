@@ -18,10 +18,13 @@ function PlaylistManager () {
 
       .done(function (resp) {
         if (resp.success) {
-          playlists.push(resp.playlist);
+          var playlist = new Playlist(resp.playlist.uid,
+                                      resp.playlist.name,
+                                      resp.playlist.tracks);
+          playlists.push(playlist);
 
           if (onGetPlaylist !== null) {
-            onGetPlaylist(resp.playlist);
+            onGetPlaylist(playlist);
           }
         }
       });
