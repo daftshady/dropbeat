@@ -900,6 +900,14 @@ input[type='submit'] {
 #dropbeat .play-controls .playlist-section .playlist .playlist-inner .playlist-track.on .track-on-icon {
   display: block;
 }
+#dropbeat .play-controls .playlist-section .playlist .playlist-inner .playlist-track .track-title-wrapper .track-on-icon .ic {
+  width: 11px;
+  height: 12px;
+  margin-top: 2px;
+  background-image: url("../images/sprites.png");
+  background-position: -17px 0;
+  display: inline-block;
+}
 #dropbeat .play-controls .playlist-section .playlist .playlist-inner .playlist-track.on .track-title {
   text-decoration: underline;
 }

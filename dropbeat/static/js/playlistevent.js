@@ -33,6 +33,22 @@ function PlaylistEventListener () {
 
         playerManager.play(new Track(uid, title, source));
       });
+  },
+
+  boldCurrentTrack = function () {
+    var track = playerManager.getCurrentTrack(),
+        elem = $(baseQuery)
+          .filter('[data-uid="' + track.uid + '"]');
+
+    elem.parent().addClass('on');
+  },
+
+  unboldCurrentTrack = function () {
+    var track = playerManager.getCurrentTrack(),
+        elem = $(baseQuery)
+          .filter('[data-uid="' + track.uid + '"]');
+
+    elem.parent().removeClass('on');
   };
 
   this.init = function () {
@@ -53,6 +69,15 @@ function PlaylistEventListener () {
     });
 
   };
+
+  playerManager.setPlayCallbacks({
+    onPlay: function () {
+      boldCurrentTrack();
+    },
+    onFinish: function () {
+      unboldCurrentTrack();
+    }
+  });
 };
 
 return new PlaylistEventListener();
