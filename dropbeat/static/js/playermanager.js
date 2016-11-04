@@ -77,6 +77,10 @@ function PlayerManager () {
     }
   };
 
+  this.getCurrentPlayer = function () {
+    return currentPlayer;
+  };
+
   this.getCurrentTrack = function () {
     return currentPlayer.getCurrentTrack();
   };

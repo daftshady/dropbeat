@@ -37,9 +37,11 @@ function PlaylistEventListener () {
 
   boldCurrentTrack = function () {
     var track = playerManager.getCurrentTrack(),
-        elem = $(baseQuery)
-          .filter('[data-uid="' + track.uid + '"]');
+        elem = $(baseQuery);
 
+    elem.parent().removeClass('on');
+
+    elem = elem.filter('[data-uid="' + track.uid + '"]');
     elem.parent().addClass('on');
   },
 

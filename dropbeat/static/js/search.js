@@ -1,8 +1,10 @@
 'use strict';
 
 define([
-  'jquery', 'handlebars', 'api', 'playermanager'
-], function ($, hb, api, playerManager) {
+  'jquery', 'handlebars', 'api', 'playermanager', 'track'
+], function ($, hb, api, getPlayerManager, Track) {
+
+var playerManager = getPlayerManager();
 
 /**
   * Defines modules for search features such as autocomplete, youtube & soundcloud
@@ -281,11 +283,7 @@ function SearchManager () {
           title = item.find('.item-title').text();
 
       // Play music. Other platforms except for youtube are not implemented yet.
-      playerManager.play({
-        type: 'youtube',
-        id: uid,
-        title: title
-      });
+      playerManager.play(new Track(uid, title, 'youtube'));
     }
 
     // Render search result and attach click listeners.

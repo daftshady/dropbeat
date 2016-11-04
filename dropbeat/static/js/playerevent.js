@@ -60,7 +60,8 @@ function ProgressHandler () {
   seek = function (event) {
     var stat = manager.getStatus();
     if (stat === manager.STATUS.NOT_STARTED ||
-        stat === manager.STATUS.STOPPED) {
+        (stat === manager.STATUS.STOPPED &&
+         manager.getCurrentPlayer() === undefined)) {
       return;
     }
 
