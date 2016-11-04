@@ -2,15 +2,168 @@
 
 define([
   'jquery', 'handlebars', 'track',
+  'playlist', 'api',
   'playlistmanager', 'playermanager'
-], function ($, hb, Track, playlistManager, getPlayerManager) {
+], function ($, hb, Track, Playlist, api,
+             getPlaylistManager, getPlayerManager) {
 
-var playerManager = getPlayerManager();
+var playerManager = getPlayerManager(),
+    playlistManager = getPlaylistManager();
 
 /**
- * It binds user actions for playlist.
+ * It binds user actions for playlist manipulation.
  */
+
 function PlaylistEventListener () {
+  var that = this,
+      editButton = '.nonedit-mode-view .menus .rename-button',
+      removeButton = '.nonedit-mode-view .menus .remove-button',
+      submitButton = '.edit-mode-view .menus .apply-edit-button',
+      cancelButton = '.edit-mode-view .menus .cancel-edit-button',
+      editContainer = '.edit-mode-view .title-input-field',
+      editValue = '.edit-mode-view form input[type=text]';
+
+  this.playlists = [];
+
+  // this obj represents playlist created by `this.newPlaylist`
+  // but not submitted to server.
+  // Use this for limit creating multiple playlists at once.
+  this.preparedList = null;
+
+  // Open my playlists view.
+  this.openPlaylist = function () {
+    that.elems.myPlaylists.empty();
+    that.elems.root.show();
+
+    var template = hb.compile(that.elems.playlistTmpl),
+        children = $(template(that)).appendTo(that.elems.myPlaylists);
+
+    that.bindEvents(children);
+  };
+
+  this.newPlaylist = function () {
+    if (that.preparedList !== null) {
+      return;
+    }
+
+    // NOTE uid should be assigned after ajax call.
+    // (server will assign uid)
+    var emptyList = new Playlist(null, '', []);
+    emptyList.editing = true;
+
+    that.preparedList = emptyList;
+
+    // To use same temaplate for `playlists` and `playlist`,
+    // this container obj should wrap a playlist.
+    var container = {playlists: [emptyList]},
+        template = hb.compile(that.elems.playlistTmpl),
+        child = $(template(container)).appendTo(that.elems.myPlaylists);
+
+    that.bindEvents(child);
+  };
+
+  this.bindEvents = function (elems) {
+    // edit playlist's name
+    elems.find(editButton).click(function () {
+      $(this).closest('.playlist').addClass('edit-mode');
+    });
+
+    // remove playlist
+    elems.find(removeButton).click(function () {
+      var list = $(this).closest('.playlist'),
+          uid = list.attr('data-uid'),
+          remove = function (path, params) {
+            return $.ajax({
+              url: path,
+              type: 'DELETE',
+              data: JSON.stringify(params)
+            });
+          };
+
+      // FIXME Does playlist-uid have a fixed length?
+      if (uid.length !== 0) {
+        remove(api.Router.getPath('playlist'), {uid: uid})
+          .always(function () {
+            list.remove();
+          });
+      }
+    });
+
+    // apply creation or renaming playlist.
+    elems.find(submitButton).click(function () {
+      var list = $(this).closest('.playlist'),
+          uid = list.attr('data-uid'),
+          name = list.find(editValue).val(),
+          method = $.post;
+
+      if (uid.length !== 0) {
+        // Because there is no `$.put`
+        method = function (path, params) {
+          return $.ajax({
+            url: path,
+            type: 'PUT',
+            data: JSON.stringify(params)
+          });
+        };
+      }
+
+      method(api.Router.getPath('playlist'), {name: name, uid: uid})
+        .done(function (resp) {
+          if (resp.success) {
+            list.removeClass('edit-mode');
+            list.find('.nonedit-mode-view .title').text(name);
+            list.find(editValue).closest(editContainer).removeClass('warning');
+
+            if (list.attr('data-uid').length === 0) {
+              list.attr('data-uid', resp.playlist.uid);
+              that.playlists.push(this.preparedList);
+              that.preparedList = null;
+            }
+          } else {
+            list.find(editValue).closest(editContainer).addClass('warning');
+          }
+        });
+    });
+
+    // cancel renaming playlist
+    elems.find(cancelButton).click(function () {
+      var list = $(this).closest('.playlist')
+      list.removeClass('edit-mode');
+      list.find(editValue).closest().removeClass('warning');
+
+      if (list.attr('data-uid').length === 0) {
+        list.remove();
+        that.preparedList = null;
+      }
+    });
+  };
+
+  this.init = function () {
+    var root = $('#dropbeat').find('.play-controls .my-playlist');
+    that.elems = {
+      root: root,
+      closeButton: root.find('.close-button'),
+      createList: root.find('.create-new-playlist-button'),
+      myPlaylists: root.find('.playlists-wrapper .playlists'),
+      playlistTmpl: $('#playlist-template').html()
+    };
+
+    that.elems.closeButton.click(function () {
+      that.elems.root.hide();
+    });
+
+    that.elems.createList.click(function () {
+      that.newPlaylist();
+    });
+  };
+
+};
+
+/**
+ * It binds user actions for tracks in playlist.
+ */
+
+function PlaylistTracksEventListener (listListener) {
   var that = this,
       baseQuery = '.playlist-track .playlist-track-inner ',
       trackTitleQuery = baseQuery + '.track-title-wrapper',
@@ -18,7 +171,17 @@ function PlaylistEventListener () {
       currentPlaylist = null,
 
   changePlaylist = function (playlist) {
+    if (playlist === currentPlaylist) {
+      return;
+    }
+
     var template = hb.compile(that.elems.playlistTmpl.html());
+
+    if (currentPlaylist !== null) {
+      currentPlaylist.selected = false;
+    }
+
+    playlist.selected = true;
 
     currentPlaylist = playlist;
     that.elems.playlistName.text(playlist.name);
@@ -35,6 +198,9 @@ function PlaylistEventListener () {
       });
   },
 
+  // To bold & unbold tracks it should be calculated
+  // every time when it called.
+  // Because many tracks attached & detached.
   boldCurrentTrack = function () {
     var track = playerManager.getCurrentTrack(),
         elem = $(baseQuery);
@@ -61,6 +227,7 @@ function PlaylistEventListener () {
       playlistSearch: root.find('.playlist-search'),
       addByUrl: root.find('.add-by-url-section'),
       playlistInner: root.find('.playlist .playlist-inner'),
+      openPlaylist: root.find('.playlist-footer .my-playlist-button'),
       playlistTmpl: $('#playlist-track-template')
     };
 
@@ -68,8 +235,10 @@ function PlaylistEventListener () {
       if (currentPlaylist === null) {
         changePlaylist(playlist);
       }
+      listListener.playlists.push(playlist);
     });
 
+    that.elems.openPlaylist.click(listListener.openPlaylist);
   };
 
   playerManager.setPlayCallbacks({
@@ -82,6 +251,14 @@ function PlaylistEventListener () {
   });
 };
 
-return new PlaylistEventListener();
+var playlistListener = new PlaylistEventListener(),
+    tracksListener = new PlaylistTracksEventListener(playlistListener);
+
+return {
+  init: function () {
+    tracksListener.init();
+    playlistListener.init();
+  }
+};
 
 });

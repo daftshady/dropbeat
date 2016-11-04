@@ -934,3 +934,192 @@ input[type='submit'] {
 #dropbeat .play-controls .playlist-section .playlist .playlist-inner .playlist-track .menus .track-remove:hover {
   background-position: -142px -30px;
 }
+#dropbeat .play-controls .my-playlist {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 400;
+  padding-left: 36px;
+  padding-right: 36px;
+  background: #000;
+}
+#dropbeat .play-controls .my-playlist .close-button {
+  position: absolute;
+  top: 36px;
+  right: 36px;
+  width: 20px;
+  height: 20px;
+  background-image: url("../images/sprites.png");
+  background-position: -158px 0;
+  cursor: pointer;
+}
+#dropbeat .play-controls .my-playlist .close-button:hover {
+  background-position: -158px -20px;
+}
+#dropbeat .play-controls .my-playlist > .title {
+  margin-top: 123px;
+  color: white;
+  font-size: 29px;
+  font-weight: 100;
+}
+#dropbeat .play-controls .my-playlist .create-new-playlist-wrapper {
+  margin-top: 30px;
+}
+#dropbeat .play-controls .my-playlist .create-new-playlist-wrapper a {
+  font-size: 13px;
+  font-weight: 400;
+  color: #8d02ef;
+  cursor: pointer;
+  text-decoration: none;
+}
+#dropbeat .play-controls .my-playlist .create-new-playlist-wrapper a:hover {
+  color: #aa32ff;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper {
+  position: absolute;
+  top: 263px;
+  bottom: 20px;
+  left: 36px;
+  right: 34px;
+  padding-right: 6px;
+  overflow: auto;
+  scrollbar-face-color: #4b4b4b;
+  scrollbar-highlight-color: #4b4b4b;
+  scrollbar-shadow-color: #4b4b4b;
+  scrollbar-3dlight-color: #4b4b4b;
+  scrollbar-arrow-color: #4b4b4b;
+  scrollbar-track-color: #1e1e1e;
+  scrollbar-darkshadow-color: #4b4b4b;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper::-webkit-scrollbar {
+  width: 6px;
+  background-color: transparent;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper::-webkit-scrollbar-thumb {
+  background-color: #4b4b4b;
+  border-radius: 4px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #6d6d6d;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper::-webkit-scrollbar-thumb:active {
+  background-color: #6d6d6d;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist {
+  margin-bottom: 2px;
+  position: relative;
+  height: 35px;
+  overflow: overlay;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist.temp {
+  -webkit-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist.temp .menus {
+  display: none;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist.edit-mode .nonedit-mode-view {
+  display: none;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist.edit-mode .edit-mode-view {
+  display: block;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist.selected .title {
+  text-decoration: underline;
+  color: white;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .nonedit-mode-view {
+  display: block;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .edit-mode-view {
+  display: none;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .title-input-field {
+  height: 24px;
+  width: 228px;
+  border-bottom: 1px solid white;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .title-input-field.warning {
+  border-bottom: 1px solid red;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .title-input-field input {
+  font-size: 15px;
+  background: transparent;
+  border: none;
+  width: 100%;
+  height: 22px;
+  padding: 5px 0 3px;
+  line-height: 15px;
+  color: white;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .title {
+  display: inline-block;
+  height: 22px;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  font-size: 15px;
+  line-height: 15px;
+  cursor: pointer;
+  color: #AEAEAE;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 228px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .title:hover {
+  color: white;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus {
+  float: right;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button {
+  float: right;
+  margin-left: 14px;
+  width: 16px;
+  height: 15px;
+  background-image: url("../images/sprites.png");
+  text-indent: -9999px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.remove-button {
+  cursor: pointer;
+  background-position: -126px -30px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.remove-button:active,
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.remove-button:hover {
+  background-position: -142px -30px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.rename-button {
+  cursor: pointer;
+  background-position: -126px -15px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.rename-button:active,
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.rename-button:hover {
+  background-position: -142px -15px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.apply-edit-button {
+  cursor: pointer;
+  width: 21px;
+  height: 16px;
+  background-position: -180px 0;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.apply-edit-button:active,
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.apply-edit-button:hover {
+  background-position: -180px 0px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.apply-edit-button .disabled {
+  background-position: -180px 0px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.cancel-edit-button {
+  cursor: pointer;
+  background-position: -126px -45px;
+}
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.cancel-edit-button:active,
+#dropbeat .play-controls .my-playlist .playlists-wrapper .playlist .menus .button.cancel-edit-button:hover {
+  background-position: -142px -45px;
+}

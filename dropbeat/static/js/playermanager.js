@@ -107,7 +107,7 @@ function PlayerManager () {
   currentStatus = this.STATUS.NOT_STARTED;
 };
 
-// NOTE returning `new PlayerManager()` can construct each object
+// NOTE returning `new PlayerManager()` constructs each different object
 // when we import this module multiple times. Because it breaks `player`
 // module's consistency, we made it to singletone and provide
 // as factory method.

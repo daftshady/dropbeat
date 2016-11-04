@@ -53,6 +53,21 @@ function PlaylistManager () {
   auth.onLogin(initPlaylistUids);
 };
 
-return new PlaylistManager();
+
+// NOTE Bacause of the same reason of using singleton in `playermanager.js`,
+// it also should be used as singleton.
+var getInstance = (function (instance) {
+  function wrap () {
+    if (instance === null) {
+      instance = new PlaylistManager();
+    }
+
+    return instance;
+  };
+
+  return wrap;
+})(null);
+
+return getInstance;
 
 });

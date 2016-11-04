@@ -63,6 +63,40 @@
       </li>
       {{/tracks}}
     </script>
+    <script id="playlist-template" type="text/x-handlebars-template">
+      {{#playlists}}
+      <li class="playlist {{#if selected}}selected{{/if}}{{#if editing}}edit-mode{{/if}}"
+        data-uid={{uid}}>
+        <div class="nonedit-mode-view">
+          <div class="menus">
+            <a class="button remove-button">remove</a>
+            <a class="button rename-button">rename</a>
+          </div>
+          <a class="title">
+            {{name}}
+          </a>
+        </div>
+        <div class="edit-mode-view">
+          <div class="menus">
+            <a class="button cancel-edit-button">cancel</a>
+            <a class="button apply-edit-button">ok</a>
+          </div>
+          <div class="title-input-field">
+            <form class="playlist-form">
+              <input type="text" class="title-input" maxlength="95" autocomplete="off" placeholder="Type playlist name"
+                value=
+                {{#if uid}}
+                  "{{name}}"
+                {{else}}
+                  "New Playlist"
+                {{/if}} />
+              <input type="submit"/>
+            </form>
+          </div>
+        </div>
+      </li>
+      {{/playlists}}
+    </script>
   </head>
   <body>
     <div id="dropbeat">
@@ -152,7 +186,7 @@
           <div class="playlist-footer">
             <a class="my-playlist-button button">
               <i class="ic ic-my-playlist"></i>
-              <span class="text">MY PLAYLIST</span>
+              <span class="text">MY PLAYLISTS</span>
             </a>
             <div class="divider"></div>
             <a class="share-playlist-button button">
@@ -163,7 +197,7 @@
         </div>
         <div class="my-playlist">
           <a class="close-button"></a>
-          <div class="title">MY PLAYLIST</div>
+          <div class="title">MY PLAYLISTS</div>
           <div class="create-new-playlist-wrapper">
             <a class="create-new-playlist-button">+ CREATE NEW PLAYLIST</a>
           </div>
