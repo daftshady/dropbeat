@@ -107,7 +107,7 @@ class Resource(object):
         @csrf_exempt
         def wrapper(request, *args, **kwargs):
             # TODO: Handle exception in production level by checking debug flag.
-
+            # TODO: Check content-type as we only want json request.
             try:
                 handler = getattr(self, self._find_dispatcher(request))
 
