@@ -15,13 +15,7 @@ var playerManager = getPlayerManager(),
  */
 
 function PlaylistEventListener () {
-  var that = this,
-      editButton = '.nonedit-mode-view .menus .rename-button',
-      removeButton = '.nonedit-mode-view .menus .remove-button',
-      submitButton = '.edit-mode-view .menus .apply-edit-button',
-      cancelButton = '.edit-mode-view .menus .cancel-edit-button',
-      editContainer = '.edit-mode-view .title-input-field',
-      editValue = '.edit-mode-view form input[type=text]';
+  var that = this;
 
   this.playlists = [];
 
@@ -63,6 +57,26 @@ function PlaylistEventListener () {
   };
 
   this.bindEvents = function (elems) {
+    var editButton = '.nonedit-mode-view .menus .rename-button',
+        removeButton = '.nonedit-mode-view .menus .remove-button',
+        submitButton = '.edit-mode-view .menus .apply-edit-button',
+        cancelButton = '.edit-mode-view .menus .cancel-edit-button',
+        editContainer = '.edit-mode-view .title-input-field',
+        editValue = '.edit-mode-view form input[type=text]',
+        title = '.nonedit-mode-view .title';
+
+    // select playlist.
+    elems.find(title).click(function () {
+      var uid = $(this).closest('.playlist').attr('data-uid'),
+          uids = that.playlists.map(function (playlist) {
+                   return playlist.uid
+                 }),
+          idx = uids.indexOf(uid);
+
+      tracksListener.changePlaylist(that.playlists[idx]);
+      that.elems.root.hide();
+    });
+
     // edit playlist's name
     elems.find(editButton).click(function () {
       $(this).closest('.playlist').addClass('edit-mode');
@@ -181,14 +195,35 @@ function PlaylistEventListener () {
  * It binds user actions for tracks in playlist.
  */
 
-function PlaylistTracksEventListener (listListener) {
+function PlaylistTracksEventListener () {
   var that = this,
       baseQuery = '.playlist-track .playlist-track-inner ',
       trackTitleQuery = baseQuery + '.track-title-wrapper',
       trackRemoveQuery = baseQuery + '.menus .track-remove',
       currentPlaylist = null,
 
-  changePlaylist = function (playlist) {
+  // To bold & unbold tracks it should be calculated
+  // every time when it called.
+  // Because many tracks attached & detached.
+  boldCurrentTrack = function () {
+    var track = playerManager.getCurrentTrack(),
+        elem = $(baseQuery);
+
+    elem.parent().removeClass('on');
+
+    elem = elem.filter('[data-uid="' + track.uid + '"]');
+    elem.parent().addClass('on');
+  },
+
+  unboldCurrentTrack = function () {
+    var track = playerManager.getCurrentTrack(),
+        elem = $(baseQuery)
+          .filter('[data-uid="' + track.uid + '"]');
+
+    elem.parent().removeClass('on');
+  };
+
+  this.changePlaylist = function (playlist) {
     if (playlist === currentPlaylist) {
       return;
     }
@@ -214,27 +249,6 @@ function PlaylistTracksEventListener (listListener) {
 
         playerManager.play(new Track(uid, title, source));
       });
-  },
-
-  // To bold & unbold tracks it should be calculated
-  // every time when it called.
-  // Because many tracks attached & detached.
-  boldCurrentTrack = function () {
-    var track = playerManager.getCurrentTrack(),
-        elem = $(baseQuery);
-
-    elem.parent().removeClass('on');
-
-    elem = elem.filter('[data-uid="' + track.uid + '"]');
-    elem.parent().addClass('on');
-  },
-
-  unboldCurrentTrack = function () {
-    var track = playerManager.getCurrentTrack(),
-        elem = $(baseQuery)
-          .filter('[data-uid="' + track.uid + '"]');
-
-    elem.parent().removeClass('on');
   };
 
   this.init = function () {
@@ -251,12 +265,12 @@ function PlaylistTracksEventListener (listListener) {
 
     playlistManager.onGetPlaylist(function (playlist) {
       if (currentPlaylist === null) {
-        changePlaylist(playlist);
+        that.changePlaylist(playlist);
       }
-      listListener.playlists.push(playlist);
+      playlistListener.playlists.push(playlist);
     });
 
-    that.elems.openPlaylist.click(listListener.openPlaylist);
+    that.elems.openPlaylist.click(playlistListener.openPlaylist);
   };
 
   playerManager.setPlayCallbacks({
@@ -270,7 +284,7 @@ function PlaylistTracksEventListener (listListener) {
 };
 
 var playlistListener = new PlaylistEventListener(),
-    tracksListener = new PlaylistTracksEventListener(playlistListener);
+    tracksListener = new PlaylistTracksEventListener();
 
 return {
   init: function () {
