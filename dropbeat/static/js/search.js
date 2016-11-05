@@ -251,7 +251,7 @@ function SearchManager () {
               } else {
                 // TODO: Check error code.
                 if (curPoll < maxPoll) {
-                  curPoll += 1;
+                  curPoll++;
                 } else {
                   // Timeout expired.
                   clearPoller(poller);

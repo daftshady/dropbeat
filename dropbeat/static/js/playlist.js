@@ -4,7 +4,7 @@ define([
 ], function () {
 
 /**
- * Playlist Constructor.
+ * Playlist object
  */
 
 function Playlist (uid, name, tracks) {
