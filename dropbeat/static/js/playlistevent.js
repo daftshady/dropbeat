@@ -17,8 +17,6 @@ var playerManager = getPlayerManager(),
 function PlaylistEventListener () {
   var that = this;
 
-  this.playlists = [];
-
   // this obj represents playlist created by `this.newPlaylist`
   // but not submitted to server.
   // Use this for limit creating multiple playlists at once.
@@ -30,22 +28,18 @@ function PlaylistEventListener () {
     that.elems.root.show();
 
     var template = hb.compile(that.elems.playlistTmpl),
-        children = $(template(that)).appendTo(that.elems.myPlaylists);
+        children = $(template(playlistManager));
 
+    children.appendTo(that.elems.myPlaylists);
     that.bindEvents(children);
   };
 
   this.newPlaylist = function () {
-    if (that.preparedList !== null) {
+    if (playlistManager.prepared()) {
       return;
     }
 
-    // NOTE uid should be assigned after ajax call.
-    // (server will assign uid)
-    var emptyList = new Playlist(null, '', []);
-    emptyList.editing = true;
-
-    that.preparedList = emptyList;
+    var emptyList = playlistManager.prepare();
 
     // To use same temaplate for `playlists` and `playlist`,
     // this container obj should wrap a playlist.
@@ -61,19 +55,18 @@ function PlaylistEventListener () {
         removeButton = '.nonedit-mode-view .menus .remove-button',
         submitButton = '.edit-mode-view .menus .apply-edit-button',
         cancelButton = '.edit-mode-view .menus .cancel-edit-button',
-        editContainer = '.edit-mode-view .title-input-field',
         editValue = '.edit-mode-view form input[type=text]',
-        title = '.nonedit-mode-view .title';
+        playlistTitle = '.nonedit-mode-view .title';
 
     // select playlist.
-    elems.find(title).click(function () {
+    elems.find(playlistTitle).click(function () {
       var uid = $(this).closest('.playlist').attr('data-uid'),
-          uids = that.playlists.map(function (playlist) {
-                   return playlist.uid
-                 }),
-          idx = uids.indexOf(uid);
+          selectedList = playlistManager.getPlaylist(uid);
 
-      tracksListener.changePlaylist(that.playlists[idx]);
+      if (selectedList !== null) {
+        tracksListener.changePlaylist(selectedList);
+      }
+
       that.elems.root.hide();
     });
 
@@ -90,7 +83,7 @@ function PlaylistEventListener () {
 
       if (list.attr('data-uid').length === 0) {
         list.remove();
-        that.preparedList = null;
+        playlistManager.commit({cancel: true});
       }
     });
 
@@ -110,12 +103,7 @@ function PlaylistEventListener () {
       if (uid.length !== 0) {
         remove(api.Router.getPath('playlist'), {uid: uid})
           .always(function () {
-            var uids = that.playlists.map(function (playlist) {
-                         return playlist.uid
-                       }),
-                idx = uids.indexOf(uid);
-
-            that.playlists.splice(idx, 1);
+            playlistManager.removePlaylist(uid);
             list.remove();
           });
       }
@@ -141,30 +129,25 @@ function PlaylistEventListener () {
 
       method(api.Router.getPath('playlist'), {name: name, uid: uid})
         .done(function (resp) {
+          var editContainer = '.edit-mode-view .title-input-field';
+
           if (!resp.success) {
             list.find(editValue).closest(editContainer).addClass('warning');
             return;
           }
 
           list.removeClass('edit-mode');
-          list.find('.nonedit-mode-view .title').text(name);
+          list.find(playlistTitle).text(name);
           list.find(editValue).closest(editContainer).removeClass('warning');
 
           if (list.attr('data-uid').length === 0) {
+
             list.attr('data-uid', resp.playlist.uid);
+            playlistManager.commit(resp.playlist);
 
-            that.preparedList.uid = resp.playlist.uid;
-            that.preparedList.name = name;
-            that.playlists.push(that.preparedList);
-
-            that.preparedList = null;
           } else {
-            var uids = that.playlists.map(function (playlist) {
-                         return playlist.uid
-                       }),
-                idx = uids.indexOf(uid);
-
-            that.playlists[idx].name = name;
+            var playlist = playlistManager.getPlaylist(uid);
+            playlist.name = name;
           }
         });
     });
@@ -267,7 +250,6 @@ function PlaylistTracksEventListener () {
       if (currentPlaylist === null) {
         that.changePlaylist(playlist);
       }
-      playlistListener.playlists.push(playlist);
     });
 
     that.elems.openPlaylist.click(playlistListener.openPlaylist);

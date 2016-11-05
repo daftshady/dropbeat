@@ -10,10 +10,10 @@ define([
  */
 
 function PlaylistManager () {
-  var playlists = [],
-      onGetPlaylist = null,
+  var that = this, reservedList = null,
+      playlistCallback = null,
 
-  getPlaylist = function (uid) {
+  loadPlaylist = function (uid) {
     $.get(api.Router.getPath('playlist'), {uid: uid})
 
       .done(function (resp) {
@@ -21,36 +21,84 @@ function PlaylistManager () {
           var playlist = new Playlist(resp.playlist.uid,
                                       resp.playlist.name,
                                       resp.playlist.tracks);
-          playlists.push(playlist);
+          that.playlists.push(playlist);
 
-          if (onGetPlaylist !== null) {
-            onGetPlaylist(playlist);
+          if (playlistCallback !== null) {
+            playlistCallback(playlist);
           }
         }
       });
   },
 
-  initPlaylistUids = function () {
+  loadPlaylistUids = function () {
     $.get(api.Router.getPath('playlistList'))
 
       .done(function (resp) {
         if (resp.success) {
           for (var i=0; i<resp.list.length; i+=1) {
-            getPlaylist(resp.list[i]);
+            loadPlaylist(resp.list[i]);
           }
         }
       });
   };
 
-  this.onGetPlaylist = function (callback) {
-    for (var i=0; i<playlists.length; i+=1) {
-      callback(playlists[i]);
-    }
+  this.prepare = function () {
+    var list = new Playlist();
+    list.editing = true;
 
-    onGetPlaylist = callback;
+    reservedList = list;
+
+    return list;
   };
 
-  auth.onLogin(initPlaylistUids);
+  this.prepared = function () {
+    return reservedList !== null;
+  };
+
+  this.commit = function (params) {
+    if (params.cancel) {
+      reservedList = null;
+      return;
+    }
+
+    reservedList.uid = params.uid;
+    reservedList.name = params.name;
+
+    that.playlists.push(reservedList);
+    reservedList = null;
+  };
+
+  this.getPlaylist = function (uid) {
+    var uids = that.playlists.map(function (playlist) {
+                 return playlist.uid;
+               }),
+        idx = uids.indexOf(uid);
+
+    return idx === -1 ? null : that.playlists[idx];
+  };
+
+  this.removePlaylist = function (uid) {
+    var uids = that.playlists.map(function (playlist) {
+                 return playlist.uid;
+               }),
+        idx = uids.indexOf(uid);
+
+    if (idx !== -1) {
+      that.playlists.splice(idx, 1);
+    }
+  };
+
+  this.onGetPlaylist = function (callback) {
+    for (var i=0; i<that.playlists.length; i+=1) {
+      callback(that.playlists[i]);
+    }
+
+    playlistCallback = callback;
+  };
+
+  this.playlists = [];
+
+  auth.onLogin(loadPlaylistUids);
 };
 
 

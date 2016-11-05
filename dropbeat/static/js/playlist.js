@@ -8,23 +8,21 @@ define([
  */
 
 function Playlist (uid, name, tracks) {
-  var that = this;
-
-  this.name = name;
-  this.uid = uid;
+  this.uid = uid || null;
+  this.name = name || '';
   this.tracks = tracks || [];
 
   this.get = function (idx) {
-    if (idx < that.tracks.length) {
-      return that.tracks[idx];
+    if (idx < this.tracks.length) {
+      return this.tracks[idx];
     }
   };
 
   this.index = function (track) {
-    var i, len = that.tracks.length;
+    var i, len = this.tracks.length;
 
     for (i = 0; i < len; i += 1) {
-      if (that.tracks[i].id === track.uid) {
+      if (this.tracks[i].uid === track.uid) {
         return i;
       }
     }
@@ -33,40 +31,40 @@ function Playlist (uid, name, tracks) {
   };
 
   this.add = function (track) {
-    var idx = that.index(track);
+    var idx = this.index(track);
 
     if (idx !== -1) {
       return false;
     }
 
-    that.tracks.push(track);
+    this.tracks.push(track);
     return true;
   };
 
   this.remove = function (track) {
-    var idx = that.index(track);
+    var idx = this.index(track);
 
     if (idx === -1) {
       return false;
     }
 
-    that.tracks.splice(idx, 1);
+    this.tracks.splice(idx, 1);
   };
 
   this.toArray = function () {
-    return that.tracks;
+    return this.tracks;
   };
 
   this.clear = function () {
-    that.tracks = [];
+    this.tracks = [];
   };
 
   this.size = function () {
-    return that.tracks.length;
+    return this.tracks.length;
   };
 
   this.isEmpty = function () {
-    return that.tracks.length === 0;
+    return this.tracks.length === 0;
   };
 };
 

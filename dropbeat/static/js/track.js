@@ -12,9 +12,6 @@ function Track (uid, name, source) {
   this.source = source;
 };
 
-Track.prototype = {
-};
-
 return Track;
 
 });
