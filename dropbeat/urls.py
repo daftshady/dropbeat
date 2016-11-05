@@ -8,5 +8,5 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-	urlpatterns.append(
-		url(r'^/?', RedirectView.as_view(url=settings.ROOT_HTML)))
+    urlpatterns.append(
+        url(r'^?', RedirectView.as_view(url=settings.ROOT_HTML)))
