@@ -68,6 +68,18 @@ function PlaylistEventListener () {
       $(this).closest('.playlist').addClass('edit-mode');
     });
 
+    // cancel renaming playlist
+    elems.find(cancelButton).click(function () {
+      var list = $(this).closest('.playlist')
+      list.removeClass('edit-mode');
+      list.find(editValue).closest().removeClass('warning');
+
+      if (list.attr('data-uid').length === 0) {
+        list.remove();
+        that.preparedList = null;
+      }
+    });
+
     // remove playlist
     elems.find(removeButton).click(function () {
       var list = $(this).closest('.playlist'),
@@ -84,6 +96,12 @@ function PlaylistEventListener () {
       if (uid.length !== 0) {
         remove(api.Router.getPath('playlist'), {uid: uid})
           .always(function () {
+            var uids = that.playlists.map(function (playlist) {
+                         return playlist.uid
+                       }),
+                idx = uids.indexOf(uid);
+
+            that.playlists.splice(idx, 1);
             list.remove();
           });
       }
@@ -109,32 +127,32 @@ function PlaylistEventListener () {
 
       method(api.Router.getPath('playlist'), {name: name, uid: uid})
         .done(function (resp) {
-          if (resp.success) {
-            list.removeClass('edit-mode');
-            list.find('.nonedit-mode-view .title').text(name);
-            list.find(editValue).closest(editContainer).removeClass('warning');
-
-            if (list.attr('data-uid').length === 0) {
-              list.attr('data-uid', resp.playlist.uid);
-              that.playlists.push(this.preparedList);
-              that.preparedList = null;
-            }
-          } else {
+          if (!resp.success) {
             list.find(editValue).closest(editContainer).addClass('warning');
+            return;
+          }
+
+          list.removeClass('edit-mode');
+          list.find('.nonedit-mode-view .title').text(name);
+          list.find(editValue).closest(editContainer).removeClass('warning');
+
+          if (list.attr('data-uid').length === 0) {
+            list.attr('data-uid', resp.playlist.uid);
+
+            that.preparedList.uid = resp.playlist.uid;
+            that.preparedList.name = name;
+            that.playlists.push(that.preparedList);
+
+            that.preparedList = null;
+          } else {
+            var uids = that.playlists.map(function (playlist) {
+                         return playlist.uid
+                       }),
+                idx = uids.indexOf(uid);
+
+            that.playlists[idx].name = name;
           }
         });
-    });
-
-    // cancel renaming playlist
-    elems.find(cancelButton).click(function () {
-      var list = $(this).closest('.playlist')
-      list.removeClass('edit-mode');
-      list.find(editValue).closest().removeClass('warning');
-
-      if (list.attr('data-uid').length === 0) {
-        list.remove();
-        that.preparedList = null;
-      }
     });
   };
 
