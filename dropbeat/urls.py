@@ -5,6 +5,8 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     url(r'^api/', include(api_v1.urls)),
-    # Redirect for debug mode.
-    url(r'^/?', RedirectView.as_view(url=settings.ROOT_HTML))
 ]
+
+if settings.DEBUG:
+	urlpatterns.append(
+		url(r'^/?', RedirectView.as_view(url=settings.ROOT_HTML)))
