@@ -54,6 +54,10 @@ class Router(object):
         return self._url('playlist')
 
     @property
+    def playlist_all(self):
+        return self.playlist + '/all'
+
+    @property
     def track(self):
         return self._url('track')
 
@@ -111,6 +115,15 @@ class DropbeatTest(TestSuite):
         assert resp.json()['playlist']['name'] == 'my-playlist'
 
         global_context.playlist_uid = resp.json()['playlist']['uid']
+
+    @staticmethod
+    def test_playlist_all():
+        resp = global_session.get(
+            global_router.playlist_all
+        )
+        assert resp.ok
+        assert len(resp.json()['data']) == 1
+        assert resp.json()['data'][0]['name'] == 'my-playlist'
 
     @staticmethod
     def test_playlist_rename():
@@ -173,7 +186,7 @@ class DropbeatTest(TestSuite):
 
 
 class TestRunner(object):
-    """Base test runnerfor dropbeat.
+    """Base test runner for dropbeat.
 
     """
     def __init__(self, tests=None):

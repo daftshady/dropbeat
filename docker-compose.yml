@@ -1,7 +1,3 @@
-# It's not possible for docker-compose to sequencially control execution order.
-# Though `depends_on` command can regulate start sequence, it doens't make some containers
-# to wait for booting of an another container. `sleep` is a temporal workaround for it. (it sucks)
-# TODO: third-party wrapper such as wait-for-it, dockerize would be possible solutions.
 sut:
   build: .
   dockerfile: Dockerfile.sut
@@ -18,3 +14,5 @@ web:
     - DBT_MYSQL_HOST=mysql
     - DBT_MYSQL_PORT=3306
     - DBT_TEST=True
+    - DBT_REDIS_URL='redis://redis:6379/0'
+    - DBT_DJANGO_SECRET=secret

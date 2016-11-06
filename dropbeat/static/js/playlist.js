@@ -4,7 +4,7 @@ define([
 ], function () {
 
 /**
- * Playlist Constructor.
+ * Playlist object
  */
 
 function Playlist (uid, name, tracks) {
@@ -18,10 +18,10 @@ function Playlist (uid, name, tracks) {
     }
   };
 
+  // Returns index of the given track.
+  // Tracks are regarded to be equal if both have the same uid.
   this.index = function (track) {
-    var i, len = this.tracks.length;
-
-    for (i = 0; i < len; i += 1) {
+    for (var i = 0; i < this.tracks.length; i++) {
       if (this.tracks[i].uid === track.uid) {
         return i;
       }
@@ -30,10 +30,12 @@ function Playlist (uid, name, tracks) {
     return -1;
   };
 
+  // Adds track to the playlist and returns success boolean.
   this.add = function (track) {
     var idx = this.index(track);
 
     if (idx !== -1) {
+      // Fails if the track already exists.
       return false;
     }
 
@@ -41,14 +43,17 @@ function Playlist (uid, name, tracks) {
     return true;
   };
 
+  // Removes track from the playlist and returns success boolean.
   this.remove = function (track) {
     var idx = this.index(track);
 
     if (idx === -1) {
+      // Cannot remove non-exist track.
       return false;
     }
 
     this.tracks.splice(idx, 1);
+    return true;
   };
 
   this.toArray = function () {
