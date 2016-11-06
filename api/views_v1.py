@@ -11,6 +11,11 @@ from django.contrib.auth import login, logout, authenticate
 
 
 class DropbeatResource(Resource):
+    """If a single object is returned in json resp, use a resource name as
+    data key. If multiple objects are returned (json list), we use `data` as a
+    key name.
+
+    """
     def handle_get(self, request, *args, **kwargs):
         return self.on_error('You cannot access to this path directly')
 
@@ -73,6 +78,7 @@ class UserResource(DropbeatResource):
 class PlaylistResource(DropbeatResource):
     def prepare_urls(self):
         self.add_path('list')
+        self.add_path('all')
 
     @auth_required
     @parameters(['uid'])
@@ -97,6 +103,12 @@ class PlaylistResource(DropbeatResource):
     def handle_get_list(self, request, *args, **kwargs):
         return self.on_success(data={
             'list': Playlist.objects.fetch_all_uids(request.user)})
+
+    @auth_required
+    def handle_get_all(self, request, *args, **kwargs):
+        playlists = [x.to_dict()
+            for x in Playlist.objects.filter(user=request.user)]
+        return self.on_success(data={'data': playlists})
 
     @auth_required
     @parameters(['name'])
