@@ -11,10 +11,14 @@ require.config({
 });
 
 require([
-  'domReady', 'dropbeat', 'jquery'
+  'require', 'domReady'
 
-], function (domReady, Dropbeat, $) {
-  domReady(Dropbeat.initialize);
+], function (require, domReady) {
+  domReady(function () {
+    require(['dropbeat'], function (Dropbeat) {
+      Dropbeat.initialize()
+    })
+  });
 });
 
 // eslint-disable-next-line no-unused-vars

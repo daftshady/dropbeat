@@ -15,15 +15,19 @@ var playerManager = getPlayerManager(),
  */
 
 function PlaylistEventListener () {
-  var that = this;
+  var that = this,
+      root = $('#dropbeat').find('.play-controls .my-playlist');
 
-  // this obj represents playlist created by `this.newPlaylist`
-  // but not submitted to server.
-  // Use this for limit creating multiple playlists at once.
-  this.preparedList = null;
+  this.elems = {
+    root: root,
+    closeButton: root.find('.close-button'),
+    createList: root.find('.create-new-playlist-button'),
+    myPlaylists: root.find('.playlists-wrapper .playlists'),
+    playlistTmpl: $('#playlist-template').html()
+  };
 
   // Open my playlists view.
-  this.openPlaylist = function () {
+  this.openPlaylistView = function () {
     that.elems.myPlaylists.empty();
     that.elems.root.show();
 
@@ -34,7 +38,7 @@ function PlaylistEventListener () {
     that.bindEvents(children);
   };
 
-  this.newPlaylist = function () {
+  this.openPlaylistCreationView = function () {
     if (playlistManager.prepared()) {
       return;
     }
@@ -64,7 +68,7 @@ function PlaylistEventListener () {
           selectedList = playlistManager.getPlaylist(uid);
 
       if (selectedList !== null) {
-        tracksListener.changePlaylist(selectedList);
+        tracksListener.loadTracksView(selectedList);
       }
 
       that.elems.root.hide();
@@ -154,21 +158,12 @@ function PlaylistEventListener () {
   };
 
   this.init = function () {
-    var root = $('#dropbeat').find('.play-controls .my-playlist');
-    that.elems = {
-      root: root,
-      closeButton: root.find('.close-button'),
-      createList: root.find('.create-new-playlist-button'),
-      myPlaylists: root.find('.playlists-wrapper .playlists'),
-      playlistTmpl: $('#playlist-template').html()
-    };
-
-    that.elems.closeButton.click(function () {
+    this.elems.closeButton.click(function () {
       that.elems.root.hide();
     });
 
-    that.elems.createList.click(function () {
-      that.newPlaylist();
+    this.elems.createList.click(function () {
+      that.openPlaylistCreationView();
     });
   };
 
@@ -206,12 +201,24 @@ function PlaylistTracksEventListener () {
     elem.parent().removeClass('on');
   };
 
-  this.changePlaylist = function (playlist) {
+  // Contrary to tracks' queries, this elements need not to fetched twice.
+  // So pre-fetched elements are more efficient.
+  var root = $('#dropbeat').find('.play-controls .playlist-section');
+  this.elems = {
+    playlistName: root.find('.playlist-name'),
+    playlistSearch: root.find('.playlist-search'),
+    addByUrl: root.find('.add-by-url-section'),
+    playlistInner: root.find('.playlist .playlist-inner'),
+    openPlaylist: root.find('.playlist-footer .my-playlist-button'),
+    playlistTmpl: $('#playlist-track-template').html()
+  };
+
+  this.loadTracksView = function (playlist) {
     if (playlist === currentPlaylist) {
       return;
     }
 
-    var template = hb.compile(that.elems.playlistTmpl.html());
+    var template = hb.compile(that.elems.playlistTmpl);
 
     if (currentPlaylist !== null) {
       currentPlaylist.selected = false;
@@ -224,7 +231,7 @@ function PlaylistTracksEventListener () {
     that.elems.playlistInner.html(template(playlist));
 
     that.elems.playlistInner.find(trackTitleQuery)
-      .click(function (event) {
+      .click(function () {
         var elem = $(this),
             title = elem.find('.track-title').text(),
             uid = elem.parent().attr('data-uid'),
@@ -235,24 +242,13 @@ function PlaylistTracksEventListener () {
   };
 
   this.init = function () {
-    var root = $('#dropbeat').find('.play-controls .playlist-section');
-
-    that.elems = {
-      playlistName: root.find('.playlist-name'),
-      playlistSearch: root.find('.playlist-search'),
-      addByUrl: root.find('.add-by-url-section'),
-      playlistInner: root.find('.playlist .playlist-inner'),
-      openPlaylist: root.find('.playlist-footer .my-playlist-button'),
-      playlistTmpl: $('#playlist-track-template')
-    };
-
     playlistManager.onGetPlaylist(function (playlist) {
       if (currentPlaylist === null) {
-        that.changePlaylist(playlist);
+        that.loadTracksView(playlist);
       }
     });
 
-    that.elems.openPlaylist.click(playlistListener.openPlaylist);
+    that.elems.openPlaylist.click(playlistListener.openPlaylistView);
   };
 
   playerManager.setPlayCallbacks({

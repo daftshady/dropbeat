@@ -18,22 +18,26 @@ function User (params) {
 
 function UserManager () {
   var that = this,
-      menus, tmplSignout, tmplSignin,
+      elems = {
+        menus: $('.account-menus'),
+        tmplSignout: $('#tmpl-signout'),
+        tmplSignin: $('#tmpl-signin'),
+      },
 
   fillMenu = function () {
     var render;
 
     if (that.currentUser !== null) {
-      render = handlebars.compile(tmplSignout.html());
+      render = handlebars.compile(elems.tmplSignout.html());
 
-      menus.html(render({email: that.currentUser.email}));
-      menus.find('.signout-btn').click(signout);
+      elems.menus.html(render({email: that.currentUser.email}));
+      elems.menus.find('.signout-btn').click(signout);
     } else {
-      render = handlebars.compile(tmplSignin.html());
+      render = handlebars.compile(elems.tmplSignin.html());
 
-      menus.html(render());
-      menus.find('.signin-btn').click(signin);
-      menus.find('.signup-btn').click(signup);
+      elems.menus.html(render());
+      elems.menus.find('.signin-btn').click(signin);
+      elems.menus.find('.signup-btn').click(signup);
     }
   },
 
@@ -82,10 +86,6 @@ function UserManager () {
   };
 
   this.init = function () {
-    menus = $('.account-menus');
-    tmplSignout = $('#tmpl-signout');
-    tmplSignin = $('#tmpl-signin');
-
     $.get(api.Router.getPath('user'))
       .done(function (resp) {
         var key;

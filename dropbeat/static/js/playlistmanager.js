@@ -10,7 +10,9 @@ define([
  */
 
 function PlaylistManager () {
-  var that = this, reservedList = null,
+  var that = this,
+      // `reservedList` limit creating multiple playlists at once.
+      reservedList = null,
       playlistCallback = null,
 
   loadPlaylist = function (uid) {
