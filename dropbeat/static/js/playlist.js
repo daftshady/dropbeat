@@ -71,6 +71,10 @@ function Playlist (uid, name, tracks) {
   this.isEmpty = function () {
     return this.tracks.length === 0;
   };
+
+  this.push = function (track) {
+    tracks.push(track);
+  };
 };
 
 return Playlist;

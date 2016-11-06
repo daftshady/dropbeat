@@ -23,11 +23,12 @@ function PlaylistManager () {
           var playlist = new Playlist(resp.playlist.uid,
                                       resp.playlist.name,
                                       resp.playlist.tracks);
-          that.playlists.push(playlist);
 
-          if (playlistCallback !== null) {
-            playlistCallback(playlist);
+          if (that.playlists.length === 0) {
+            onFirstPlaylistLoaded(playlist);
           }
+
+          that.playlists.push(playlist);
         }
       });
   },
@@ -42,6 +43,39 @@ function PlaylistManager () {
           }
         }
       });
+  },
+
+  onFirstPlaylistLoaded = function (playlist) {
+    var length = that.callbacks.onFirstPlaylistLoaded.length;
+    for (var i=0; i<length; i+=1) {
+      that.callbacks.onFirstPlaylistLoaded[i](playlist);
+    }
+  },
+
+  onTrackAdded = function (playlist) {
+    var length = that.callbacks.onTrackAdded.length;
+    for (var i=0; i<length; i+=1) {
+      that.callbacks.onTrackAdded[i](playlist);
+    }
+  };
+
+  this.currentPlaylist = null;
+  this.playlists = [];
+  this.callbacks = {
+    onFirstPlaylistLoaded: [],
+    onTrackAdded: [],
+  };
+
+  this.setPlaylistCallbacks = function (callbacks) {
+    for (var key in callbacks) {
+      if (callbacks.hasOwnProperty(key) && key in that.callbacks) {
+        that.callbacks[key].push(callbacks[key]);
+
+        if (key === 'onFirstPlaylistLoaded' && that.playlists.length > 0) {
+          callbacks[key](that.playlists[0]);
+        }
+      }
+    }
   };
 
   this.prepare = function () {
@@ -90,15 +124,34 @@ function PlaylistManager () {
     }
   };
 
-  this.onGetPlaylist = function (callback) {
-    for (var i=0; i<that.playlists.length; i+=1) {
-      callback(that.playlists[i]);
-    }
+  this.addNewTrack = function (track) {
+    var playlist_uid = that.currentPlaylist.uid,
+        data = {
+          uid: track.uid,
+          name: track.name,
+          playlist_uid: playlist_uid
+        };
 
-    playlistCallback = callback;
+    $.ajax({
+      url: api.Router.getPath('track'),
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=utf-8',
+    }).done(function (resp) {
+      if (resp.success) {
+        var playlist = that.getPlaylist(playlist_uid);
+        if (playlist !== null) {
+          playlist.push(resp.track);
+
+          // Defense for changing playlist before ajax reponse.
+          if (that.currentPlaylist.uid === playlist_uid) {
+            onTrackAdded(playlist);
+          }
+        }
+      }
+    });
   };
-
-  this.playlists = [];
 
   auth.onLogin(loadPlaylistUids);
 };

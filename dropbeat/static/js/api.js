@@ -34,9 +34,15 @@ var errorCodes = {
   resultNotReady: '109'
 };
 
+var playerTypes = {
+  youtube: '0',
+  soundcloud: '1'
+}
+
 return {
   Router: new Router(),
-  ErrorCodes: errorCodes
+  ErrorCodes: errorCodes,
+  playerTypes: playerTypes
 };
 
 });

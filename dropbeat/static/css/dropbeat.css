@@ -716,12 +716,12 @@ input[type='submit'] {
   color: #fff;
   font: 12px Roboto,arial,sans-serif;
 }
-#dropbeat .contents .body-section .search-result-section .search-result-item .menus {
+#dropbeat .contents .body-section .search-result-section .search-result-item .add-button {
   float: right;
   width: 26px;
   margin-top: 25px;
 }
-#dropbeat .contents .body-section .search-result-section .search-result-item .menus .add-to-playlist {
+#dropbeat .contents .body-section .search-result-section .search-result-item .add-button .add-to-playlist {
   display:block;
   background:url("../images/ic_add.png");
   width:26px;
@@ -729,7 +729,7 @@ input[type='submit'] {
   text-indent:-9999px;
   cursor:pointer;
 }
-#dropbeat .contents .body-section .search-result-section .search-result-item .menus .add-to-playlist:hover {
+#dropbeat .contents .body-section .search-result-section .search-result-item .add-button .add-to-playlist:hover {
   opacity: 0.5;
 }
 #dropbeat .contents .body-section .search-spinner .status {

@@ -1,7 +1,10 @@
 /*global YT*/
 'use strict';
 
-define(function () {
+define([
+  'api',
+],
+function (api) {
 
 /**
  * Basic Player APIs.
@@ -145,7 +148,7 @@ function YoutubePlayer () {
     }
   };
 
-  this.type = 'youtube';
+  this.type = api.playerTypes.youtube;
 
   this.init = function () {
     playerImpl = new YT.Player('youtube-player', {

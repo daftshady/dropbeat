@@ -1,10 +1,15 @@
 'use strict';
 
 define([
-  'jquery', 'handlebars', 'api', 'playermanager', 'track', 'auth'
-], function ($, hb, api, getPlayerManager, Track, auth) {
+  'jquery', 'handlebars', 'api',
+  'playermanager', 'playlistmanager',
+  'track', 'auth'
+], function ($, hb, api,
+             getPlayerManager, getPlaylistManager,
+             Track, auth) {
 
-var playerManager = getPlayerManager();
+var playerManager = getPlayerManager(),
+    playlistManager = getPlaylistManager();
 
 /**
   * Defines modules for search features such as autocomplete, youtube & soundcloud
@@ -283,7 +288,7 @@ function SearchManager () {
           title = item.find('.item-title').text();
 
       // Play music. Other platforms except for youtube are not implemented yet.
-      playerManager.play(new Track(uid, title, 'youtube'));
+      playerManager.play(new Track(uid, title, api.playerTypes.youtube));
     }
 
     // Render search result and attach click listeners.
@@ -294,6 +299,16 @@ function SearchManager () {
         onItemClicked(itemWrapper);
       });
     }
+
+    container.find('.add-button').click(function () {
+      var itemWrapper = $(this).closest('.item-wrapper'),
+          uid = itemWrapper.attr('data-uid'),
+          name = itemWrapper.find('.item-title').text(),
+          source = itemWrapper.attr('data-source') || api.playerTypes.youtube,
+          track = new Track(uid, name, source);
+
+      playlistManager.addNewTrack(track);
+    });
   };
 
   this.searching = false;

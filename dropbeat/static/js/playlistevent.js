@@ -178,7 +178,6 @@ function PlaylistTracksEventListener () {
       baseQuery = '.playlist-track .playlist-track-inner ',
       trackTitleQuery = baseQuery + '.track-title-wrapper',
       trackRemoveQuery = baseQuery + '.menus .track-remove',
-      currentPlaylist = null,
 
   // To bold & unbold tracks it should be calculated
   // every time when it called.
@@ -214,11 +213,8 @@ function PlaylistTracksEventListener () {
   };
 
   this.loadTracksView = function (playlist) {
-    if (playlist === currentPlaylist) {
-      return;
-    }
-
-    var template = hb.compile(that.elems.playlistTmpl);
+    var currentPlaylist = playlistManager.currentPlaylist,
+        template = hb.compile(that.elems.playlistTmpl);
 
     if (currentPlaylist !== null) {
       currentPlaylist.selected = false;
@@ -226,7 +222,7 @@ function PlaylistTracksEventListener () {
 
     playlist.selected = true;
 
-    currentPlaylist = playlist;
+    playlistManager.currentPlaylist = playlist;
     that.elems.playlistName.text(playlist.name);
     that.elems.playlistInner.html(template(playlist));
 
@@ -242,8 +238,11 @@ function PlaylistTracksEventListener () {
   };
 
   this.init = function () {
-    playlistManager.onGetPlaylist(function (playlist) {
-      if (currentPlaylist === null) {
+    playlistManager.setPlaylistCallbacks({
+      onFirstPlaylistLoaded: function (playlist) {
+        that.loadTracksView(playlist);
+      },
+      onTrackAdded: function (playlist) {
         that.loadTracksView(playlist);
       }
     });

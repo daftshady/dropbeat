@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'player'
-], function (players) {
+  'player', 'api'
+], function (players, api) {
 
 /**
  * Player Manager APIs.
@@ -21,8 +21,8 @@ function PlayerManager () {
   };
 
   this.TYPES = {
-    youtube: 'YoutubePlayer',
-    soundcloud: 'SoundCloudPlayer'
+    '0': 'YoutubePlayer',
+    '1': 'SoundCloudPlayer'
   };
 
   this.play = function (track) {
