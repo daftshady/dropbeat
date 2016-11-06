@@ -39,9 +39,11 @@
               <p class="item-title">{{title}}</p>
               <p class="item-duration">{{duration}}</p>
             </div>
+            {{#if ../authorized}}
             <div class="menus">
               <a class="add-to-playlist">+</a>
             </div>
+            {{/if}}
           </div>
         </div>
         {{/searchResults}}

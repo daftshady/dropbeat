@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'jquery', 'handlebars', 'api', 'playermanager', 'track'
-], function ($, hb, api, getPlayerManager, Track) {
+  'jquery', 'handlebars', 'api', 'playermanager', 'track', 'auth'
+], function ($, hb, api, getPlayerManager, Track, auth) {
 
 var playerManager = getPlayerManager();
 
@@ -272,7 +272,7 @@ function SearchManager () {
 
   this.updateView = function (data) {
     var template = hb.compile($('#search-result-template').html()),
-        items = {searchResults: data},
+        items = {searchResults: data, authorized: auth.currentUser !== null},
         renderedHtml = template(items),
         clickable = ['.item-title', '.item-thumbnail'],
         container = this.searchResultSection;
