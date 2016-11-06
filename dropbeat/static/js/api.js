@@ -27,6 +27,7 @@ var errorCodes = {
   invalidEmail: '101',
   passwordTooShort: '102',
   emailNotExist: '103',
+  passwordMismatch: '104',
   duplicatedPlaylistName: '105',
   trackAlreadyExist: '106',
   playlistNotExist: '107',

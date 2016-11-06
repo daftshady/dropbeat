@@ -49,8 +49,6 @@ function PlaylistManager () {
 
     onGetPlaylist = callback;
   };
-
-  auth.onLogin(initPlaylistUids);
 };
 
 
