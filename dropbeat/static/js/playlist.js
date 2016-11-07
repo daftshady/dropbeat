@@ -73,7 +73,7 @@ function Playlist (uid, name, tracks) {
   };
 
   this.push = function (track) {
-    tracks.push(track);
+    this.tracks.push(track);
   };
 };
 

@@ -99,6 +99,7 @@ function PlaylistManager () {
 
     reservedList.uid = params.uid;
     reservedList.name = params.name;
+    reservedList.editing = false;
 
     that.playlists.push(reservedList);
     reservedList = null;
@@ -125,11 +126,11 @@ function PlaylistManager () {
   };
 
   this.addNewTrack = function (track) {
-    var playlist_uid = that.currentPlaylist.uid,
+    var playlist = that.currentPlaylist,
         data = {
           uid: track.uid,
           name: track.name,
-          playlist_uid: playlist_uid
+          playlist_uid: playlist.uid
         };
 
     $.ajax({
@@ -140,15 +141,8 @@ function PlaylistManager () {
       contentType: 'application/json; charset=utf-8',
     }).done(function (resp) {
       if (resp.success) {
-        var playlist = that.getPlaylist(playlist_uid);
-        if (playlist !== null) {
-          playlist.push(resp.track);
-
-          // Defense for changing playlist before ajax reponse.
-          if (that.currentPlaylist.uid === playlist_uid) {
-            onTrackAdded(playlist);
-          }
-        }
+        playlist.push(resp.track);
+        onTrackAdded(playlist);
       }
     });
   };

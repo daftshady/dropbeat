@@ -94,22 +94,19 @@ function PlaylistEventListener () {
     // remove playlist
     elems.find(removeButton).click(function () {
       var list = $(this).closest('.playlist'),
-          uid = list.attr('data-uid'),
-          remove = function (path, params) {
-            return $.ajax({
-              url: path,
-              type: 'DELETE',
-              data: JSON.stringify(params)
-            });
-          };
+          uid = list.attr('data-uid');
 
       // FIXME Does playlist-uid have a fixed length?
       if (uid.length !== 0) {
-        remove(api.Router.getPath('playlist'), {uid: uid})
-          .always(function () {
-            playlistManager.removePlaylist(uid);
-            list.remove();
-          });
+        $.ajax({
+          url: api.Router.getPath('playlist'),
+          type: 'DELETE',
+          data: JSON.stringify({uid: uid}),
+          contentType: 'application/json; charset=utf-8'
+        }).done(function () {
+          playlistManager.removePlaylist(uid);
+          list.remove();
+        });
       }
     });
 
@@ -118,42 +115,36 @@ function PlaylistEventListener () {
       var list = $(this).closest('.playlist'),
           uid = list.attr('data-uid'),
           name = list.find(editValue).val(),
-          method = $.post;
+          data = {name: name, uid: uid},
+          method = uid.length === 0 ? 'POST', 'PUT';
 
-      if (uid.length !== 0) {
-        // Because there is no `$.put`
-        method = function (path, params) {
-          return $.ajax({
-            url: path,
-            type: 'PUT',
-            data: JSON.stringify(params)
-          });
-        };
-      }
+      $.ajax({
+        url: api.Router.getPath('playlist'),
+        type: method,
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8'
+      }).done(function (resp) {
+        var editContainer = '.edit-mode-view .title-input-field';
 
-      method(api.Router.getPath('playlist'), {name: name, uid: uid})
-        .done(function (resp) {
-          var editContainer = '.edit-mode-view .title-input-field';
+        if (!resp.success) {
+          list.find(editValue).closest(editContainer).addClass('warning');
+          return;
+        }
 
-          if (!resp.success) {
-            list.find(editValue).closest(editContainer).addClass('warning');
-            return;
-          }
+        list.removeClass('edit-mode');
+        list.find(playlistTitle).text(name);
+        list.find(editValue).closest(editContainer).removeClass('warning');
 
-          list.removeClass('edit-mode');
-          list.find(playlistTitle).text(name);
-          list.find(editValue).closest(editContainer).removeClass('warning');
+        if (list.attr('data-uid').length === 0) {
 
-          if (list.attr('data-uid').length === 0) {
+          list.attr('data-uid', resp.playlist.uid);
+          playlistManager.commit(resp.playlist);
 
-            list.attr('data-uid', resp.playlist.uid);
-            playlistManager.commit(resp.playlist);
-
-          } else {
-            var playlist = playlistManager.getPlaylist(uid);
-            playlist.name = name;
-          }
-        });
+        } else {
+          var playlist = playlistManager.getPlaylist(uid);
+          playlist.name = name;
+        }
+      });
     });
   };
 
@@ -235,6 +226,27 @@ function PlaylistTracksEventListener () {
 
         playerManager.play(new Track(uid, title, source));
       });
+
+    that.elems.playlistInner.find(trackRemoveQuery).click(function () {
+      var elem = $(this),
+          uid = elem.closest('.playlist-track-inner').attr('data-uid'),
+          playlist = playlistManager.currentPlaylist,
+          data = {uid: uid, playlist_uid: playlist.uid};
+
+      $.ajax({
+        url: api.Router.getPath('track'),
+        type: 'DELETE',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8'
+      }).done(function (resp) {
+        if (resp.success) {
+          playlist.remove(new Track(uid));
+          that.loadTracksView(playlist);
+        }
+      });
+
+    });
   };
 
   this.init = function () {
