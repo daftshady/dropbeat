@@ -116,7 +116,7 @@ function PlaylistEventListener () {
           uid = list.attr('data-uid'),
           name = list.find(editValue).val(),
           data = {name: name, uid: uid},
-          method = uid.length === 0 ? 'POST', 'PUT';
+          method = uid.length === 0 ? 'POST' : 'PUT';
 
       $.ajax({
         url: api.Router.getPath('playlist'),

@@ -146,8 +146,7 @@ function PlaylistManager () {
       }
     });
   };
-
-  auth.onLogin(loadPlaylistUids);
+  //auth.onLogin(loadPlaylistUids);
 };
 
 

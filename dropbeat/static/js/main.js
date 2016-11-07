@@ -7,7 +7,6 @@ require.config({
     handlebars: 'lib/handlebars-4.0.5',
     domReady: 'lib/domReady'
   }
-
 });
 
 require([
