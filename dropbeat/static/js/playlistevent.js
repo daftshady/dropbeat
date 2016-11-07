@@ -55,15 +55,10 @@ function PlaylistEventListener () {
   };
 
   this.bindEvents = function (elems) {
-    var editButton = '.nonedit-mode-view .menus .rename-button',
-        removeButton = '.nonedit-mode-view .menus .remove-button',
-        submitButton = '.edit-mode-view .menus .apply-edit-button',
-        cancelButton = '.edit-mode-view .menus .cancel-edit-button',
-        editValue = '.edit-mode-view form input[type=text]',
-        playlistTitle = '.nonedit-mode-view .title';
+    var editValue = '.edit-mode-view form input[type=text]';
 
     // select playlist.
-    elems.find(playlistTitle).click(function () {
+    elems.find('.nonedit-mode-view .title').click(function () {
       var uid = $(this).closest('.playlist').attr('data-uid'),
           selectedList = playlistManager.getPlaylist(uid);
 
@@ -75,43 +70,45 @@ function PlaylistEventListener () {
     });
 
     // edit playlist's name
-    elems.find(editButton).click(function () {
-      $(this).closest('.playlist').addClass('edit-mode');
-    });
+    elems.find('.nonedit-mode-view .menus .rename-button')
+      .click(function () {
+        $(this).closest('.playlist').addClass('edit-mode');
+      });
 
     // cancel renaming playlist
-    elems.find(cancelButton).click(function () {
-      var list = $(this).closest('.playlist')
-      list.removeClass('edit-mode');
-      list.find(editValue).closest().removeClass('warning');
+    elems.find('.edit-mode-view .menus .cancel-edit-button')
+      .click(function () {
+        var list = $(this).closest('.playlist')
+        list.removeClass('edit-mode');
+        list.find(editValue).closest().removeClass('warning');
 
-      if (list.attr('data-uid').length === 0) {
-        list.remove();
-        playlistManager.commit({cancel: true});
-      }
-    });
+        if (list.attr('data-uid').length === 0) {
+          list.remove();
+          playlistManager.commit({cancel: true});
+        }
+      });
 
     // remove playlist
-    elems.find(removeButton).click(function () {
-      var list = $(this).closest('.playlist'),
-          uid = list.attr('data-uid');
+    elems.find('.nonedit-mode-view .menus .remove-button')
+      .click(function () {
+        var list = $(this).closest('.playlist'),
+            uid = list.attr('data-uid');
 
-      // FIXME Does playlist-uid have a fixed length?
-      if (uid.length !== 0) {
-        $.ajax({
-          url: api.Router.getPath('playlist'),
-          type: 'DELETE',
-          data: JSON.stringify({uid: uid}),
-          contentType: 'application/json; charset=utf-8'
-        }).done(function () {
-          playlistManager.removePlaylist(uid);
-          list.remove();
-        });
-      }
-    });
+        // FIXME Does playlist-uid have a fixed length?
+        if (uid.length !== 0) {
+          $.ajax({
+            url: api.Router.getPath('playlist'),
+            type: 'DELETE',
+            data: JSON.stringify({uid: uid}),
+            contentType: 'application/json; charset=utf-8'
+          }).done(function () {
+            playlistManager.removePlaylist(uid);
+            list.remove();
+          });
+        }
+      });
 
-    // apply creation or renaming playlist.
-    elems.find(submitButton).click(function () {
+    var onSubmit = function () {
       var list = $(this).closest('.playlist'),
           uid = list.attr('data-uid'),
           name = list.find(editValue).val(),
@@ -132,7 +129,7 @@ function PlaylistEventListener () {
         }
 
         list.removeClass('edit-mode');
-        list.find(playlistTitle).text(name);
+        list.find('.nonedit-mode-view .title').text(name);
         list.find(editValue).closest(editContainer).removeClass('warning');
 
         if (list.attr('data-uid').length === 0) {
@@ -145,7 +142,16 @@ function PlaylistEventListener () {
           playlist.name = name;
         }
       });
-    });
+    };
+
+    // apply creation or renaming playlist.
+    elems.find('.edit-mode-view .menus .apply-edit-button').click(onSubmit);
+    elems.find('.edit-mode-view .title-input-field form')
+      .on('submit', function (event) {
+        $(event.currentTarget).closest('.edit-mode-view')
+          .find('.menus .apply-edit-button').click();
+        return false;
+      });
   };
 
   this.init = function () {
