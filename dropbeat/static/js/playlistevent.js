@@ -108,7 +108,8 @@ function PlaylistEventListener () {
         }
       });
 
-    var onSubmit = function () {
+    // apply creation or renaming playlist.
+    elems.find('.edit-mode-view .menus .apply-edit-button').click(function () {
       var list = $(this).closest('.playlist'),
           uid = list.attr('data-uid'),
           name = list.find(editValue).val(),
@@ -142,10 +143,8 @@ function PlaylistEventListener () {
           playlist.name = name;
         }
       });
-    };
+    });
 
-    // apply creation or renaming playlist.
-    elems.find('.edit-mode-view .menus .apply-edit-button').click(onSubmit);
     elems.find('.edit-mode-view .title-input-field form')
       .on('submit', function (event) {
         $(event.currentTarget).closest('.edit-mode-view')
