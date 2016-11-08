@@ -2,9 +2,9 @@
 
 define([
   'jquery', 'handlebars', 'track',
-  'playlist', 'api', 'auth',
+  'api', 'auth',
   'playlistmanager', 'playermanager'
-], function ($, hb, Track, Playlist, api, auth,
+], function ($, hb, Track, api, auth,
              getPlaylistManager, getPlayerManager) {
 
 var playerManager = getPlayerManager(),
@@ -272,21 +272,21 @@ function PlaylistTracksEventListener () {
   };
 
   this.init = function () {
-    playlistManager.setPlaylistCallbacks({
-      onFirstPlaylistLoaded: function (playlist) {
-        that.loadTracksView(playlist);
-      },
-      onTrackAdded: function (track) {
-        that.loadNewTrack(track);
-      }
-    });
-
     that.elems.openPlaylist.click(function () {
       if (auth.currentUser !== null) {
         playlistListener.openPlaylistView();
       }
     });
   };
+
+  playlistManager.setPlaylistCallbacks({
+    onFirstPlaylistLoaded: function (playlist) {
+      that.loadTracksView(playlist);
+    },
+    onTrackAdded: function (track) {
+      that.loadNewTrack(track);
+    }
+  });
 
   playerManager.addPlayerCallbacks({
     onPlay: function () {
