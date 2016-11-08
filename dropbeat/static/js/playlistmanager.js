@@ -40,7 +40,10 @@ function PlaylistManager () {
                                       resp.playlist.tracks);
 
           if (that.playlists.length === 0) {
-            onFirstPlaylistLoaded(playlist);
+            var length = that.callbacks.onFirstPlaylistLoaded.length;
+            for (var i=0; i<length; i+=1) {
+              that.callbacks.onFirstPlaylistLoaded[i](playlist);
+            }
           }
 
           that.playlists.push(playlist);
@@ -58,33 +61,19 @@ function PlaylistManager () {
           }
         }
       });
-  },
-
-  onFirstPlaylistLoaded = function (playlist) {
-    var length = that.callbacks.onFirstPlaylistLoaded.length;
-    for (var i=0; i<length; i+=1) {
-      that.callbacks.onFirstPlaylistLoaded[i](playlist);
-    }
-  },
-
-  onTrackAdded = function (track) {
-    var length = that.callbacks.onTrackAdded.length;
-    for (var i=0; i<length; i+=1) {
-      that.callbacks.onTrackAdded[i](track);
-    }
   };
 
   this.currentPlaylist = null;
   this.playlists = [];
   this.callbacks = {
-    onFirstPlaylistLoaded: [],
-    onTrackAdded: [],
+    onFirstPlaylistLoaded: null,
+    onTrackAdded: null,
   };
 
   this.setPlaylistCallbacks = function (callbacks) {
     for (var key in callbacks) {
       if (callbacks.hasOwnProperty(key) && key in that.callbacks) {
-        that.callbacks[key].push(callbacks[key]);
+        that.callbacks[key] = callbacks[key];
 
         if (key === 'onFirstPlaylistLoaded' && that.playlists.length > 0) {
           callbacks[key](that.playlists[0]);
@@ -160,7 +149,11 @@ function PlaylistManager () {
     }).done(function (resp) {
       if (resp.success) {
         playlist.push(resp.track);
-        onTrackAdded(resp.track);
+
+        var length = that.callbacks.onTrackAdded.length;
+        for (var i=0; i<length; i+=1) {
+          that.callbacks.onTrackAdded[i](resp.track);
+        }
       }
     });
   };

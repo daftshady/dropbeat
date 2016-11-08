@@ -48,7 +48,7 @@ function PlayerBase () {
     return buffer;
   };
 
-  this.setPlayCallbacks = function () {
+  this.addPlayerCallbacks = function () {
   };
 
   this.onPlay = function () {
@@ -135,15 +135,18 @@ function YoutubePlayer () {
     }
   };
 
-  this.setPlayCallbacks = function (callbacks) {
-    var key;
-    for (key in callbacks) {
-      if (callbacks.hasOwnProperty(key) && key in playCallbacks) {
-        playCallbacks[key].push(callbacks[key]);
-      }
+  this.addPlayerCallbacks = function (callbacks) {
+    var validKeys = ['onReady', 'onPlay', 'onPause', 'onFinish'];
 
-      if (key === 'onReady' && playerImpl !== null) {
-        callbacks[key]();
+    for (var i=0; i < validKeys.length; i++) {
+      var key = validKeys[i];
+
+      if (key in callbacks) {
+        playCallbacks[key].push(callbacks[key]);
+
+        if (key === 'onReady' && playerImpl !== null) {
+          callbacks[key]();
+        }
       }
     }
   };

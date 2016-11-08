@@ -288,7 +288,7 @@ function PlaylistTracksEventListener () {
     });
   };
 
-  playerManager.setPlayCallbacks({
+  playerManager.addPlayerCallbacks({
     onPlay: function () {
       boldCurrentTrack();
     },

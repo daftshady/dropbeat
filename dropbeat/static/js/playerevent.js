@@ -172,7 +172,7 @@ function PlayerEventListener () {
     that.buttons.shuffle.click(function () {
     });
 
-    manager.setPlayCallbacks({
+    manager.addPlayerCallbacks({
       onReady: function () {
         setStatus('READY');
         setTitle('CHOOSE TRACK FROM PLAYLIST');
