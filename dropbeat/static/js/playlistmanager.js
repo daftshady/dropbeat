@@ -39,8 +39,7 @@ function PlaylistManager () {
                                       resp.playlist.name,
                                       resp.playlist.tracks);
 
-          if (that.playlists.length === 0 &&
-              that.callbacks.onFirstPlaylistLoaded !== null) {
+          if (that.playlists.length === 0) {
             that.callbacks.onFirstPlaylistLoaded(playlist);
           }
 
@@ -147,10 +146,7 @@ function PlaylistManager () {
     }).done(function (resp) {
       if (resp.success) {
         playlist.push(resp.track);
-
-        if (that.callbacks.onTrackAdded !== null) {
-          that.callbacks.onTrackAdded(resp.track);
-        }
+        that.callbacks.onTrackAdded(resp.track);
       }
     });
   };
