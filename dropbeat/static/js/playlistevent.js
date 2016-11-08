@@ -220,19 +220,36 @@ function PlaylistTracksEventListener () {
 
     playlistManager.currentPlaylist = playlist;
     that.elems.playlistName.text(playlist.name);
-    that.elems.playlistInner.html(template(playlist));
 
-    that.elems.playlistInner.find(trackTitleQuery)
-      .click(function () {
-        var elem = $(this),
-            title = elem.find('.track-title').text(),
-            uid = elem.parent().attr('data-uid'),
-            source = elem.parent().attr('data-source');
+    var children = that.elems.playlistInner.html(template(playlist));
 
-        playerManager.play(new Track(uid, title, source));
-      });
+    this.bindEvents(children);
+  };
 
-    that.elems.playlistInner.find(trackRemoveQuery).click(function () {
+  this.loadNewTrack = function (track) {
+    var currentPlaylist = playlistManager.currentPlaylist,
+        template = hb.compile(that.elems.playlistTmpl);
+
+    if (currentPlaylist === null) {
+      return;
+    }
+
+    var child = that.elems.playlistInner.append(template({tracks: [track]}));
+
+    this.bindEvents(child);
+  };
+
+  this.bindEvents = function (elems) {
+    elems.find(trackTitleQuery).click(function () {
+      var elem = $(this),
+          title = elem.find('.track-title').text(),
+          uid = elem.parent().attr('data-uid'),
+          source = elem.parent().attr('data-source');
+
+      playerManager.play(new Track(uid, title, source));
+    });
+
+    elems.find(trackRemoveQuery).click(function () {
       var elem = $(this),
           uid = elem.closest('.playlist-track-inner').attr('data-uid'),
           playlist = playlistManager.currentPlaylist,
@@ -259,8 +276,8 @@ function PlaylistTracksEventListener () {
       onFirstPlaylistLoaded: function (playlist) {
         that.loadTracksView(playlist);
       },
-      onTrackAdded: function (playlist) {
-        that.loadTracksView(playlist);
+      onTrackAdded: function (track) {
+        that.loadNewTrack(track);
       }
     });
 

@@ -5,6 +5,21 @@ define([
 ], function ($, Playlist, auth, api) {
 
 /**
+ * Track queue management helper.
+ * It helps shuffle when users play their playlist.
+ */
+
+function TrackQueue () {
+
+  this.init = function (playlist) {
+  };
+
+  this.shuffle = function () {
+  };
+
+};
+
+/**
  * Playlist manager object.
  * It manages users' playlist (and tracks) addition/deletion/modifications.
  */
@@ -52,10 +67,10 @@ function PlaylistManager () {
     }
   },
 
-  onTrackAdded = function (playlist) {
+  onTrackAdded = function (track) {
     var length = that.callbacks.onTrackAdded.length;
     for (var i=0; i<length; i+=1) {
-      that.callbacks.onTrackAdded[i](playlist);
+      that.callbacks.onTrackAdded[i](track);
     }
   };
 
@@ -78,6 +93,9 @@ function PlaylistManager () {
     }
   };
 
+  // Prepare a list, which is created by user but not submitted to server.
+  // (clicked by `create new playlist`)
+  // After create playlist by server, `this.commit` will be invoked.
   this.prepare = function () {
     var list = new Playlist();
     list.editing = true;
@@ -142,11 +160,10 @@ function PlaylistManager () {
     }).done(function (resp) {
       if (resp.success) {
         playlist.push(resp.track);
-        onTrackAdded(playlist);
+        onTrackAdded(resp.track);
       }
     });
   };
-  //auth.onLogin(loadPlaylistUids);
 };
 
 

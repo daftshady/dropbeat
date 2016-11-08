@@ -160,7 +160,6 @@ function PlayerEventListener () {
       }
     });
 
-    // TODO Implement after playlist addition/deletion.
     that.buttons.prev.click(function () {
     });
 
