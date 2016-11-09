@@ -18,11 +18,11 @@ function Playlist (uid, name, tracks) {
     }
   };
 
-  // Returns index of the given track.
+  // Returns index of track having given uid.
   // Tracks are regarded to be equal if both have the same uid.
-  this.index = function (track) {
+  this.index = function (uid) {
     for (var i = 0; i < this.tracks.length; i++) {
-      if (this.tracks[i].uid === track.uid) {
+      if (this.tracks[i].uid === uid) {
         return i;
       }
     }
@@ -32,7 +32,7 @@ function Playlist (uid, name, tracks) {
 
   // Adds track to the playlist and returns success boolean.
   this.add = function (track) {
-    var idx = this.index(track);
+    var idx = this.index(track.uid);
 
     if (idx !== -1) {
       // Fails if the track already exists.
@@ -44,8 +44,8 @@ function Playlist (uid, name, tracks) {
   };
 
   // Removes track from the playlist and returns success boolean.
-  this.remove = function (track) {
-    var idx = this.index(track);
+  this.remove = function (uid) {
+    var idx = this.index(uid);
 
     if (idx === -1) {
       // Cannot remove non-exist track.

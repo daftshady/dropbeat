@@ -1,8 +1,10 @@
 'use strict';
 
 define([
-  'jquery', 'handlebars', 'api',
-], function ($, handlebars, api) {
+  'jquery', 'handlebars', 'api', 'playlistmanager'
+], function ($, handlebars, api, getPlaylistManager) {
+
+var playlistManager = getPlaylistManager();
 
 /**
  * User model.
@@ -164,6 +166,8 @@ function Authenticator (view) {
           window.location.href = '/';
         });
       });
+
+      playlistManager.loadAllPlaylists();
     };
 
     this.onAuthFailure = function () {

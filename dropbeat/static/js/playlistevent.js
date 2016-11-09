@@ -228,13 +228,17 @@ function PlaylistTracksEventListener () {
 
   this.loadNewTrack = function (track) {
     var currentPlaylist = playlistManager.currentPlaylist,
-        template = hb.compile(that.elems.playlistTmpl);
+        template = hb.compile(that.elems.playlistTmpl),
+        trackDump = Object.create(track);
+
+    trackDump.idx = currentPlaylist.index(track.uid);
 
     if (currentPlaylist === null) {
       return;
     }
 
-    var child = that.elems.playlistInner.append(template({tracks: [track]}));
+    var child = that.elems.playlistInner
+      .append(template({tracks: [trackDump]}));
 
     this.bindEvents(child);
   };
@@ -263,7 +267,7 @@ function PlaylistTracksEventListener () {
         contentType: 'application/json; charset=utf-8'
       }).done(function (resp) {
         if (resp.success) {
-          playlist.remove(new Track(uid));
+          playlist.remove(uid);
           that.loadTracksView(playlist);
         }
       });

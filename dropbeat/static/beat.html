@@ -53,7 +53,13 @@
       <li class="playlist-track">
         <div class="playlist-track-inner" data-uid={{uid}} data-source={{source}}>
           <a class="track-title-wrapper">
-            <span class="track-index">{{@key}}.</span>
+            <span class="track-index">
+              {{#if idx}}
+                {{idx}}
+              {{else}}
+                {{@key}}
+              {{/if}}
+            .</span>
             <span class="track-on-icon">
               <i class="ic"></i>
             </span>

@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'jquery', 'playlist', 'auth', 'api'
-], function ($, Playlist, auth, api) {
+  'jquery', 'playlist', 'api'
+], function ($, Playlist, api) {
 
 /**
  * Track queue management helper.
@@ -46,9 +46,9 @@ function PlaylistManager () {
           that.playlists.push(playlist);
         }
       });
-  },
+  };
 
-  loadPlaylistUids = function () {
+  this.loadAllPlaylists = function () {
     $.get(api.Router.getPath('playlistList'))
 
       .done(function (resp) {
