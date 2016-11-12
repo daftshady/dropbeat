@@ -281,25 +281,25 @@ function PlaylistTracksEventListener () {
         playlistListener.openPlaylistView();
       }
     });
+
+    playlistManager.setPlaylistCallbacks({
+      onFirstPlaylistLoaded: function (playlist) {
+        that.loadTracksView(playlist);
+      },
+      onTrackAdded: function (track) {
+        that.loadNewTrack(track);
+      }
+    });
+
+    playerManager.addPlayerCallbacks({
+      onPlay: function () {
+        boldCurrentTrack();
+      },
+      onFinish: function () {
+        unboldCurrentTrack();
+      }
+    });
   };
-
-  playlistManager.setPlaylistCallbacks({
-    onFirstPlaylistLoaded: function (playlist) {
-      that.loadTracksView(playlist);
-    },
-    onTrackAdded: function (track) {
-      that.loadNewTrack(track);
-    }
-  });
-
-  playerManager.addPlayerCallbacks({
-    onPlay: function () {
-      boldCurrentTrack();
-    },
-    onFinish: function () {
-      unboldCurrentTrack();
-    }
-  });
 };
 
 var playlistListener = new PlaylistEventListener(),
