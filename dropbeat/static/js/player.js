@@ -138,7 +138,7 @@ function YoutubePlayer () {
   this.addPlayerCallbacks = function (callbacks) {
     var validKeys = ['onReady', 'onPlay', 'onPause', 'onFinish'];
 
-    for (var i=0; i < validKeys.length; i++) {
+    for (var i = 0; i < validKeys.length; i += 1) {
       var key = validKeys[i];
 
       if (key in callbacks) {

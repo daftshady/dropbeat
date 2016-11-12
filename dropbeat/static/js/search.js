@@ -57,7 +57,7 @@ function AutoCompletor (searchBar, driver) {
         that.clearItems();
 
         // Update view with the result
-        for (i = 0; i < parsedResult.length; i++) {
+        for (i = 0; i < parsedResult.length; i += 1) {
           $('<ul />', {
             class: that.itemClass,
             text: parsedResult[i]
@@ -92,7 +92,7 @@ function AutoCompletor (searchBar, driver) {
   this.selectNext = function () {
     if (this.selectedIdx < this.wordList.children().length - 1) {
       this.clearSelectedItem(this.selectedIdx);
-      this.selectedIdx++;
+      this.selectedIdx += 1;
       this.selectTo(this.selectedIdx);
     }
   };
@@ -109,7 +109,7 @@ function AutoCompletor (searchBar, driver) {
     // This method is used to clear style of previously selected item without
     // updating `selectedIdx`.
     var children = this.wordList.children();
-    for (var i = 0; i < children.length; i++) {
+    for (var i = 0; i < children.length; i += 1) {
       $(children[i]).removeClass('autocomplete-items-selected');
     }
   }
@@ -159,7 +159,7 @@ function YoutubeDriver () {
   // Parse jsonp result from youtube search api
   this.parseResp = function (rawResp) {
     var words = rawResp[1], parsed = [], i;
-    for (i = 0; i < words.length; i++) {
+    for (i = 0; i < words.length; i += 1) {
       parsed.push(words[i][0]);
     }
     return parsed;
@@ -256,7 +256,7 @@ function SearchManager () {
               } else {
                 // TODO: Check error code.
                 if (curPoll < maxPoll) {
-                  curPoll++;
+                  curPoll += 1;
                 } else {
                   // Timeout expired.
                   clearPoller(poller);
@@ -293,7 +293,7 @@ function SearchManager () {
 
     // Render search result and attach click listeners.
     container.html(renderedHtml);
-    for (var i = 0; i < clickable.length; i++) {
+    for (var i = 0; i < clickable.length; i += 1) {
       container.find(clickable[i]).click(function () {
         var itemWrapper = $(this).closest('.item-wrapper');
         onItemClicked(itemWrapper);

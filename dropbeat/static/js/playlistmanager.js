@@ -32,7 +32,6 @@ function PlaylistManager () {
 
   loadPlaylist = function (uid) {
     $.get(api.Router.getPath('playlist'), {uid: uid})
-
       .done(function (resp) {
         if (resp.success) {
           var playlist = new Playlist(resp.playlist.uid,
@@ -50,10 +49,9 @@ function PlaylistManager () {
 
   this.loadAllPlaylists = function () {
     $.get(api.Router.getPath('playlistList'))
-
       .done(function (resp) {
         if (resp.success) {
-          for (var i=0; i<resp.list.length; i+=1) {
+          for (var i = 0; i < resp.list.length; i += 1) {
             loadPlaylist(resp.list[i]);
           }
         }
@@ -111,8 +109,8 @@ function PlaylistManager () {
 
   this.getPlaylist = function (uid) {
     var uids = that.playlists.map(function (playlist) {
-                 return playlist.uid;
-               }),
+          return playlist.uid;
+        }),
         idx = uids.indexOf(uid);
 
     return idx === -1 ? null : that.playlists[idx];
@@ -120,8 +118,8 @@ function PlaylistManager () {
 
   this.removePlaylist = function (uid) {
     var uids = that.playlists.map(function (playlist) {
-                 return playlist.uid;
-               }),
+          return playlist.uid;
+        }),
         idx = uids.indexOf(uid);
 
     if (idx !== -1) {

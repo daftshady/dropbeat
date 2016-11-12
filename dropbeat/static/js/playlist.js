@@ -21,7 +21,7 @@ function Playlist (uid, name, tracks) {
   // Returns index of track having given uid.
   // Tracks are regarded to be equal if both have the same uid.
   this.index = function (uid) {
-    for (var i = 0; i < this.tracks.length; i++) {
+    for (var i = 0; i < this.tracks.length; i += 1) {
       if (this.tracks[i].uid === uid) {
         return i;
       }
