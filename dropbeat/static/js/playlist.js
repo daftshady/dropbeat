@@ -18,6 +18,10 @@ function Playlist (uid, name, tracks) {
     }
   };
 
+  // Public field for ui template.
+  this.editing = false;
+  this.selected = false;
+
   // Returns index of track having given uid.
   // Tracks are regarded to be equal if both have the same uid.
   this.index = function (uid) {
