@@ -62,6 +62,8 @@ function PlaylistEventListener () {
       var uid = $(this).closest('.playlist').attr('data-uid'),
           selectedList = playlistManager.getPlaylist(uid);
 
+      playlistManager.playOrderControl.reloadQueue();
+
       if (selectedList !== null) {
         tracksListener.loadTracksView(selectedList);
       }
@@ -285,6 +287,7 @@ function PlaylistTracksEventListener () {
     playlistManager.setPlaylistCallbacks({
       onFirstPlaylistLoaded: function (playlist) {
         that.loadTracksView(playlist);
+        playlistManager.playOrderControl.reloadQueue();
       },
       onTrackAdded: function (track) {
         that.loadNewTrack(track);
