@@ -170,7 +170,7 @@ function PlaylistEventListener () {
 
 function PlaylistTracksEventListener () {
   var that = this,
-      baseQuery = '.playlist-track .playlist-track-inner ',
+      baseQuery = '.playlist-track-inner ',
       trackTitleQuery = baseQuery + '.track-title-wrapper',
       trackRemoveQuery = baseQuery + '.menus .track-remove',
 
@@ -236,8 +236,8 @@ function PlaylistTracksEventListener () {
       return;
     }
 
-    var child = that.elems.playlistInner
-      .append(template({tracks: [trackDump]}));
+    var child = $(template({tracks: [trackDump]}))
+      .appendTo(that.elems.playlistInner);
 
     this.bindEvents(child);
   };
