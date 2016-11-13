@@ -10,7 +10,7 @@ function Router () {
     signin: 'user/signin',
     signout: 'user/signout',
     playlist: 'playlist',
-    playlistList: 'playlist/list',
+    playlistList: 'playlist/all',
     track: 'track',
     search: 'search',
     searchAsync: 'search/async'

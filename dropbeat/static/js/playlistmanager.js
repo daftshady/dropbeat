@@ -124,21 +124,19 @@ function PlaylistManager () {
   var that = this,
       // `reservedList` limit creating multiple playlists at once.
       reservedList = null,
-      playlistCallback = null,
+      playlistCallback = null;
 
-  loadPlaylist = function (uid) {
+  this.loadPlaylist = function (uid, updateView) {
     $.get(api.Router.getPath('playlist'), {uid: uid})
       .done(function (resp) {
+        var playlist = that.getPlaylist(uid);
+
         if (resp.success) {
-          var playlist = new Playlist(resp.playlist.uid,
-                                      resp.playlist.name,
-                                      resp.playlist.tracks);
+          playlist.tracks = resp.playlist.tracks;
 
-          if (that.playlists.length === 0) {
-            that.callbacks.onFirstPlaylistLoaded(playlist);
+          if (updateView) {
+            that.callbacks.onPlaylistChange(playlist);
           }
-
-          that.playlists.push(playlist);
         }
       });
   };
@@ -147,8 +145,13 @@ function PlaylistManager () {
     $.get(api.Router.getPath('playlistList'))
       .done(function (resp) {
         if (resp.success) {
-          for (var i = 0; i < resp.list.length; i += 1) {
-            loadPlaylist(resp.list[i]);
+          for (var i = 0; i < resp.data.length; i += 1) {
+            var playlist = new Playlist(resp.data[i].uid, resp.data[i].name);
+            that.playlists.push(playlist);
+
+            if (i === 0) {
+              that.loadPlaylist(resp.data[0].uid, true);
+            }
           }
         }
       });
@@ -159,7 +162,7 @@ function PlaylistManager () {
   this.playlists = [];
 
   this.callbacks = {
-    onFirstPlaylistLoaded: null,
+    onPlaylistChange: null,
     onTrackAdded: null,
   };
 
@@ -171,7 +174,7 @@ function PlaylistManager () {
       if (callbacks.hasOwnProperty(key) && key in that.callbacks) {
         that.callbacks[key] = callbacks[key];
 
-        if (key === 'onFirstPlaylistLoaded' && that.playlists.length > 0) {
+        if (key === 'onPlaylistChange' && that.playlists.length > 0) {
           callbacks[key](that.playlists[0]);
         }
       }

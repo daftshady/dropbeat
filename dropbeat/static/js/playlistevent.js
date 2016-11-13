@@ -65,7 +65,7 @@ function PlaylistEventListener () {
       playlistManager.playOrderControl.reloadQueue();
 
       if (selectedList !== null) {
-        tracksListener.loadTracksView(selectedList);
+        playlistManager.loadPlaylist(uid, true);
       }
 
       that.elems.root.hide();
@@ -308,7 +308,7 @@ function PlaylistTracksEventListener () {
     });
 
     playlistManager.setPlaylistCallbacks({
-      onFirstPlaylistLoaded: function (playlist) {
+      onPlaylistChange: function (playlist) {
         that.loadTracksView(playlist);
         playlistManager.playOrderControl.reloadQueue();
       },
