@@ -118,6 +118,6 @@ var getInstance = (function (instance) {
   return wrap;
 })(null);
 
-return getInstance;
+return getInstance();
 
 });

@@ -2,14 +2,12 @@
 
 define([
   'jquery', 'playermanager'
-], function ($, getManager) {
+], function ($, manager) {
 
 /**
  * Progress is in player and is responsible for
  * updating progress (when playing) and handling player's seek actions.
  */
-
-var manager = getManager();
 
 function ProgressHandler () {
   var root = $('#player').find('.progress'),

@@ -5,10 +5,8 @@ define([
   'playermanager', 'playlistevent',
   'track', 'auth'
 ], function ($, hb, api,
-             getPlayerManager, playlistEvent,
+             playerManager, playlistEvent,
              Track, auth) {
-
-var playerManager = getPlayerManager();
 
 /**
   * Defines modules for search features such as autocomplete, youtube & soundcloud
