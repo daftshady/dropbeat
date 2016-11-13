@@ -2,8 +2,8 @@
 'use strict';
 
 define([
-  'api', 'playercallbacks'
-], function (api, callbacks) {
+  'api', 'playercallback'
+], function (api, playerCallback) {
 
 /**
  * Basic Player APIs.
@@ -62,13 +62,13 @@ function YoutubePlayer () {
   onStateChange = function (event) {
     switch (event.data) {
       case YT.PlayerState.PLAYING:
-        callbacks.onPlay(currentTrack);
+        playerCallback.onPlay(currentTrack);
         break;
       case YT.PlayerState.PAUSED:
-        callbacks.onPause();
+        playerCallback.onPause();
         break;
       case YT.PlayerState.ENDED:
-        callbacks.onFinish();
+        playerCallback.onFinish();
         break;
       case YT.PlayerState.UNSTARTED:
 // NOTE Youtube iframe player firstly send this after loading.
@@ -88,7 +88,7 @@ function YoutubePlayer () {
       videoId: 'x',
       playerVars: {},
       events: {
-        onReady: callbacks.onReady,
+        onReady: playerCallback.onReady,
         onStateChange: onStateChange,
         onPlaybackQualityChange: null,
         onPlaybackRateChange: null,

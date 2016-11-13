@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'player', 'api', 'playercallbacks'
-], function (players, api, callbackManager) {
+  'player', 'api', 'playercallback'
+], function (player, api, playerCallback) {
 
 /**
  * Player Manager APIs.
@@ -30,7 +30,7 @@ function PlayerManager () {
       throw 'Do not play with unspecified track.';
     }
 
-    currentPlayer = players[this.TYPES[track.source]];
+    currentPlayer = player[this.TYPES[track.source]];
     if (currentPlayer === undefined) {
       throw 'Player type ' + track.source + ' is not supported.';
     }
@@ -69,7 +69,7 @@ function PlayerManager () {
   };
 
   this.addPlayerCallbacks = function (callbacks) {
-    callbackManager.addPlayerCallbacks(callbacks)
+    playerCallback.addCallbacks(callbacks)
   };
 
   this.getCurrentPlayer = function () {
