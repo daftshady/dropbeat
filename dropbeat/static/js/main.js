@@ -28,7 +28,7 @@ require([
 
 // eslint-disable-next-line no-unused-vars
 function onYouTubeIframeAPIReady () {
-  require(['player'], function (players) {
-    players.YoutubePlayer.init();
+  require(['player'], function (player) {
+    player.YoutubePlayer.init();
   });
 };
