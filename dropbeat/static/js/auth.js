@@ -2,9 +2,7 @@
 
 define([
   'jquery', 'handlebars', 'api', 'playlistmanager'
-], function ($, handlebars, api, getPlaylistManager) {
-
-var playlistManager = getPlaylistManager();
+], function ($, handlebars, api, playlistManager) {
 
 /**
  * User model.

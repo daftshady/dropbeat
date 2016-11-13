@@ -5,10 +5,7 @@ define([
   'api', 'auth', 'notification',
   'playlistmanager', 'playermanager'
 ], function ($, hb, Track, api, auth, notify,
-             getPlaylistManager, getPlayerManager) {
-
-var playerManager = getPlayerManager(),
-    playlistManager = getPlaylistManager();
+             playlistManager, playerManager) {
 
 /**
  * It binds user actions for playlist manipulation.
