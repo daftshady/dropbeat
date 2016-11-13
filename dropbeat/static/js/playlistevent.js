@@ -62,8 +62,6 @@ function PlaylistEventListener () {
       var uid = $(this).closest('.playlist').attr('data-uid'),
           selectedList = playlistManager.getPlaylist(uid);
 
-      playlistManager.playOrderControl.reloadQueue();
-
       if (selectedList !== null) {
         playlistManager.loadPlaylist(uid, true);
       }
@@ -225,6 +223,8 @@ function PlaylistTracksEventListener () {
     var children = that.elems.playlistInner.html(template(playlist));
 
     this.bindEvents(children);
+
+    playlistManager.playOrderControl.reloadQueue();
   };
 
   this.addNewTrack = function (track) {
@@ -245,26 +245,9 @@ function PlaylistTracksEventListener () {
       if (resp.success) {
         notify.onTrackAdded();
         playlist.push(resp.track);
-        that.loadNewTrackView(resp.track);
+        that.loadTracksView(playlist);
       }
     });
-  };
-
-  this.loadNewTrackView = function (track) {
-    var currentPlaylist = playlistManager.currentPlaylist,
-        template = hb.compile(that.elems.playlistTmpl),
-        trackDump = Object.create(track);
-
-    trackDump.idx = currentPlaylist.index(track.uid);
-
-    if (currentPlaylist === null) {
-      return;
-    }
-
-    var child = $(template({tracks: [trackDump]}))
-      .appendTo(that.elems.playlistInner);
-
-    this.bindEvents(child);
   };
 
   this.bindEvents = function (elems) {
@@ -310,7 +293,6 @@ function PlaylistTracksEventListener () {
     playlistManager.setPlaylistCallbacks({
       onPlaylistChange: function (playlist) {
         that.loadTracksView(playlist);
-        playlistManager.playOrderControl.reloadQueue();
       },
       onTrackAdded: function (track) {
         that.loadNewTrack(track);
