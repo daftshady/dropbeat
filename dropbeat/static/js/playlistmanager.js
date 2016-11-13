@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'jquery', 'playlist', 'api'
-], function ($, Playlist, api) {
+  'jquery', 'playlist', 'api', 'notification'
+], function ($, Playlist, api, notify) {
 
 /**
  * Track queue management helper.
@@ -143,6 +143,7 @@ function PlaylistManager () {
       contentType: 'application/json; charset=utf-8',
     }).done(function (resp) {
       if (resp.success) {
+        notify.onTrackAdded();
         playlist.push(resp.track);
         that.callbacks.onTrackAdded(resp.track);
       }

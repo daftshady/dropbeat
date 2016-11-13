@@ -2,9 +2,9 @@
 
 define([
   'jquery', 'handlebars', 'track',
-  'api', 'auth',
+  'api', 'auth', 'notification',
   'playlistmanager', 'playermanager'
-], function ($, hb, Track, api, auth,
+], function ($, hb, Track, api, auth, notify,
              getPlaylistManager, getPlayerManager) {
 
 var playerManager = getPlayerManager(),
@@ -94,7 +94,6 @@ function PlaylistEventListener () {
         var list = $(this).closest('.playlist'),
             uid = list.attr('data-uid');
 
-        // FIXME Does playlist-uid have a fixed length?
         if (uid.length !== 0) {
           $.ajax({
             url: api.Router.getPath('playlist'),
@@ -267,6 +266,7 @@ function PlaylistTracksEventListener () {
         contentType: 'application/json; charset=utf-8'
       }).done(function (resp) {
         if (resp.success) {
+          notify.onTrackRemoved();
           playlist.remove(uid);
           that.loadTracksView(playlist);
         }

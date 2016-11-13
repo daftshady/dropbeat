@@ -5,7 +5,13 @@ require.config({
   paths: {
     jquery: 'lib/jquery-3.1.1.min',
     handlebars: 'lib/handlebars-4.0.5',
-    domReady: 'lib/domReady'
+    domReady: 'lib/domReady',
+    toastr: 'lib/toastr.min'
+  },
+  map: {
+    '*': {
+      'css': 'lib/css.min'
+    }
   }
 });
 
