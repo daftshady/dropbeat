@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'player', 'api'
-], function (players, api) {
+  'player', 'api', 'playercallbacks'
+], function (players, api, callbackManager) {
 
 /**
  * Player Manager APIs.
@@ -69,11 +69,7 @@ function PlayerManager () {
   };
 
   this.addPlayerCallbacks = function (callbacks) {
-    for (var key in players) {
-      if (players.hasOwnProperty(key)) {
-        players[key].addPlayerCallbacks(callbacks);
-      }
-    }
+    callbackManager.addPlayerCallbacks(callbacks)
   };
 
   this.getCurrentPlayer = function () {

@@ -2,9 +2,8 @@
 'use strict';
 
 define([
-  'api',
-],
-function (api) {
+  'api', 'playercallbacks'
+], function (api, callbacks) {
 
 /**
  * Basic Player APIs.
@@ -47,18 +46,6 @@ function PlayerBase () {
 
     return buffer;
   };
-
-  this.addPlayerCallbacks = function () {
-  };
-
-  this.onPlay = function () {
-  };
-
-  this.onPause = function () {
-  }
-
-  this.onFinish = function() {
-  };
 };
 
 /*
@@ -69,60 +56,19 @@ function PlayerBase () {
  */
 
 function YoutubePlayer () {
-  var playerImpl, currentTrack,
-      playCallbacks = {
-        onReady: [],
-        onPlay: [],
-        onPause: [],
-        onFinish: [],
-      };
-
-  var onReady = function (event) {
-    var key;
-    for (key in playCallbacks.onReady) {
-      if (playCallbacks.onReady.hasOwnProperty(key)) {
-        playCallbacks.onReady[key](event);
-      }
-    }
-  },
-
-  onPlay = function (track) {
-    var key;
-    for (key in playCallbacks.onPlay) {
-      if (playCallbacks.onPlay.hasOwnProperty(key)) {
-        playCallbacks.onPlay[key](track);
-      }
-    }
-  },
-
-  onPause = function () {
-    var key;
-    for (key in playCallbacks.onPause) {
-      if (playCallbacks.onPause.hasOwnProperty(key)) {
-        playCallbacks.onPause[key]();
-      }
-    }
-  },
-
-  onFinish = function () {
-    var key;
-    for (key in playCallbacks.onFinish) {
-      if (playCallbacks.onFinish.hasOwnProperty(key)) {
-        playCallbacks.onFinish[key]();
-      }
-    }
-  },
+  var that = this,
+      playerImpl, currentTrack,
 
   onStateChange = function (event) {
     switch (event.data) {
       case YT.PlayerState.PLAYING:
-        onPlay(currentTrack);
+        callbacks.onPlay(currentTrack);
         break;
       case YT.PlayerState.PAUSED:
-        onPause();
+        callbacks.onPause();
         break;
       case YT.PlayerState.ENDED:
-        onFinish();
+        callbacks.onFinish();
         break;
       case YT.PlayerState.UNSTARTED:
 // NOTE Youtube iframe player firstly send this after loading.
@@ -135,22 +81,6 @@ function YoutubePlayer () {
     }
   };
 
-  this.addPlayerCallbacks = function (callbacks) {
-    var validKeys = ['onReady', 'onPlay', 'onPause', 'onFinish'];
-
-    for (var i = 0; i < validKeys.length; i += 1) {
-      var key = validKeys[i];
-
-      if (key in callbacks) {
-        playCallbacks[key].push(callbacks[key]);
-
-        if (key === 'onReady' && playerImpl !== null) {
-          callbacks[key]();
-        }
-      }
-    }
-  };
-
   this.type = api.playerTypes.youtube;
 
   this.init = function () {
@@ -158,7 +88,7 @@ function YoutubePlayer () {
       videoId: 'x',
       playerVars: {},
       events: {
-        onReady: onReady,
+        onReady: callbacks.onReady,
         onStateChange: onStateChange,
         onPlaybackQualityChange: null,
         onPlaybackRateChange: null,
