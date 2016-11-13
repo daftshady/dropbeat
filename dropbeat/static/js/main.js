@@ -21,7 +21,7 @@ require([
 ], function (require, domReady) {
   domReady(function () {
     require(['dropbeat'], function (Dropbeat) {
-      Dropbeat.initialize()
+      Dropbeat.init()
     })
   });
 });
