@@ -5,18 +5,114 @@ define([
 ], function ($, Playlist, api, notify) {
 
 /**
- * Track queue management helper.
- * It helps shuffle when users play their playlist.
+ * This controller manages what to be played next.
  */
-
-function TrackQueue () {
-
-  this.init = function (playlist) {
+function PlayOrderControl (playlistManager) {
+  var RepeatStatus = {
+    noRepeat: 0,
+    repeatPlaylist: 1,
+    repeatOne: 2
   };
 
-  this.shuffle = function () {
+  var ShuffleStatus = {
+    noShuffle: 0,
+    shuffle: 1
+  }
+
+  this.playQueue = [];
+
+  this.repeatStatus = RepeatStatus.noRepeat;
+
+  this.shuffleStatus = ShuffleStatus.noShuffle;
+
+  this.repeatBtn = $('.controls .ctrl-repeat');
+
+  this.shuffleBtn = $('.controls .ctrl-shuffle');
+
+  this.init = function () {
+    var that = this;
+    this.repeatBtn.click(function () {
+      that.onRepeatClicked();
+    });
+
+    this.shuffleBtn.click(function () {
+      that.onShuffleClicked();
+    });
   };
 
+  this.onRepeatClicked = function () {
+    this.repeatStatus = (this.repeatStatus + 1) % 3;
+
+    switch (this.repeatStatus) {
+      case RepeatStatus.noRepeat:
+        this.repeatBtn.removeClass('repeat-one');
+        break;
+      case RepeatStatus.repeatPlaylist:
+        this.repeatBtn.addClass('repeat');
+        break;
+      case RepeatStatus.repeatOne:
+        this.repeatBtn.removeClass('repeat');
+        this.repeatBtn.addClass('repeat-one');
+        break;
+    }
+  };
+
+  this.onShuffleClicked = function () {
+    this.shuffleStatus = (this.shuffleStatus + 1) % 2;
+    this.reloadQueue();
+
+    switch (this.shuffleStatus) {
+      case ShuffleStatus.noShuffle:
+        this.shuffleBtn.removeClass('shuffle');
+        break;
+      case ShuffleStatus.shuffle:
+        this.shuffleBtn.addClass('shuffle');
+        break;
+    }
+  };
+
+  this.reloadQueue = function () {
+    var playlistTracks = playlistManager.currentPlaylist.tracks;
+    if (this.shuffleStatus === ShuffleStatus.shuffle) {
+      var i, j, temp;
+      for (i = playlistTracks.length - 1; i > 0; i -= 1) {
+        // Shuffle array.
+        j = Math.floor(Math.random() * (i + 1));
+        temp = playlistTracks[i];
+        playlistTracks[i] = playlistTracks[j];
+        playlistTracks[j] = temp;
+      }
+    }
+    this.playQueue = playlistTracks;
+  };
+
+  this.getCurPosition = function (track) {
+    for (var i = 0; i < this.playQueue.size(); i += 1) {
+      if (this.playQueue[i].uid === track.uid) {
+        return i;
+      }
+    }
+  };
+
+  this.popNext = function (curTrack) {
+    if (repeatStatus === RepeatStatus.repeatOne) {
+      // Should repeat current music regardless of shuffle status.
+      return curTrack;
+    } else {
+      // Pick next.
+      var pos = this.getCurPosition(curTrack);
+      if (pos < this.playQueue.size() - 1) {
+        // If there is remaining track, play it.
+        return this.playQueue[pos + 1];
+      } else {
+        // No remaining track.
+        if (repeatStatus === RepeatStatus.repeatPlaylist) {
+          // Fill the queue again.
+          this.reloadQueue();
+        }
+      }
+    }
+  };
 };
 
 /**
@@ -59,11 +155,16 @@ function PlaylistManager () {
   };
 
   this.currentPlaylist = null;
+
   this.playlists = [];
+
   this.callbacks = {
     onFirstPlaylistLoaded: null,
     onTrackAdded: null,
   };
+
+  this.playOrderControl = new PlayOrderControl(this);
+  this.playOrderControl.init();
 
   this.setPlaylistCallbacks = function (callbacks) {
     for (var key in callbacks) {
