@@ -127,28 +127,6 @@ function PlaylistManager () {
     }
   };
 
-  this.addNewTrack = function (track) {
-    var playlist = that.currentPlaylist,
-        data = {
-          uid: track.uid,
-          name: track.name,
-          playlist_uid: playlist.uid
-        };
-
-    $.ajax({
-      url: api.Router.getPath('track'),
-      type: 'POST',
-      dataType: 'json',
-      data: JSON.stringify(data),
-      contentType: 'application/json; charset=utf-8',
-    }).done(function (resp) {
-      if (resp.success) {
-        notify.onTrackAdded();
-        playlist.push(resp.track);
-        that.callbacks.onTrackAdded(resp.track);
-      }
-    });
-  };
 };
 
 

@@ -22,7 +22,8 @@ Dropbeat.prototype = {
     auth.init();
     search.init();
     playerEvent.init();
-    playlistEvent.init();
+    playlistEvent.playlist.init();
+    playlistEvent.tracks.init();
   }
 };
 

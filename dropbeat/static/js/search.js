@@ -2,14 +2,13 @@
 
 define([
   'jquery', 'handlebars', 'api',
-  'playermanager', 'playlistmanager',
+  'playermanager', 'playlistevent',
   'track', 'auth'
 ], function ($, hb, api,
-             getPlayerManager, getPlaylistManager,
+             getPlayerManager, playlistEvent,
              Track, auth) {
 
-var playerManager = getPlayerManager(),
-    playlistManager = getPlaylistManager();
+var playerManager = getPlayerManager();
 
 /**
   * Defines modules for search features such as autocomplete, youtube & soundcloud
@@ -307,7 +306,7 @@ function SearchManager () {
           source = itemWrapper.attr('data-source') || api.playerTypes.youtube,
           track = new Track(uid, name, source);
 
-      playlistManager.addNewTrack(track);
+      playlistEvent.tracks.addNewTrack(track);
     });
   };
 
