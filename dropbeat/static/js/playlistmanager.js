@@ -87,7 +87,7 @@ function PlayOrderControl (playlistManager) {
   };
 
   this.getCurPosition = function (track) {
-    for (var i = 0; i < this.playQueue.size(); i += 1) {
+    for (var i = 0; i < this.playQueue.length; i += 1) {
       if (this.playQueue[i].uid === track.uid) {
         return i;
       }
@@ -101,7 +101,7 @@ function PlayOrderControl (playlistManager) {
     } else {
       // Pick next.
       var pos = this.getCurPosition(curTrack);
-      if (pos < this.playQueue.size() - 1) {
+      if (pos < this.playQueue.length - 1) {
         // If there is remaining track, play it.
         return this.playQueue[pos + 1];
       } else {
