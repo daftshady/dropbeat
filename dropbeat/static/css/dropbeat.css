@@ -557,6 +557,14 @@ input[type='submit'] {
   scrollbar-track-color: #1e1e1e;
   scrollbar-darkshadow-color: #4b4b4b;
 }
+#dropbeat .contents .body-section .search-result-section .catchphrase {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  right: 0;
+  font-size: 80px;
+  text-align: center;
+}
 #dropbeat .contents .body-section .spinner {
   background: url("../images/ajax-spinner.gif") center center no-repeat;
 }
