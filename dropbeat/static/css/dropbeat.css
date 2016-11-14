@@ -535,7 +535,7 @@ input[type='submit'] {
 #dropbeat .contents .body-section {
   position: absolute;
   top: 0;
-  left: 55px;
+  left: 20px;
   right: 15px;
   bottom: 0;
   z-index: 100;
@@ -559,11 +559,15 @@ input[type='submit'] {
 }
 #dropbeat .contents .body-section .search-result-section .catchphrase {
   position: absolute;
-  top: 40%;
+  top: 35%;
   left: 0;
   right: 0;
-  font-size: 80px;
+  font-size: 40px;
+  color: #bfc3c9;
   text-align: center;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  content: " ";
+  line-height: 70px;
 }
 #dropbeat .contents .body-section .spinner {
   background: url("../images/ajax-spinner.gif") center center no-repeat;
@@ -671,7 +675,7 @@ input[type='submit'] {
 }
 #dropbeat .contents .body-section .search-section {
   position: absolute;
-  left: 0;
+  left: 20px;
   top: 140px;
   height: 36px;
   min-width: 506px;
