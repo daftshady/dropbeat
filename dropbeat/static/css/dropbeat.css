@@ -245,26 +245,26 @@ input[type='submit'] {
 }
 #dropbeat .play-controls .playlist-section .playlist-footer .button .ic-my-playlist {
   width: 21px;
-  background-position: -29px 0;
+  background-position: -29px -20px;
 }
 #dropbeat .play-controls .playlist-section .playlist-footer .button .ic-share-playlist {
-  background-position: -50px 0;
+  background-position: -50px -20px;
   width: 18px;
 }
 #dropbeat .play-controls .playlist-section .playlist-footer .button .text {
   vertical-align: middle;
-  color: white;
+  color: #7b7b7b;
   font-size: 13px;
   font-weight: 400;
 }
 #dropbeat .play-controls .playlist-section .playlist-footer .button:hover .text {
-  color: #7b7b7b;
+  color: white;
 }
 #dropbeat .play-controls .playlist-section .playlist-footer .button:hover .ic-my-playlist {
-  background-position: -29px -20px;
+  background-position: -29px 0;
 }
 #dropbeat .play-controls .playlist-section .playlist-footer .button:hover .ic-share-playlist {
-  background-position: -50px -20px;
+  background-position: -50px 0;
   width: 18px;
 }
 #dropbeat .play-controls .playlist-section .playlist-footer .divider {
