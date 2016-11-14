@@ -75,23 +75,19 @@ input[type='submit'] {
   display: none;
   position: absolute;
   top: 30%;
-  left: 50%;
+  left: 35%;
+  width: 30%;
 }
-#dropbeat .auth-container .form-wrapper .title{
+#dropbeat .auth-container .form-wrapper > * {
+  margin-top: 30px;
+}
+#dropbeat .auth-container .form-wrapper .title {
   position: relative;
-  left: -50%;
 }
-#dropbeat .auth-container .form-wrapper form {
-  position: relative;
-  top: -50%;
-  left: -50%;
-  margin-top: 10px;
-}
-#dropbeat .auth-container .form-wrapper form input {
+#dropbeat .auth-container .form-wrapper input {
   background: transparent;
   border: none;
   color: white;
-  margin: 8px 0;
   width: 100%;
   display: inline-block;
   font-size: 16px;
@@ -101,7 +97,6 @@ input[type='submit'] {
   box-sizing: border-box;
 }
 #dropbeat .auth-container .form-wrapper button {
-  margin-top: 10px;
   background: none;
   border: 0;
   color: white;
@@ -110,11 +105,10 @@ input[type='submit'] {
 }
 #dropbeat .auth-container .form-wrapper button[type='submit'] {
   position: relative;
-  right: 10px;
 }
-#dropbeat .auth-container .form-wrapper button.cancel {
-  position: relative;
-  left: -50%;
+#dropbeat .auth-container .form-wrapper button.cancel-btn {
+  position: absolute;
+  right: 0;
 }
 #dropbeat .play-controls {
   float: right;
