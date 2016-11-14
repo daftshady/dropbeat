@@ -56,6 +56,8 @@ class Youtube(object):
                     'aria-describedby': lambda x: x is not None})['title']
                 duration = elem.find('span',
                     {'class': 'accessible-description'}).text.split(': ', 1)[1]
+                # Remove garbage postfix from duration
+                duration = duration[:duration.find(':') + 3]
 
                 tracks.append({
                     'title': title,
