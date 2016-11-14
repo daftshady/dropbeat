@@ -77,7 +77,6 @@ function PlaylistEventListener () {
       .click(function () {
         var list = $(this).closest('.playlist')
         list.removeClass('edit-mode');
-        list.find(editValue).closest().removeClass('warning');
 
         if (list.attr('data-uid').length === 0) {
           list.remove();
@@ -121,13 +120,18 @@ function PlaylistEventListener () {
         var editContainer = '.edit-mode-view .title-input-field';
 
         if (!resp.success) {
-          list.find(editValue).closest(editContainer).addClass('warning');
+          switch(resp.error) {
+            case api.ErrorCodes.duplicatedPlaylistName:
+              notify.duplicatedPlaylistName();
+              break;
+            default:
+              break;
+          }
           return;
         }
 
         list.removeClass('edit-mode');
         list.find('.nonedit-mode-view .title').text(name);
-        list.find(editValue).closest(editContainer).removeClass('warning');
 
         if (list.attr('data-uid').length === 0) {
 
@@ -243,6 +247,15 @@ function PlaylistTracksEventListener () {
         notify.onTrackAdded();
         playlist.push(resp.track);
         that.loadTracksView(playlist);
+      } else {
+        switch (resp.error) {
+          case api.ErrorCodes.trackAlreadyExist:
+            notify.trackExists();
+            break;
+          default:
+            // Unexpected error code.
+            break;
+        }
       }
     });
   };
@@ -284,6 +297,8 @@ function PlaylistTracksEventListener () {
     that.elems.openPlaylist.click(function () {
       if (auth.currentUser !== null) {
         playlistListener.openPlaylistView();
+      } else {
+        notify.signinRequired();
       }
     });
 
