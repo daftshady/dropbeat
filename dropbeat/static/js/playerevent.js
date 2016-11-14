@@ -162,6 +162,11 @@ function PlayerEventListener () {
     });
 
     that.buttons.next.click(function () {
+      var nextTrack = playlistManager.
+        playOrderControl.popNext(playerManager.getCurrentTrack());
+      if (nextTrack !== null) {
+        playerManager.play(nextTrack);
+      }
     });
 
     that.buttons.repeat.click(function () {
@@ -177,6 +182,7 @@ function PlayerEventListener () {
         setStatus('READY');
         setTitle('CHOOSE TRACK FROM PLAYLIST');
         that.buttons.playToggle.removeClass('disabled');
+        that.buttons.next.removeClass('disabled');
       },
       onPlay: function (track) {
         setTitle(track.name);

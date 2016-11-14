@@ -118,6 +118,7 @@ function PlayOrderControl (playlistManager) {
             return this.playQueue[0];
           }
         }
+        return null;
       }
     }
   };

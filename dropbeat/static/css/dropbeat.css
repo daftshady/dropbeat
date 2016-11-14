@@ -389,7 +389,7 @@ input[type='submit'] {
   cursor: default;
 }
 #dropbeat .play-controls .player-section #player .controls .ctrl.ctrl-play {
-  left: 132px;
+  left: 128px;
   margin-top: -22px;
   background-position: -44px 0;
   width: 44px;
