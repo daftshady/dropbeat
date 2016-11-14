@@ -7,7 +7,15 @@ function (_, toastr) {
 var notification = function () {
   var MESSAGE = {
     onTrackAdded: 'Track is added to playlist',
-    onTrackRemoved: 'Track is removed from playlist'
+    onTrackRemoved: 'Track is removed from playlist',
+    signinRequired: 'You should sign in',
+    incorrectPassword: 'Password is incorrect',
+    emailNotExist: 'Email does not exist',
+    emailExist: 'Same email exists',
+    invalidEmail: 'Email is not valid format',
+    shortPassword: 'Password is too short (at least 8 chars)',
+    duplicatedPlaylistName: 'Playlist name cannot be duplicated',
+    trackExists: 'Track is already added to playlist',
   };
 
   toastr.options = {
@@ -34,6 +42,30 @@ var notification = function () {
     },
     onTrackRemoved: function () {
       toastr.success(MESSAGE.onTrackRemoved);
+    },
+    signinRequired: function () {
+      toastr.error(MESSAGE.signinRequired);
+    },
+    incorrectPassword: function () {
+      toastr.error(MESSAGE.incorrectPassword);
+    },
+    emailNotExist: function () {
+      toastr.error(MESSAGE.emailNotExist);
+    },
+    emailExist: function () {
+      toastr.error(MESSAGE.emailExist);
+    },
+    invalidEmail: function () {
+      toastr.error(MESSAGE.invalidEmail);
+    },
+    shortPassword: function () {
+      toastr.error(MESSAGE.shortPassword);
+    },
+    duplicatedPlaylistName: function () {
+      toastr.error(MESSAGE.duplicatedPlaylistName);
+    },
+    trackExists: function () {
+      toastr.warning(MESSAGE.trackExists);
     }
   };
 }();

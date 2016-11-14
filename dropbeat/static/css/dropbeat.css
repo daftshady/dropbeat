@@ -137,12 +137,12 @@ input[type='submit'] {
 #dropbeat .play-controls .account-menus .signout-btn {
   float: left;
   display: block;
-  padding: 0 20px;
+  padding: 0 18px;
   color: #8d02ef;
   line-height: 18px;
   padding-top: 2px;
   padding-bottom: 2px;
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
 }
 #dropbeat .play-controls .account-menus .signin-btn:hover,
@@ -556,6 +556,14 @@ input[type='submit'] {
   scrollbar-arrow-color: #4b4b4b;
   scrollbar-track-color: #1e1e1e;
   scrollbar-darkshadow-color: #4b4b4b;
+}
+#dropbeat .contents .body-section .search-result-section .catchphrase {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  right: 0;
+  font-size: 80px;
+  text-align: center;
 }
 #dropbeat .contents .body-section .spinner {
   background: url("../images/ajax-spinner.gif") center center no-repeat;

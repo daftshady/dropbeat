@@ -5,7 +5,7 @@ from dropbeat.exceptions import (
     UserException, TrackException, PlaylistException)
 from dropbeat.constants import ErrorCode, TrackSource
 
-from django.db import models
+from django.db import models, IntegrityError
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.contrib.auth.models import BaseUserManager

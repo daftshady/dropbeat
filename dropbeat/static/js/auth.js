@@ -1,8 +1,10 @@
 'use strict';
 
 define([
-  'jquery', 'handlebars', 'api', 'playlistmanager'
-], function ($, handlebars, api, playlistManager) {
+  'jquery', 'handlebars', 'api',
+  'playlistmanager', 'notification'
+], function ($, handlebars, api,
+             playlistManager, notify) {
 
 /**
  * User model.
@@ -88,14 +90,19 @@ function Authenticator (view) {
       if (handleError) {
         switch(resp.error) {
           case api.ErrorCodes.invalidEmail:
+            notify.invalidEmail();
             break;
           case api.ErrorCodes.duplicatedEmail:
+            notify.emailExist();
             break;
           case api.ErrorCodes.passwordTooShort:
+            notify.shortPassword();
             break;
           case api.ErrorCodes.emailNotExist:
+            notify.emailNotExist();
             break;
           case api.ErrorCodes.passwordMismatch:
+            notify.incorrectPassword();
             break;
           default:
             // Unexpected error code.
