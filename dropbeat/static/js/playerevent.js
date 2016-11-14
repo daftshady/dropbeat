@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'jquery', 'playermanager'
-], function ($, manager) {
+  'jquery', 'playermanager', 'playlistmanager'
+], function ($, playerManager, playlistManager) {
 
 /**
  * Progress is in player and is responsible for
@@ -40,8 +40,8 @@ function ProgressHandler () {
       return;
     }
 
-    var total = manager.getDuration(),
-        position = manager.getCurrentPosition(),
+    var total = playerManager.getDuration(),
+        position = playerManager.getCurrentPosition(),
         width = position / total * progressWidth;
 
     bullet.width(width);
@@ -52,19 +52,19 @@ function ProgressHandler () {
   },
 
   onBuffered = function () {
-    buffer.width(manager.getBuffer() / 100 * progressWidth);
+    buffer.width(playerManager.getBuffer() / 100 * progressWidth);
   },
 
   seek = function (event) {
-    var stat = manager.getStatus();
-    if (stat === manager.STATUS.NOT_STARTED ||
-        (stat === manager.STATUS.STOPPED &&
-         manager.getCurrentPlayer() === undefined)) {
+    var stat = playerManager.getStatus();
+    if (stat === playerManager.STATUS.NOT_STARTED ||
+        (stat === playerManager.STATUS.STOPPED &&
+         playerManager.getCurrentPlayer() === undefined)) {
       return;
     }
 
     var dx = event.pageX - bullet.offset().left,
-        duration = manager.getDuration();
+        duration = playerManager.getDuration();
 
     if (dx < 0) {
       dx = 0;
@@ -81,7 +81,7 @@ function ProgressHandler () {
     currentTime.text(formatTime(currentPosition));
 
     if (!dragging) {
-      manager.seek(currentPosition);
+      playerManager.seek(currentPosition);
     }
   },
 
@@ -142,16 +142,16 @@ function PlayerEventListener () {
     };
 
     that.buttons.playToggle.click(function () {
-      var playstat = manager.getStatus();
+      var playstat = playerManager.getStatus();
 
       switch(playstat) {
-        case manager.STATUS.PLAYING:
-          manager.pause();
+        case playerManager.STATUS.PLAYING:
+          playerManager.pause();
           break;
-        case manager.STATUS.PAUSED:
-          manager.resume();
+        case playerManager.STATUS.PAUSED:
+          playerManager.resume();
           break;
-        case manager.STATUS.STOPPED:
+        case playerManager.STATUS.STOPPED:
           break;
         default:
           break;
@@ -165,12 +165,14 @@ function PlayerEventListener () {
     });
 
     that.buttons.repeat.click(function () {
+      playlistManager.playOrderControl.onRepeatClicked();
     });
 
     that.buttons.shuffle.click(function () {
+      playlistManager.playOrderControl.onShuffleClicked();
     });
 
-    manager.addPlayerCallbacks({
+    playerManager.addPlayerCallbacks({
       onReady: function () {
         setStatus('READY');
         setTitle('CHOOSE TRACK FROM PLAYLIST');

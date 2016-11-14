@@ -32,13 +32,6 @@ function PlayOrderControl (playlistManager) {
 
   this.init = function () {
     var that = this;
-    this.repeatBtn.click(function () {
-      that.onRepeatClicked();
-    });
-
-    this.shuffleBtn.click(function () {
-      that.onShuffleClicked();
-    });
 
     // Add player callback so that this module picks next track
     // when the track finished.
