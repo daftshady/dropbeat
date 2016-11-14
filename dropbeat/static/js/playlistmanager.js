@@ -1,8 +1,9 @@
 'use strict';
 
 define([
-  'jquery', 'playlist', 'api', 'notification'
-], function ($, Playlist, api, notify) {
+  'jquery', 'playlist', 'api', 'notification',
+  'playermanager', 'playercallback'
+], function ($, Playlist, api, notify, playerManager, playerCallback) {
 
 /**
  * This controller manages what to be played next.
@@ -38,6 +39,17 @@ function PlayOrderControl (playlistManager) {
     this.shuffleBtn.click(function () {
       that.onShuffleClicked();
     });
+
+    // Add player callback so that this module picks next track
+    // when the track finished.
+    playerCallback.addCallbacks({
+      onFinish: function () {
+        var nextTrack = that.popNext(playerManager.getCurrentTrack());
+        if (nextTrack !== null) {
+          playerManager.play(nextTrack);
+        }
+      }
+    })
   };
 
   this.onRepeatClicked = function () {
@@ -95,7 +107,7 @@ function PlayOrderControl (playlistManager) {
   };
 
   this.popNext = function (curTrack) {
-    if (repeatStatus === RepeatStatus.repeatOne) {
+    if (this.repeatStatus === RepeatStatus.repeatOne) {
       // Should repeat current music regardless of shuffle status.
       return curTrack;
     } else {
@@ -106,9 +118,12 @@ function PlayOrderControl (playlistManager) {
         return this.playQueue[pos + 1];
       } else {
         // No remaining track.
-        if (repeatStatus === RepeatStatus.repeatPlaylist) {
-          // Fill the queue again.
+        if (this.repeatStatus === RepeatStatus.repeatPlaylist) {
+          // Fill the queue again and returns first track.
           this.reloadQueue();
+          if (this.playQueue.length > 0) {
+            return this.playQueue[0];
+          }
         }
       }
     }

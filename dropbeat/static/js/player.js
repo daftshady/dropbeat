@@ -56,10 +56,8 @@ function PlayerBase () {
  */
 
 function YoutubePlayer () {
-  var that = this,
-      playerImpl, currentTrack,
-
-  onStateChange = function (event) {
+  var that = this, playerImpl, currentTrack;
+  var onStateChange = function (event) {
     switch (event.data) {
       case YT.PlayerState.PLAYING:
         playerCallback.onPlay(currentTrack);
@@ -97,7 +95,6 @@ function YoutubePlayer () {
       },
     });
 
-    this.currentTrack = null;
     this.ready = true;
   };
 
