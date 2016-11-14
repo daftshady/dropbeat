@@ -8,14 +8,14 @@ var notification = function () {
   var MESSAGE = {
     onTrackAdded: 'Track is added to playlist',
     onTrackRemoved: 'Track is removed from playlist',
-    signinRequired: 'You should sign in',
-    incorrectPassword: 'Password is incorrect',
+    signinRequired: 'You should signin first',
+    incorrectPassword: 'Incorrect password',
     emailNotExist: 'Email does not exist',
-    emailExist: 'Same email exists',
-    invalidEmail: 'Email is not valid format',
+    emailExist: 'Email already exists',
+    invalidEmail: 'Invalid email',
     shortPassword: 'Password is too short (at least 8 chars)',
-    duplicatedPlaylistName: 'Playlist name cannot be duplicated',
-    trackExists: 'Track is already added to playlist',
+    duplicatedPlaylistName: 'Playlist name already exists',
+    trackExists: 'The track already exists in playlist',
   };
 
   toastr.options = {
