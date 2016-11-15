@@ -3,9 +3,10 @@
 define([
   'jquery', 'handlebars', 'track',
   'api', 'auth', 'notification',
-  'playlistmanager', 'playermanager'
+  'playlistmanager', 'playermanager',
+  'playercallback'
 ], function ($, hb, Track, api, auth, notify,
-             playlistManager, playerManager) {
+             playlistManager, playerManager, playerCallback) {
 
 /**
  * It binds user actions for playlist manipulation.
@@ -311,7 +312,7 @@ function PlaylistTracksEventListener () {
       }
     });
 
-    playerManager.addPlayerCallbacks({
+    playerCallback.addCallbacks({
       onPlay: function () {
         boldCurrentTrack();
       },

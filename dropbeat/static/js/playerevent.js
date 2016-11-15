@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'jquery', 'playermanager', 'playlistmanager'
-], function ($, playerManager, playlistManager) {
+  'jquery', 'playermanager', 'playlistmanager', 'playercallback'
+], function ($, playerManager, playlistManager, playerCallback) {
 
 /**
  * Progress is in player and is responsible for
@@ -177,7 +177,7 @@ function PlayerEventListener () {
       playlistManager.playOrderControl.onShuffleClicked();
     });
 
-    playerManager.addPlayerCallbacks({
+    playerCallback.addCallbacks({
       onReady: function () {
         setStatus('READY');
         setTitle('CHOOSE TRACK FROM PLAYLIST');

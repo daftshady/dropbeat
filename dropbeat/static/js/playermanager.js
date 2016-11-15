@@ -68,10 +68,6 @@ function PlayerManager () {
     return currentPlayer.getCurrentPosition();
   };
 
-  this.addPlayerCallbacks = function (callbacks) {
-    playerCallback.addCallbacks(callbacks)
-  };
-
   this.getCurrentPlayer = function () {
     return currentPlayer;
   };
@@ -84,7 +80,7 @@ function PlayerManager () {
 // Because Youtube's iframe api calls this callbacks with changed context.
 // After this, `this` will lose our context. (maybe it will be null)
   var manager = this;
-  this.addPlayerCallbacks({
+  playerCallback.addCallbacks({
     onReady: function (event) {
       currentStatus = manager.STATUS.STOPPED;
     },
