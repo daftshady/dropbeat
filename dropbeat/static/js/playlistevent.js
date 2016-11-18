@@ -224,7 +224,7 @@ function PlaylistTracksEventListener () {
 
     var children = that.elems.playlistInner.html(template(playlist));
 
-    this.bindEvents(children);
+    that.bindEvents(children);
 
     playlistManager.playOrderControl.reloadQueue();
   };
@@ -302,6 +302,28 @@ function PlaylistTracksEventListener () {
         notify.signinRequired();
       }
     });
+
+    // Search filter event.
+    // In order to catch `deletion` in an input field,
+    // 'keyup' event is used but not 'keypress'.
+    that.elems.playlistSearch.find('#search-playlist-input')
+      .on('keyup', function (event) {
+        var pattern = $(this).val();
+
+        // clear search result & restore original playlist
+        if (pattern.length === 0) {
+          playlistManager.filter.revoke(that.loadTracksView);
+          return;
+        }
+
+        // only search tracks in playlist when press enter
+        if (event.keyCode !== 13 ||
+            playlistManager.currentPlaylist === null) {
+          return;
+        }
+
+        playlistManager.filter.query(pattern, that.loadTracksView);
+      });
 
     playlistManager.setPlaylistCallbacks({
       onPlaylistChange: function (playlist) {

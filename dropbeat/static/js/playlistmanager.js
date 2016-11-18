@@ -6,6 +6,41 @@ define([
 ], function ($, Playlist, api, notify, playerManager, playerCallback) {
 
 /**
+ * Playlist filter.
+ *
+ * Find tracks by their name.
+ * Callbacks should be provided as `function (filteredPlaylist)`.
+ */
+
+function PlaylistFilter (playlist) {
+  var originalPlaylist = playlist;
+
+  // filter a playlist matching pattern.
+  // show only tracks whose name contains pattern.
+  this.query = function (pattern, callback) {
+    var filteredPlaylist =
+      new Playlist(originalPlaylist.uid, originalPlaylist.name, []);
+
+    for (var i=0; i < originalPlaylist.size(); i+=1) {
+      var track = originalPlaylist.get(i),
+          name = track.name;
+
+      if (name.toLowerCase().indexOf(pattern.toLowerCase()) !== -1) {
+        filteredPlaylist.add(track);
+      }
+    }
+
+    callback(filteredPlaylist);
+  };
+
+  // Revoke playlist filterd to originalPlaylist.
+  this.revoke = function (callback) {
+    callback(originalPlaylist);
+  };
+
+};
+
+/**
  * This controller manages what to be played next.
  */
 function PlayOrderControl (playlistManager) {
@@ -145,6 +180,7 @@ function PlaylistManager () {
 
           if (updateView) {
             that.callbacks.onPlaylistChange(playlist);
+            that.filter = new PlaylistFilter(playlist);
           }
         }
       });
@@ -185,6 +221,7 @@ function PlaylistManager () {
 
         if (key === 'onPlaylistChange' && that.playlists.length > 0) {
           callbacks[key](that.playlists[0]);
+          that.filter = new PlaylistFilter(that.playlists[0]);
         }
       }
     }
