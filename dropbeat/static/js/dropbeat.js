@@ -1,11 +1,11 @@
 'use strict';
 
 define([
-  'jquery', 'search', 'auth', 'view',
+  'jquery', 'search', 'auth',
   'playerevent', 'playlistevent', 'playermanager', 'playordercontrol'
 ], function (
-  $, search, auth, view,
-  playerEvent, playlistEvent, playerManager, playOrderControl) {
+  $, search, auth, playerEvent, playlistEvent,
+  playerManager, playOrderControl) {
 
 /**
  * The core Dropbeat client
@@ -14,7 +14,6 @@ define([
  */
 return {
   init: function () {
-    view.init();
     auth.init();
     search.init();
     playerEvent.init();
