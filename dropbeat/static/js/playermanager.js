@@ -193,7 +193,6 @@ function PlayerManager () {
   this.currentPlayer = this.players.YoutubePlayer;
 
   this.init = function () {
-    console.log('go!');
     for (var i = 0; i < this.players.length; i += 1) {
       this.players[i].init();
     }
