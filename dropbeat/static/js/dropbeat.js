@@ -22,6 +22,14 @@ return {
     playlistEvent.tracks.init();
     playerManager.init();
     playOrderControl.init();
+
+    this.initMainView();
+  },
+  initMainView: function () {
+    // Event for main dropbeat logo.
+    $('.ic-logo').click(function () {
+      window.location.href = '/';
+    });
   },
   debug: true
 }
