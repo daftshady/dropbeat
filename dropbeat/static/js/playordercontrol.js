@@ -89,10 +89,10 @@ function PlayOrderControl () {
 
     switch (this.shuffleStatus) {
       case ShuffleStatus.noShuffle:
-        this.shuffleBtn.removeClass('shuffle');
+        this.buttons.shuffle.removeClass('shuffle');
         break;
       case ShuffleStatus.shuffle:
-        this.shuffleBtn.addClass('shuffle');
+        this.buttons.shuffle.addClass('shuffle');
         break;
     }
   };
