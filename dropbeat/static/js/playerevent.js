@@ -127,20 +127,14 @@ function PlayerEventListener () {
     var root = $('#player'),
         progress = new ProgressHandler();
 
-    that.buttons = {
-      playToggle: root.find('.ctrl.ctrl-play'),
-      prev: root.find('.ctrl.ctrl-prev'),
-      next: root.find('.ctrl.ctrl-next'),
-      repeat: root.find('.ctrl.ctrl-repeat'),
-      shuffle: root.find('.ctrl.ctrl-shuffle')
-    };
+    that.playToggleButton = root.find('.ctrl.ctrl-play');
 
     that.playerStatus = {
       stat: root.find('.status'),
       title: root.find('.title')
     };
 
-    that.buttons.playToggle.click(function () {
+    that.playToggleButton.click(function () {
       if (playerManager.isPlaying()) {
         playerManager.pause();
       } else if (playerManager.isPaused()) {
@@ -148,31 +142,10 @@ function PlayerEventListener () {
       }
     });
 
-    that.buttons.prev.click(function () {
-    });
-
-    that.buttons.next.click(function () {
-      var nextTrack = playlistManager.
-        playOrderControl.popNext(playerManager.getCurrentTrack());
-      if (nextTrack !== null) {
-        playerManager.play(nextTrack);
-      }
-    });
-
-    that.buttons.repeat.click(function () {
-      playlistManager.playOrderControl.onRepeatClicked();
-    });
-
-    that.buttons.shuffle.click(function () {
-      playlistManager.playOrderControl.onShuffleClicked();
-    });
-
     playerCallback.addCallbacks({
       onReady: function () {
         setStatus('READY');
         setTitle('CHOOSE TRACK FROM PLAYLIST');
-        that.buttons.playToggle.removeClass('disabled');
-        that.buttons.next.removeClass('disabled');
       },
       onPlay: function (track) {
         setTitle(track.name);
@@ -201,12 +174,12 @@ function PlayerEventListener () {
 
 // Play button
   var setPlay = function () {
-    that.buttons.playToggle.addClass('pause');
+    that.playToggleButton.addClass('pause');
     setStatus('PLAYING');
   },
 
   setPaused = function () {
-    that.buttons.playToggle.removeClass('pause');
+    that.playToggleButton.removeClass('pause');
     setStatus('PAUSED');
   },
 

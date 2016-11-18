@@ -2,21 +2,17 @@
 
 define([
   'jquery', 'search', 'auth', 'view',
-  'playerevent', 'playlistevent', 'playermanager'
-], function ($, search, auth, view, playerEvent, playlistEvent, playermanager) {
-
-function Dropbeat () {
-};
+  'playerevent', 'playlistevent', 'playermanager', 'playordercontrol'
+], function (
+  $, search, auth, view,
+  playerEvent, playlistEvent, playerManager, playOrderControl) {
 
 /**
  * The core Dropbeat client
  *
  * @this {Dropbeat}
  */
-
-Dropbeat.prototype = {
-  debug: true,
-
+return {
   init: function () {
     view.init();
     auth.init();
@@ -24,10 +20,10 @@ Dropbeat.prototype = {
     playerEvent.init();
     playlistEvent.playlist.init();
     playlistEvent.tracks.init();
-    playermanager.init();
-  }
-};
-
-return new Dropbeat();
+    playerManager.init();
+    playOrderControl.init();
+  },
+  debug: true
+}
 
 });

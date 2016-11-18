@@ -4,9 +4,10 @@ define([
   'jquery', 'handlebars', 'track',
   'api', 'auth', 'notification',
   'playlistmanager', 'playermanager',
-  'playercallback'
+  'playercallback', 'playordercontrol'
 ], function ($, hb, Track, api, auth, notify,
-             playlistManager, playerManager, playerCallback) {
+             playlistManager, playerManager, playerCallback,
+             playOrderControl) {
 
 /**
  * It binds user actions for playlist manipulation.
@@ -226,7 +227,7 @@ function PlaylistTracksEventListener () {
 
     this.bindEvents(children);
 
-    playlistManager.playOrderControl.reloadQueue();
+    playOrderControl.reloadQueue();
   };
 
   this.addNewTrack = function (track) {
