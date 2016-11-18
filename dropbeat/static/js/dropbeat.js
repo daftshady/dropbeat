@@ -2,8 +2,8 @@
 
 define([
   'jquery', 'search', 'auth', 'view',
-  'playerevent', 'playlistevent'
-], function ($, search, auth, view, playerEvent, playlistEvent) {
+  'playerevent', 'playlistevent', 'playermanager'
+], function ($, search, auth, view, playerEvent, playlistEvent, playermanager) {
 
 function Dropbeat () {
 };
@@ -24,6 +24,7 @@ Dropbeat.prototype = {
     playerEvent.init();
     playlistEvent.playlist.init();
     playlistEvent.tracks.init();
+    playermanager.init();
   }
 };
 

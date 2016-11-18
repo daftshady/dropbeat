@@ -1,28 +1,202 @@
 'use strict';
 
 define([
-  'player', 'api', 'playercallback'
-], function (player, api, playerCallback) {
+  'api', 'playercallback'
+], function (api, playerCallback) {
+
+/**
+ * Basic Player APIs.
+ *
+ * All notImplemented functions are just abstraction
+ * and should be implemented in its real implementation.
+ */
+
+var PLAYER_STATUS = {
+  NOT_STARTED: -1,
+  STOPPED: 0,
+  PLAYING: 1,
+  PAUSED: 2,
+  BUFFERING: 3,
+};
+
+function PlayerBase () {
+  function notImplemented () {
+    throw 'NotImplementedError';
+  };
+
+  this.type = undefined;
+  this.ready = false;
+  this.currentStatus = PLAYER_STATUS.NOT_STARTED;
+
+  this.init = notImplemented;
+  this.play = notImplemented;
+  this.pause = notImplemented;
+  this.stop = notImplemented;
+
+  this.seek = notImplemented;
+
+  this.getCurrentTrack = notImplemented;
+
+  this.getCurrentPosition = notImplemented;
+  this.getDuration = notImplemented;
+
+  this.getBuffer = notImplemented;
+
+  this.getStatus = function () {
+    return this.currentStatus;
+  };
+
+  this.roundPercentage = function (fraction) {
+    var buffer = 0;
+
+    if (fraction) {
+      buffer = fraction * 100;
+      buffer = buffer > 100 ? 100 : buffer;
+      buffer = buffer < 0 ? 0 : buffer;
+    }
+
+    return buffer;
+  };
+};
+
+/*
+ * Youtube Player APIs.
+ *
+ * It has YT.Player object that plays Youtube Videos.
+ * see `https://developers.google.com/youtube/iframe_api_reference`.
+ */
+
+function YoutubePlayer () {
+  var that = this, playerImpl, currentTrack;
+
+  var onStateChange = function (event) {
+    switch (event.data) {
+      case YT.PlayerState.PLAYING:
+        playerCallback.onPlay(currentTrack);
+        that.currentStatus = PLAYER_STATUS.PLAYING;
+        break;
+      case YT.PlayerState.PAUSED:
+        playerCallback.onPause();
+        that.currentStatus = PLAYER_STATUS.PAUSED;
+        break;
+      case YT.PlayerState.ENDED:
+        playerCallback.onFinish();
+        that.currentStatus = PLAYER_STATUS.STOPPED;
+        break;
+      case YT.PlayerState.UNSTARTED:
+// NOTE Youtube iframe player firstly send this after loading.
+      case YT.PlayerState.CUED:
+// TODO Implement onLoad functionality.
+      case YT.PlayerState.BUFFERING:
+        that.currentStatus = PLAYER_STATUS.BUFFERING;
+        break;
+      default:
+        throw 'No such event ' + event.data;
+    }
+  };
+
+  this.type = api.playerTypes.youtube;
+
+  this.init = function () {
+    playerImpl = new YT.Player('youtube-player', {
+      videoId: 'x',
+      playerVars: {},
+      events: {
+        onReady: playerCallback.onReady,
+        onStateChange: onStateChange,
+        onPlaybackQualityChange: null,
+        onPlaybackRateChange: null,
+        onError: null,
+        onApiChange: null,
+      },
+    });
+
+    this.ready = true;
+  };
+
+  this.getCurrentTrack = function () {
+    return currentTrack;
+  };
+
+  this.play = function (track) {
+    if (!(playerImpl !== undefined && this.ready)) {
+      throw 'Youtube player is not initialized';
+    }
+
+    if (track !== undefined) {
+      currentTrack = track;
+      playerImpl.loadVideoById(track.uid);
+    }
+  };
+
+  this.resume = function () {
+    playerImpl.playVideo();
+  }
+
+  this.pause = function () {
+    if (playerImpl !== undefined) {
+      playerImpl.pauseVideo();
+    }
+  };
+
+  this.stop = function () {
+  };
+
+  this.seek = function (pos) {
+    if (currentTrack !== null) {
+      playerImpl.seekTo(pos, true);
+    }
+  };
+
+  this.getCurrentPosition = function () {
+    return playerImpl.getCurrentTime();
+  };
+
+  this.getDuration = function () {
+    if (currentTrack !== null) {
+      return playerImpl.getDuration();
+    }
+  };
+
+  this.getBuffer = function () {
+    return this.roundPercentage(playerImpl.getVideoLoadedFraction());
+  };
+};
+
+/*
+ * SoundCloud Player APIs.
+ *
+ */
+
+function SoundCloudPlayer () {
+  this.init = function () {
+  };
+};
+
+
+YoutubePlayer.prototype = new PlayerBase();
+SoundCloudPlayer.prototype = new PlayerBase();
 
 /**
  * Player Manager APIs.
- * This manager work for managing playlist, play callbacks and etc.
+ * As player implementation varies by streaming sources, we need manager
+ * to control multiple players in a single interface.
  */
 
 function PlayerManager () {
-  var currentPlayer, currentStatus;
 
-  this.STATUS = {
-    NOT_STARTED: -1,
-    STOPPED: 0,
-    PLAYING: 1,
-    PAUSED: 2,
-    BUFFERING: 3,
-  };
+  this.players = [
+    new YoutubePlayer(),
+    new SoundCloudPlayer()
+  ];
 
-  this.TYPES = {
-    '0': 'YoutubePlayer',
-    '1': 'SoundCloudPlayer'
+  this.currentPlayer = this.players.YoutubePlayer;
+
+  this.init = function () {
+    console.log('go!');
+    for (var i = 0; i < this.players.length; i += 1) {
+      this.players[i].init();
+    }
   };
 
   this.play = function (track) {
@@ -30,78 +204,68 @@ function PlayerManager () {
       throw 'Do not play with unspecified track.';
     }
 
-    currentPlayer = player[this.TYPES[track.source]];
-    if (currentPlayer === undefined) {
-      throw 'Player type ' + track.source + ' is not supported.';
-    }
-
-    currentPlayer.play(track);
+    // Source value for youtube: 0
+    // Source value for soundcloud: 1
+    this.currentPlayer = this.players[Number(track.source)];
+    this.currentPlayer.play(track);
   };
 
   this.resume = function () {
-    if (currentStatus === this.STATUS.PAUSED) {
-      currentPlayer.resume();
+    if (this.isPaused()) {
+      this.currentPlayer.resume();
     }
   };
 
   this.pause = function () {
-    currentPlayer.pause();
+    this.currentPlayer.pause();
   };
 
   this.seek = function (pos) {
-    currentPlayer.seek(pos);
+    this.currentPlayer.seek(pos);
   }
 
   this.getStatus = function () {
-    return currentStatus;
+    return this.currentPlayer.currentStatus;
   };
 
   this.getDuration = function () {
-    return currentPlayer.getDuration();
+    return this.currentPlayer.getDuration();
   };
 
   this.getBuffer = function () {
-    return currentPlayer.getBuffer();
+    return this.currentPlayer.getBuffer();
   };
 
   this.getCurrentPosition = function () {
-    return currentPlayer.getCurrentPosition();
+    return this.currentPlayer.getCurrentPosition();
   };
 
   this.getCurrentPlayer = function () {
-    return currentPlayer;
+    return this.currentPlayer;
   };
 
   this.getCurrentTrack = function () {
-    return currentPlayer.getCurrentTrack();
+    return this.currentPlayer.getCurrentTrack();
   };
 
-// NOTE this manager var should be assigned to `this`. (PlayerManager obj)
-// Because Youtube's iframe api calls this callbacks with changed context.
-// After this, `this` will lose our context. (maybe it will be null)
-  var manager = this;
-  playerCallback.addCallbacks({
-    onReady: function (event) {
-      currentStatus = manager.STATUS.STOPPED;
-    },
-    onPlay: function (track) {
-      currentStatus = manager.STATUS.PLAYING;
-    },
-    onPause: function () {
-      currentStatus = manager.STATUS.PAUSED;
-    },
-    onFinish: function () {
-      currentStatus = manager.STATUS.STOPPED;
-    },
-  });
+  this.isNotStarted = function () {
+    return this.getStatus() === PLAYER_STATUS.NOT_STARTED;
+  };
 
-  currentStatus = this.STATUS.NOT_STARTED;
+  this.isPlaying = function () {
+    return this.getStatus() === PLAYER_STATUS.PLAYING;
+  };
+
+  this.isPaused = function () {
+    return this.getStatus() === PLAYER_STATUS.PAUSED;
+  };
+
+  this.isStopped = function () {
+    return this.getStatus() === PLAYER_STATUS.STOPPED;
+  };
 };
 
-// NOTE returning `new PlayerManager()` constructs each different object
-// when we import this module multiple times. Because it breaks `player`
-// module's consistency, we made it to singletone and provide
-// as factory method.
+// Manager object needs to be singleton.
 var getInstance = (function (instance) {
   function wrap () {
     if (instance === null) {

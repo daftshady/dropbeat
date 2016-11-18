@@ -56,9 +56,8 @@ function ProgressHandler () {
   },
 
   seek = function (event) {
-    var stat = playerManager.getStatus();
-    if (stat === playerManager.STATUS.NOT_STARTED ||
-        (stat === playerManager.STATUS.STOPPED &&
+    if (playerManager.isNotStarted() ||
+        (playerManager.isStopped() &&
          playerManager.getCurrentPlayer() === undefined)) {
       return;
     }
@@ -142,19 +141,10 @@ function PlayerEventListener () {
     };
 
     that.buttons.playToggle.click(function () {
-      var playstat = playerManager.getStatus();
-
-      switch(playstat) {
-        case playerManager.STATUS.PLAYING:
-          playerManager.pause();
-          break;
-        case playerManager.STATUS.PAUSED:
-          playerManager.resume();
-          break;
-        case playerManager.STATUS.STOPPED:
-          break;
-        default:
-          break;
+      if (playerManager.isPlaying()) {
+        playerManager.pause();
+      } else if (playerManager.isPaused()) {
+        playerManager.resume();
       }
     });
 

@@ -15,20 +15,16 @@ require.config({
   }
 });
 
-require([
-  'require', 'domReady'
-
-], function (require, domReady) {
-  domReady(function () {
-    require(['dropbeat'], function (Dropbeat) {
-      Dropbeat.init()
-    })
-  });
-});
-
 // eslint-disable-next-line no-unused-vars
 function onYouTubeIframeAPIReady () {
-  require(['player'], function (player) {
-    player.YoutubePlayer.init();
+  require([
+    'require', 'domReady'
+
+  ], function (require, domReady) {
+    domReady(function () {
+      require(['dropbeat'], function (Dropbeat) {
+        Dropbeat.init()
+      })
+    });
   });
 };
