@@ -1,13 +1,11 @@
 'use strict';
 
 define([
-  'jquery', 'playlist', 'api', 'notification',
-  'playermanager', 'playercallback'
-], function ($, Playlist, api, notify, playerManager, playerCallback) {
+  'jquery', 'playlist', 'api', 'notification', 'playercallback'
+], function ($, Playlist, api, notify, playerCallback) {
 
 /**
  * Playlist manager object.
- * It manages users' playlist (and tracks) addition/deletion/modifications.
  */
 
 function PlaylistManager () {
@@ -16,6 +14,7 @@ function PlaylistManager () {
       reservedList = null,
       playlistCallback = null;
 
+  // TODO: Move methods related to playlist loading to `playlistevent`.
   this.loadPlaylist = function (uid, updateView) {
     $.get(api.Router.getPath('playlist'), {uid: uid})
       .done(function (resp) {
@@ -30,7 +29,6 @@ function PlaylistManager () {
         }
       });
   };
-
   this.loadAllPlaylists = function () {
     $.get(api.Router.getPath('playlistList'))
       .done(function (resp) {
