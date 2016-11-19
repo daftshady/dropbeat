@@ -210,6 +210,9 @@ function PlaylistTracksEventListener () {
     playlistTmpl: $('#playlist-track-template').html()
   };
 
+  // Render a playlist in playlist view.
+  // It will be called when playlist is changed or
+  // a track is removed. (to number tracks correctly)
   this.loadTracksView = function (playlist) {
     var currentPlaylist = playlistManager.currentPlaylist,
         template = hb.compile(that.elems.playlistTmpl);
@@ -220,7 +223,6 @@ function PlaylistTracksEventListener () {
 
     playlist.selected = true;
 
-    playlistManager.currentPlaylist = playlist;
     that.elems.playlistName.text(playlist.name);
 
     var children = that.elems.playlistInner.html(template(playlist));
@@ -230,36 +232,18 @@ function PlaylistTracksEventListener () {
     playOrderControl.reloadQueue();
   };
 
-  this.addNewTrack = function (track) {
-    var playlist = playlistManager.currentPlaylist,
-        data = {
-          uid: track.uid,
-          name: track.name,
-          playlist_uid: playlist.uid
-        };
+  // Render & Add new track in playlist view.
+  this.loadNewTrack = function (track) {
+    // To render template with index of the track,
+    // `idx` attribute should be set.
+    // see beat.html#playlist-track-template.
+    track.idx = playlistManager.currentPlaylist.size();
 
-    $.ajax({
-      url: api.Router.getPath('track'),
-      type: 'POST',
-      dataType: 'json',
-      data: JSON.stringify(data),
-      contentType: 'application/json; charset=utf-8',
-    }).done(function (resp) {
-      if (resp.success) {
-        notify.onTrackAdded();
-        playlist.push(resp.track);
-        that.loadTracksView(playlist);
-      } else {
-        switch (resp.error) {
-          case api.ErrorCodes.trackAlreadyExist:
-            notify.trackExists();
-            break;
-          default:
-            // Unexpected error code.
-            break;
-        }
-      }
-    });
+    var template = hb.compile(that.elems.playlistTmpl),
+        child = $(template({tracks: [track]}))
+          .appendTo(that.elems.playlistInner);
+
+    that.bindEvents(child);
   };
 
   this.bindEvents = function (elems) {
@@ -291,7 +275,6 @@ function PlaylistTracksEventListener () {
           that.loadTracksView(playlist);
         }
       });
-
     });
   };
 
