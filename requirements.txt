@@ -1,0 +1,6 @@
+celery==3.1.24
+Django==1.10.2
+redis==2.10.5
+requests==2.7.0
+beautifulsoup4==4.5.1
+enum34==1.1.6
