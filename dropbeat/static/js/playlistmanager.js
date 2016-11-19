@@ -23,6 +23,10 @@ function PlaylistManager () {
           playlist.tracks = resp.playlist.tracks;
 
           if (updateView) {
+            if (that.currentPlaylist !== null) {
+              that.currentPlaylist.selected = false;
+            }
+
             that.currentPlaylist = playlist;
             that.callbacks.onPlaylistChange(playlist);
           }
