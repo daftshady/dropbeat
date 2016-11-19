@@ -2,7 +2,7 @@ from dropbeat.utils import ChoiceEnum
 
 
 class ErrorCode:
-    """Error codes for json response.
+    """Error codes for HTTP response.
 
     """
     DUPLICATED_EMAIL = '100'
@@ -15,6 +15,7 @@ class ErrorCode:
     PLAYLIST_NOT_EXIST = '107'
     TRACK_NOT_EXIST = '108'
     RESULT_NOT_READY = '109'
+    INVALID_ACCESS = '110'
 
 
 class TrackSource(ChoiceEnum):

@@ -4,10 +4,12 @@ from dropbeat.exceptions import (
     UserException, TrackException, PlaylistException, DropbeatException)
 from dropbeat.models import User, Track, Playlist
 from dropbeat.youtube import youtube_search, Youtube
+from dropbeat.utils import global_file_broker
 from toolkit.resource import Resource, parameters
 
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
+from django.conf import settings
 
 
 class DropbeatResource(Resource):
@@ -203,7 +205,13 @@ class SearchResource(DropbeatResource):
         """Register async task.
 
         """
-        task = youtube_search.delay(request.p['q'])
+        if settings.DEBUG:
+            result = Youtube.search_from_html(request.p['q'])
+            task = global_file_broker.set(result)
+        else:
+            # Because celery wants unicode
+            query = request.p['q'].decode('utf8')
+            task = youtube_search.delay(query)
         return self.on_success(data={'data': str(task)})
 
     @parameters(['key'])
@@ -211,8 +219,14 @@ class SearchResource(DropbeatResource):
         """Polls result of async task with provided key.
 
         """
-        result = youtube_search.AsyncResult(request.p['key'])
-        if result.ready():
-            return self.on_success(data={'data': result.get()})
+        if settings.DEBUG:
+            result = global_file_broker.get(request.p['key'])
+            if result is None:
+                return self.on_bad_request(ErrorCode.INVALID_ACCESS)
+            return self.on_success(data={'data': result})
         else:
-            return self.on_error(error=ErrorCode.RESULT_NOT_READY)
+            result = youtube_search.AsyncResult(request.p['key'])
+            if result.ready():
+                return self.on_success(data={'data': result.get()})
+            else:
+                return self.on_error(error=ErrorCode.RESULT_NOT_READY)
