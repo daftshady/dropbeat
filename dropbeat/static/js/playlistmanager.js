@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'jquery', 'playlist', 'api', 'notification', 'playercallback'
-], function ($, Playlist, api, notify, playerCallback) {
+  'jquery', 'playlist', 'track', 'api', 'notification', 'playercallback'
+], function ($, Playlist, Track, api, notify, playerCallback) {
 
 /**
  * Playlist manager object.
@@ -11,8 +11,7 @@ define([
 function PlaylistManager () {
   var that = this,
       // `reservedList` limit creating multiple playlists at once.
-      reservedList = null,
-      playlistCallback = null;
+      reservedList = null;
 
   // TODO: Move methods related to playlist loading to `playlistevent`.
   this.loadPlaylist = function (uid, updateView) {
@@ -24,11 +23,17 @@ function PlaylistManager () {
           playlist.tracks = resp.playlist.tracks;
 
           if (updateView) {
+            if (that.currentPlaylist !== null) {
+              that.currentPlaylist.selected = false;
+            }
+
+            that.currentPlaylist = playlist;
             that.callbacks.onPlaylistChange(playlist);
           }
         }
       });
   };
+
   this.loadAllPlaylists = function () {
     $.get(api.Router.getPath('playlistList'))
       .done(function (resp) {
@@ -60,6 +65,7 @@ function PlaylistManager () {
         that.callbacks[key] = callbacks[key];
 
         if (key === 'onPlaylistChange' && that.playlists.length > 0) {
+          that.currentPlaylist = that.playlists[0];
           callbacks[key](that.playlists[0]);
         }
       }
@@ -116,8 +122,42 @@ function PlaylistManager () {
     }
   };
 
-};
+  this.addNewTrack = function (track) {
+    var playlist = that.currentPlaylist,
+        data = {
+          uid: track.uid,
+          name: track.name,
+          playlist_uid: playlist.uid
+        };
 
+    $.ajax({
+      url: api.Router.getPath('track'),
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=utf-8',
+    }).done(function (resp) {
+      if (resp.success) {
+        var track = new Track(resp.track.uid,
+                              resp.track.name,
+                              resp.track.source);
+
+        that.callbacks.onTrackAdded(track);
+        playlist.push(track);
+        notify.onTrackAdded();
+      } else {
+        switch (resp.error) {
+          case api.ErrorCodes.trackAlreadyExist:
+            notify.trackExists();
+            break;
+          default:
+            // Unexpected error code.
+            break;
+        }
+      }
+    });
+  };
+};
 
 var getInstance = (function (instance) {
   function wrap () {

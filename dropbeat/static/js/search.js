@@ -2,10 +2,10 @@
 
 define([
   'jquery', 'handlebars', 'api',
-  'playermanager', 'playlistevent',
+  'playermanager', 'playlistmanager',
   'track', 'auth'
 ], function ($, hb, api,
-             playerManager, playlistEvent,
+             playerManager, playlistManager,
              Track, auth) {
 
 /**
@@ -304,7 +304,7 @@ function SearchManager () {
           source = itemWrapper.attr('data-source') || api.playerTypes.youtube,
           track = new Track(uid, name, source);
 
-      playlistEvent.tracks.addNewTrack(track);
+      playlistManager.addNewTrack(track);
     });
   };
 

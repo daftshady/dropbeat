@@ -15,6 +15,9 @@ function Track (uid, name, source) {
 
   // Streaming sources such as youtube
   this.source = source;
+
+  // [optional] index value for template numbering.
+  this.idx = -1;
 };
 
 return Track;
