@@ -19,7 +19,9 @@ To run dropbeat in your local environment,
 
 1. Clone this repository.
 2. Run `pip install -r requirements.txt` to install python dependencies.
-3. `python manage.py runserver [host]:[port]` will run the server in debug mode.
+3. Set database env variables in `settings.py` accordingly. You may need to install mysql in this step. (Or you can use sqlite by setting `DBT_TEST` flag.)
+4. Create database named as `dropbeat` and execute `python manage.py migrate`. 
+5. `python manage.py runserver [host]:[port]` will run the server in debug mode.
 
 There are apis which rely on 3rd party services such as search, recommendation.
 
