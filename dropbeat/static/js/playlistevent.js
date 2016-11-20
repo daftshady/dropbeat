@@ -258,22 +258,10 @@ function PlaylistTracksEventListener () {
 
     elems.find(trackRemoveQuery).click(function () {
       var elem = $(this),
-          uid = elem.closest('.playlist-track-inner').attr('data-uid'),
-          playlist = playlistManager.currentPlaylist,
-          data = {uid: uid, playlist_uid: playlist.uid};
+          uid = elem.closest('.playlist-track-inner').attr('data-uid');
 
-      $.ajax({
-        url: api.Router.getPath('track'),
-        type: 'DELETE',
-        data: JSON.stringify(data),
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8'
-      }).done(function (resp) {
-        if (resp.success) {
-          notify.onTrackRemoved();
-          playlist.remove(uid);
-          that.loadTracksView(playlist);
-        }
+      playlistManager.removeTrack(uid, function (playlist) {
+        that.loadTracksView(playlist);
       });
     });
   };

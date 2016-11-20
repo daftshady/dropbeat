@@ -122,6 +122,7 @@ function PlaylistManager () {
     }
   };
 
+  // Add new track into current playlist.
   this.addNewTrack = function (track) {
     var playlist = that.currentPlaylist,
         data = {
@@ -153,6 +154,29 @@ function PlaylistManager () {
           default:
             // Unexpected error code.
             break;
+        }
+      }
+    });
+  };
+
+  // Remove a track in current playlist.
+  this.removeTrack = function (uid, updateView) {
+    var playlist = that.currentPlaylist,
+        data = {uid: uid, playlist_uid: playlist.uid};
+
+    $.ajax({
+      url: api.Router.getPath('track'),
+      type: 'DELETE',
+      data: JSON.stringify(data),
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8'
+    }).done(function (resp) {
+      if (resp.success) {
+        notify.onTrackRemoved();
+        playlist.remove(uid);
+
+        if (updateView !== undefined) {
+          updateView(playlist);
         }
       }
     });
