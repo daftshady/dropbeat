@@ -5,6 +5,41 @@ define([
 ], function ($, Playlist, Track, api, notify, playerCallback) {
 
 /**
+ * Playlist filter.
+ *
+ * Find tracks by their name.
+ * Callbacks should be provided as `function (filteredPlaylist)`.
+ */
+
+function PlaylistFilter (playlist) {
+  var originalPlaylist = playlist;
+
+  // filter a playlist matching pattern.
+  // show only tracks whose name contains pattern.
+  this.query = function (pattern, callback) {
+    var filteredPlaylist =
+      new Playlist(originalPlaylist.uid, originalPlaylist.name, []);
+
+    for (var i=0; i < originalPlaylist.size(); i+=1) {
+      var track = originalPlaylist.get(i),
+          name = track.name;
+
+      if (name.toLowerCase().indexOf(pattern.toLowerCase()) !== -1) {
+        filteredPlaylist.add(track);
+      }
+    }
+
+    callback(filteredPlaylist);
+  };
+
+  // Revoke playlist filterd to originalPlaylist.
+  this.revoke = function (callback) {
+    callback(originalPlaylist);
+  };
+
+};
+
+/**
  * Playlist manager object.
  */
 
@@ -29,6 +64,7 @@ function PlaylistManager () {
 
             that.currentPlaylist = playlist;
             that.callbacks.onPlaylistChange(playlist);
+            that.filter = new PlaylistFilter(playlist);
           }
         }
       });
@@ -67,6 +103,7 @@ function PlaylistManager () {
         if (key === 'onPlaylistChange' && that.playlists.length > 0) {
           that.currentPlaylist = that.playlists[0];
           callbacks[key](that.playlists[0]);
+          that.filter = new PlaylistFilter(that.playlists[0]);
         }
       }
     }
@@ -111,15 +148,75 @@ function PlaylistManager () {
     return idx === -1 ? null : that.playlists[idx];
   };
 
-  this.removePlaylist = function (uid) {
-    var uids = that.playlists.map(function (playlist) {
-          return playlist.uid;
-        }),
-        idx = uids.indexOf(uid);
+  this.createPlaylist = function (name, updateView) {
+    var data = {name: name};
 
-    if (idx !== -1) {
-      that.playlists.splice(idx, 1);
-    }
+    $.ajax({
+      url: api.Router.getPath('playlist'),
+      type: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=utf-8'
+    }).done(function (resp) {
+      if (!resp.success) {
+        switch(resp.error) {
+          case api.ErrorCodes.duplicatedPlaylistName:
+            notify.duplicatedPlaylistName();
+            break;
+          default:
+            break;
+        }
+        return;
+      }
+
+      that.commit(resp.playlist);
+      updateView(resp.playlist);
+    });
+  };
+
+  this.removePlaylist = function (uid, updateView) {
+    $.ajax({
+      url: api.Router.getPath('playlist'),
+      type: 'DELETE',
+      data: JSON.stringify({uid: uid}),
+      contentType: 'application/json; charset=utf-8'
+    }).done(function (resp) {
+      var uids = that.playlists.map(function (playlist) {
+            return playlist.uid;
+          }),
+          idx = uids.indexOf(uid);
+
+      if (idx !== -1) {
+        that.playlists.splice(idx, 1);
+        updateView();
+      }
+    });
+  };
+
+  this.renamePlaylist = function (uid, name, updateView) {
+    var data = {uid: uid, name: name};
+
+    $.ajax({
+      url: api.Router.getPath('playlist'),
+      type: 'PUT',
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=utf-8'
+    }).done(function (resp) {
+      if (!resp.success) {
+        switch(resp.error) {
+          case api.ErrorCodes.duplicatedPlaylistName:
+            notify.duplicatedPlaylistName();
+            break;
+          default:
+            break;
+        }
+        return;
+      }
+
+      var playlist = that.getPlaylist(uid);
+      playlist.name = name;
+
+      updateView();
+    });
   };
 
   // Add new track into current playlist.
@@ -174,10 +271,7 @@ function PlaylistManager () {
       if (resp.success) {
         notify.onTrackRemoved();
         playlist.remove(uid);
-
-        if (updateView !== undefined) {
-          updateView(playlist);
-        }
+        updateView(playlist);
       }
     });
   };

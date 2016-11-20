@@ -54,8 +54,6 @@ function PlaylistEventListener () {
   };
 
   this.bindEvents = function (elems) {
-    var editValue = '.edit-mode-view form input[type=text]';
-
     // select playlist.
     elems.find('.nonedit-mode-view .title').click(function () {
       var uid = $(this).closest('.playlist').attr('data-uid'),
@@ -93,13 +91,7 @@ function PlaylistEventListener () {
             uid = list.attr('data-uid');
 
         if (uid.length !== 0) {
-          $.ajax({
-            url: api.Router.getPath('playlist'),
-            type: 'DELETE',
-            data: JSON.stringify({uid: uid}),
-            contentType: 'application/json; charset=utf-8'
-          }).done(function () {
-            playlistManager.removePlaylist(uid);
+          playlistManager.removePlaylist(uid, function () {
             list.remove();
           });
         }
@@ -109,42 +101,20 @@ function PlaylistEventListener () {
     elems.find('.edit-mode-view .menus .apply-edit-button').click(function () {
       var list = $(this).closest('.playlist'),
           uid = list.attr('data-uid'),
-          name = list.find(editValue).val(),
-          data = {name: name, uid: uid},
-          method = uid.length === 0 ? 'POST' : 'PUT';
+          name = list.find('.edit-mode-view form input[type=text]').val();
 
-      $.ajax({
-        url: api.Router.getPath('playlist'),
-        type: method,
-        data: JSON.stringify(data),
-        contentType: 'application/json; charset=utf-8'
-      }).done(function (resp) {
-        var editContainer = '.edit-mode-view .title-input-field';
-
-        if (!resp.success) {
-          switch(resp.error) {
-            case api.ErrorCodes.duplicatedPlaylistName:
-              notify.duplicatedPlaylistName();
-              break;
-            default:
-              break;
-          }
-          return;
-        }
-
-        list.removeClass('edit-mode');
-        list.find('.nonedit-mode-view .title').text(name);
-
-        if (list.attr('data-uid').length === 0) {
-
-          list.attr('data-uid', resp.playlist.uid);
-          playlistManager.commit(resp.playlist);
-
-        } else {
-          var playlist = playlistManager.getPlaylist(uid);
-          playlist.name = name;
-        }
-      });
+      if (uid.length === 0) {
+        playlistManager.createPlaylist(name, function (playlist) {
+          list.removeClass('edit-mode');
+          list.find('.nonedit-mode-view .title').text(name);
+          list.attr('data-uid', playlist.uid);
+        });
+      } else {
+        playlistManager.renamePlaylist(uid, name, function () {
+          list.removeClass('edit-mode');
+          list.find('.nonedit-mode-view .title').text(name);
+        });
+      }
     });
 
     elems.find('.edit-mode-view .title-input-field form')
@@ -227,7 +197,7 @@ function PlaylistTracksEventListener () {
 
     var children = that.elems.playlistInner.html(template(playlist));
 
-    this.bindEvents(children);
+    that.bindEvents(children);
 
     playOrderControl.reloadQueue();
   };
@@ -274,6 +244,28 @@ function PlaylistTracksEventListener () {
         notify.signinRequired();
       }
     });
+
+    // Search filter event.
+    // In order to catch `deletion` in an input field,
+    // 'keyup' event is used but not 'keypress'.
+    that.elems.playlistSearch.find('#search-playlist-input')
+      .on('keyup', function (event) {
+        var pattern = $(this).val();
+
+        // clear search result & restore original playlist
+        if (pattern.length === 0) {
+          playlistManager.filter.revoke(that.loadTracksView);
+          return;
+        }
+
+        // only search tracks in playlist when press enter
+        if (event.keyCode !== 13 ||
+            playlistManager.currentPlaylist === null) {
+          return;
+        }
+
+        playlistManager.filter.query(pattern, that.loadTracksView);
+      });
 
     playlistManager.setPlaylistCallbacks({
       onPlaylistChange: function (playlist) {
