@@ -111,15 +111,75 @@ function PlaylistManager () {
     return idx === -1 ? null : that.playlists[idx];
   };
 
-  this.removePlaylist = function (uid) {
-    var uids = that.playlists.map(function (playlist) {
-          return playlist.uid;
-        }),
-        idx = uids.indexOf(uid);
+  this.createPlaylist = function (name, updateView) {
+    var data = {name: name};
 
-    if (idx !== -1) {
-      that.playlists.splice(idx, 1);
-    }
+    $.ajax({
+      url: api.Router.getPath('playlist'),
+      type: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=utf-8'
+    }).done(function (resp) {
+      if (!resp.success) {
+        switch(resp.error) {
+          case api.ErrorCodes.duplicatedPlaylistName:
+            notify.duplicatedPlaylistName();
+            break;
+          default:
+            break;
+        }
+        return;
+      }
+
+      that.commit(resp.playlist);
+      updateView(resp.playlist);
+    });
+  };
+
+  this.removePlaylist = function (uid, updateView) {
+    $.ajax({
+      url: api.Router.getPath('playlist'),
+      type: 'DELETE',
+      data: JSON.stringify({uid: uid}),
+      contentType: 'application/json; charset=utf-8'
+    }).done(function (resp) {
+      var uids = that.playlists.map(function (playlist) {
+            return playlist.uid;
+          }),
+          idx = uids.indexOf(uid);
+
+      if (idx !== -1) {
+        that.playlists.splice(idx, 1);
+        updateView();
+      }
+    });
+  };
+
+  this.renamePlaylist = function (uid, name, updateView) {
+    var data = {uid: uid, name: name};
+
+    $.ajax({
+      url: api.Router.getPath('playlist'),
+      type: 'PUT',
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=utf-8'
+    }).done(function (resp) {
+      if (!resp.success) {
+        switch(resp.error) {
+          case api.ErrorCodes.duplicatedPlaylistName:
+            notify.duplicatedPlaylistName();
+            break;
+          default:
+            break;
+        }
+        return;
+      }
+
+      var playlist = that.getPlaylist(uid);
+      playlist.name = name;
+
+      updateView();
+    });
   };
 
   // Add new track into current playlist.
@@ -174,10 +234,7 @@ function PlaylistManager () {
       if (resp.success) {
         notify.onTrackRemoved();
         playlist.remove(uid);
-
-        if (updateView !== undefined) {
-          updateView(playlist);
-        }
+        updateView(playlist);
       }
     });
   };
