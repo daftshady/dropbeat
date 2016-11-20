@@ -15,16 +15,20 @@ require.config({
   }
 });
 
+
+require([
+  'jquery', 'domReady'
+], function ($, domReady) {
+  domReady(function () {
+    // Youtube iframe api should be loaded dynamically after dom is loaded.
+    $.getScript('//www.youtube.com/iframe_api');
+  });
+});
+
+
 // eslint-disable-next-line no-unused-vars
 function onYouTubeIframeAPIReady () {
-  require([
-    'require', 'domReady'
-
-  ], function (require, domReady) {
-    domReady(function () {
-      require(['dropbeat'], function (Dropbeat) {
-        Dropbeat.init()
-      })
-    });
-  });
+  require(['dropbeat'], function (Dropbeat) {
+    Dropbeat.init()
+  })
 };
