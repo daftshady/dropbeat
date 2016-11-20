@@ -23,7 +23,7 @@ To run dropbeat in your local environment,
 4. Create database named as `dropbeat` and execute `python manage.py migrate`. 
 5. `python manage.py runserver [host]:[port]` will run the server in debug mode.
 
-There are apis which rely on 3rd party services such as search, recommendation.
+There are apis which rely on 3rd party services such as youtube api.
 
 They should run asynchronously and that's why there are celery broker, redis configurations in the `settings.py`.
 
