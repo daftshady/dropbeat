@@ -190,7 +190,7 @@ function PlayerManager () {
     new SoundCloudPlayer()
   ];
 
-  this.currentPlayer = this.players.YoutubePlayer;
+  this.currentPlayer = this.players[0];
 
   this.init = function () {
     for (var i = 0; i < this.players.length; i += 1) {
