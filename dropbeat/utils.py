@@ -56,5 +56,11 @@ class FileBroker(object):
         self._broker[key] = value
         return key
 
+    def close(self):
+        self._broker.close()
 
-global_file_broker = FileBroker()
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        self.close()

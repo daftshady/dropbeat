@@ -4,7 +4,7 @@ from dropbeat.exceptions import (
     UserException, TrackException, PlaylistException, DropbeatException)
 from dropbeat.models import User, Track, Playlist
 from dropbeat.youtube import youtube_search, Youtube
-from dropbeat.utils import global_file_broker
+from dropbeat.utils import FileBroker
 from toolkit.resource import Resource, parameters
 
 from django.db import IntegrityError
@@ -207,7 +207,8 @@ class SearchResource(DropbeatResource):
         """
         if settings.DEBUG:
             result = Youtube.search_from_html(request.p['q'])
-            task = global_file_broker.set(result)
+            with FileBroker() as fb:
+                task = fb.set(result)
         else:
             # Because celery wants unicode
             query = request.p['q'].decode('utf8')
@@ -220,7 +221,9 @@ class SearchResource(DropbeatResource):
 
         """
         if settings.DEBUG:
-            result = global_file_broker.get(request.p['key'])
+            with FileBroker() as fb:
+                result = fb.get(request.p['key'])
+
             if result is None:
                 return self.on_bad_request(ErrorCode.INVALID_ACCESS)
             return self.on_success(data={'data': result})
