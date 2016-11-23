@@ -484,11 +484,13 @@ input[type='submit'] {
 #dropbeat .contents .header-section .logo {
   cursor: pointer;
   display: block;
+  width: 145px;
+  height: 14px;
 }
 #dropbeat .contents .header-section .logo .ic-logo {
   display: block;
-  width: 145px;
-  height: 14px;
+  width: 100%;
+  height: 100%;
   background-image: url("../images/ic_logo_small.png");
 }
 #dropbeat .contents .header-section .github {
