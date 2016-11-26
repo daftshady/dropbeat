@@ -97,7 +97,7 @@ function AutoCompletor (searchBar, driver) {
   this.selectPrev = function () {
     if (this.selectedIdx > 1) {
       this.clearSelectedItem(this.selectedIdx);
-      this.selectedIdx--;
+      this.selectedIdx -= 1;
       this.selectTo(this.selectedIdx);
     }
   };
@@ -195,16 +195,18 @@ function SearchManager () {
           query = selectedText;
 
           // Change value in search input also.
-          that.searchBar.val(query);
+          $(this).val(query);
         }
 
         that.search(query);
       } else if (e.which === 38) {
         // keycode for arrow up.
         that.autoCompletor.selectPrev();
+        $(this).val(that.autoCompletor.getSelectedText());
       } else if (e.which === 40) {
         // keycode for arrow down.
         that.autoCompletor.selectNext();
+        $(this).val(that.autoCompletor.getSelectedText());
       } else {
         that.autoCompletor.handleKeyEvent(query, e);
       }
