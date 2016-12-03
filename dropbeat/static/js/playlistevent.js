@@ -246,6 +246,15 @@ function PlaylistTracksEventListener () {
     });
 
     // Search filter event.
+    var clearButton = that.elems.playlistSearch.find('.clear-filter'),
+        clearFilter = function () {
+          playlistManager.filter.revoke(that.loadTracksView);
+          $(this).val('');
+
+          clearButton.hide();
+          clearButton.off('click');
+        };
+
     // In order to catch `deletion` in an input field,
     // 'keyup' event is used but not 'keypress'.
     that.elems.playlistSearch.find('#search-playlist-input')
@@ -254,7 +263,7 @@ function PlaylistTracksEventListener () {
 
         // clear search result & restore original playlist
         if (pattern.length === 0) {
-          playlistManager.filter.revoke(that.loadTracksView);
+          clearFilter();
           return;
         }
 
@@ -265,6 +274,8 @@ function PlaylistTracksEventListener () {
         }
 
         playlistManager.filter.query(pattern, that.loadTracksView);
+        clearButton.show();
+        clearButton.on('click', clearFilter.bind(this));
       });
 
     playlistManager.setPlaylistCallbacks({

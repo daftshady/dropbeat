@@ -199,10 +199,18 @@ input[type='submit'] {
 #dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field input {
   background: transparent;
   border: none;
-  width: 100%;
+  width: 250px;
   height: 23px;
   line-height: 23px;
   font-size: 13px;
+  color: white;
+}
+#dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field .clear-filter {
+  display: none;
+  cursor: pointer;
+  color: #7b7b7b;
+}
+#dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field .clear-filter:hover {
   color: white;
 }
 #dropbeat .play-controls .playlist-section .playlist-search .playlist-search-field input::-webkit-input-placeholder {
