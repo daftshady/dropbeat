@@ -7,7 +7,7 @@ We all are tired of crappy youtube playlist, horrible UX of soundcloud in which 
 
 You can search music from multiple streaming sources and manage, share playlist with standard music player interface.
 
-![alt tag](https://s3-ap-northeast-1.amazonaws.com/dropbeat-oss/dropbeat.jpg)
+![alt tag](http://coroutine.io/dropbeat.png)
 
 
 Development
